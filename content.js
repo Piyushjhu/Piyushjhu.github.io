@@ -10,7 +10,7 @@ window.SITE_CONTENT = {
   bio: [
     "I’m Piyush, a Postdoctoral Fellow at the Hopkins Extreme Materials Institute, Johns Hopkins University, working with K.T. Ramesh. I study how materials deform and fail when the loading is fast, intense, and far from everyday conditions.",
     "I designed and built HELIX and co-developed AIMD-L to transform how we explore material behavior through automated experiments. My broader aim is to connect measurements, physical understanding, and data-driven models so that failure becomes more predictable—and better materials can be designed with confidence.",
-    "My path has taken me from robotics and all-terrain vehicle teams to industrial R&D, a Ph.D. with Arun Shukla at the University of Rhode Island, and research at Johns Hopkins. Along the way, building things and helping others understand how they work have remained the common threads."
+    "My path has taken me from robotics and all-terrain vehicle teams to a master’s in Mechanical Engineering at the Indian Institute of Science (IISc), Bangalore, followed by industrial R&D, a Ph.D. with Arun Shukla at the University of Rhode Island, and research at Johns Hopkins. Along the way, building things and helping others understand how they work have remained the common threads."
   ],
   portrait: "./logo.jpg",
   interests: ["Experimental mechanics", "Autonomous laboratories", "Data-driven materials"],
