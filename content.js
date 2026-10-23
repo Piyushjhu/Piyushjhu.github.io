@@ -4,8 +4,8 @@ window.SITE_CONTENT = {
   name: "Piyush Wanchoo",
   firstName: "Piyush",
   initials: "PW",
-  title: "Piyush Wanchoo — Materials at extremes. Discovery, accelerated.",
-  description: "Piyush Wanchoo is a postdoctoral fellow at Johns Hopkins University working on experimental mechanics, autonomous experiments, and materials under extreme conditions.",
+  title: "Piyush Wanchoo | Experimental Mechanics & Materials Research",
+  description: "Piyush Wanchoo is a Johns Hopkins researcher studying impact, fracture, autonomous experiments, and data-driven materials design.",
   heroDescription: "I’m an experimental mechanician, researcher, and educator at Johns Hopkins. I build experiments to understand—and design—materials for extreme environments.",
   bio: [
     "I’m Piyush, a Postdoctoral Fellow at the Hopkins Extreme Materials Institute, Johns Hopkins University, working with K.T. Ramesh. I study how materials deform and fail when the loading is fast, intense, and far from everyday conditions.",

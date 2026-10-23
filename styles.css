@@ -295,3 +295,82 @@ h1{font-size:clamp(48px,6.6vw,90px);letter-spacing:-5.4px}
 @media(max-width:900px){.research-study.has-media{grid-template-columns:1fr;gap:26px}.study-media>img{max-height:480px}.study-media{max-width:none}.research-panel-heading{align-items:start;flex-direction:column;gap:10px}.research-study{gap:25px;padding:26px}}
 @media(max-width:760px){.research-description{font-size:12px}.research-vision{margin-top:30px;padding-top:26px}.research-vision>h3{font-size:24px}.research-steps{gap:22px}.research-steps h4{font-size:18px}.research-steps p{font-size:11px}.research-tabs{margin-top:35px;gap:26px}.research-tabs>button{font-size:12px;padding-block:15px}.study-copy>h3{font-size:26px}.research-study{grid-template-columns:90px minmax(0,1fr);gap:23px}.study-marker>strong{font-size:48px}.study-marker>span{font-size:6px;letter-spacing:.7px}.study-summary{font-size:12px}.study-details p{font-size:11px}}
 @media(max-width:480px){.research-steps{grid-template-columns:1fr;gap:20px;margin-top:26px}.research-steps li{display:grid;grid-template-columns:25px 1fr;column-gap:15px;padding-top:16px}.research-step-number{grid-row:1/3;padding-top:4px}.research-steps h4{margin:0 0 6px;font-size:19px}.research-steps p{max-width:none;font-size:12px}.research-vision>h3{font-size:25px}.research-vision>p{font-size:12px}.research-tabs{gap:0;justify-content:space-between}.research-tabs>button{font-size:11px;padding:15px 2px}.research-study,.research-study.has-media{grid-template-columns:1fr;padding:20px;gap:22px;border-radius:16px}.study-marker{flex-direction:row;align-items:center;border:0;padding:0;gap:15px}.study-marker>strong{font-size:30px;letter-spacing:-1px;order:-1}.study-marker>span{font-size:7px}.study-copy>h3{font-size:26px}.study-label{font-size:7px;letter-spacing:1px}.study-institution{margin-bottom:13px;font-size:9px}.study-summary,.study-details p{font-size:12px}.study-media figcaption{font-size:10px}.study-links .text-link{font-size:10px}.research-panel-heading{margin-bottom:22px}.research-panel-heading>p:last-child{font-size:11px}.study-tags>span{font-size:8px}.gallery-open{aspect-ratio:var(--gallery-aspect,4/3)}}
+
+/* Reading sizes apply after responsive layouts so mobile text stays legible. */
+:root{--text-body:1rem;--text-small:.875rem;--text-label:.75rem;--muted:#62626c}
+.hero-description{font-size:1.125rem;line-height:1.75}
+.intro-strip p{font-size:var(--text-body);max-width:none;line-height:1.75}
+.intro-signature{font-size:var(--text-small);color:var(--muted);line-height:1.6}
+.metric-label{font-size:var(--text-small);color:#655e70;line-height:1.65;max-width:none}
+.metric{gap:12px}
+
+.project-body>p:not(.project-label),.research-description,#research-vision-description,
+.research-steps p,.study-summary,.study-details p,.publication details,.publication-empty p,
+.timeline-description,.timeline-empty p,.about-bio p,.teaching-intro,.teaching-principle p,
+.course-description,.teaching-outlook>p:not(.eyebrow),.news-summary,.news-story-text,
+.academic-item p,.academic-item .academic-subtitle,.mentorship-note p,.service-list,
+.gallery-card figcaption>p:not(.gallery-meta),.detail-dialog p:not(.dialog-eyebrow),
+.detail-dialog .gallery-lightbox figcaption>p:not(.dialog-eyebrow){font-size:var(--text-body);line-height:1.8}
+
+.section-aside,.timeline-period,.timeline-organization,.publication-meta,.publication-authors,
+.publication-note,.study-institution,.study-media figcaption,.news-date-label,.news-venue,
+.news-presenter,.news-format,.news-note,.news-count,.news-bottom>span,.gallery-meta,
+.academic-kicker,.contact-affiliation,.teaching-interests>span,.course-institution,
+.site-footer p,.footer-right,.footer-right>span,.scholar-metrics,.publications-bottom>span,
+.detail-dialog .contact-detail p{font-size:var(--text-small);line-height:1.7}
+
+.eyebrow,.hero-eyebrow,.research-copy .eyebrow,.research-vision>.eyebrow,
+.research-panel-heading>.eyebrow,.about-copy .eyebrow,.contact-section .eyebrow,
+.project-label,.project-tags span,.interests span,.study-label,.study-tags>span,
+.course-role,.teaching-principle>span,.publication-year,.academic-number,.news-meta,
+.news-status,.photo-note,.dialog-eyebrow,.gallery-enlarge,.study-credit,
+.research-step-number,.study-marker>span,.scholar-metrics>span{font-size:var(--text-label)}
+.hero-eyebrow{letter-spacing:1.1px;max-width:100%}
+.project-label{min-height:0}
+.project-body>p:not(.project-label),.about-bio p{max-width:none}
+.academic-item h4,.mentorship-note h4,.news-details h4,.study-details h4{font-size:1.0625rem}
+.academic-detail>summary{font-size:1.0625rem}
+
+.text-link,.section-aside .text-link,.about-copy .text-link,.study-links .text-link,
+.news-links .text-link,.news-bottom .text-link,.gallery-card .text-link,
+.publications-bottom .text-link,.publication-actions a,.social-links a,
+.filter,.publication-tabs .filter,.news-controls .filter,.news-details>summary,
+.study-details>summary,.dialog-actions .button,.hero-actions .text-link{font-size:var(--text-small)}
+.research-tabs>button{font-size:1rem}
+.filter,.publication-tabs .filter,.news-controls .filter{padding:9px 12px}
+.footer-name{font-size:var(--text-body)}
+.visual-note,.visual-index{font-size:.6875rem;color:#65616d}
+
+.project-body>p:not(.project-label),.about-bio p,.timeline-description,.timeline-period,.timeline-empty p,
+.academic-kicker,.academic-item p,.mentorship-note p,.service-list,.site-footer p,
+.footer-right,.footer-right>span,.photo-note,.section-top .eyebrow,.project-label,
+.project-tags span,.interests span,.detail-dialog p:not(.dialog-eyebrow){color:#655d70}
+.teaching-intro,.teaching-principle p,.course-description,
+.teaching-outlook>p:not(.eyebrow),.gallery-card figcaption>p:not(.gallery-meta){color:#62536d}
+.research-description,#research-vision-description,.research-steps p,.study-summary,
+.study-details p{color:#c7bfce}
+.publication-meta,.publication-authors,.publication-note,.publication-year,.study-institution,
+.study-media figcaption,.research-panel-heading>p:last-child,.publications-bottom>span,
+.scholar-metrics,.scholar-metrics>span{color:#bdb1c8}
+.research-panel-heading>p:last-child{font-size:var(--text-small);line-height:1.7}
+
+@media(max-width:760px){
+  .metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+  .metric:nth-child(3){padding-left:0;border-left:0}
+  .filter-tabs{flex-wrap:wrap;justify-content:flex-start;max-width:100%;border-radius:18px}
+  .project-controls{flex-wrap:wrap}
+  .publication-tabs{width:100%}
+  .publications-bottom{flex-wrap:wrap}
+  .publications-bottom>span{max-width:none;text-align:left}
+  .teaching-principles{grid-template-columns:1fr}
+  .hero-actions{flex-wrap:wrap;gap:18px 24px}
+}
+@media(max-width:480px){
+  .intro-strip{align-items:flex-start;flex-direction:column;gap:12px}
+  .intro-signature{max-width:none;text-align:left;white-space:normal}
+  .hero-description{font-size:var(--text-body);max-width:100%}
+  .visual-index{display:none}
+  .research-tabs{flex-wrap:wrap;gap:4px 22px;justify-content:flex-start}
+  .research-tabs>button{font-size:var(--text-small);padding:13px 0}
+  .news-bottom{flex-wrap:wrap}
+}

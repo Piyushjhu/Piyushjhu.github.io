@@ -30,6 +30,14 @@ Edit **content.js**. This file controls your name, bio, interests, portrait, pro
 - Update or add `projects` entries. Use `category: "code"` or `"experiments"` for filtering and add a repository or paper `url`. `detail` is the longer text shown when a card is opened; `linkLabel` customizes its action. For multiple actions, use `links: [{ label: "Explore the atlas", url: "https://piyushwanchoo.com/Dynamic-Ashby-Atlas/" }, { label: "View on GitHub", url: "https://github.com/Piyushjhu/Dynamic-Ashby-Atlas" }]` instead of `url` and `linkLabel`. `art` can be `"code"`, `"data"`, `"wave"`, `"signal"`, `"bubble"`, or `"orb"` when no image is provided. Decorative data illustrations are marked as illustrations, not measurements.
 - The main headlines and section headings are in `index.html`. Design tokens and responsive styling are in `styles.css`.
 
+## Search visibility
+
+The homepage has a descriptive name-first title, a canonical URL, and `WebSite`, `ProfilePage`, and `Person` structured data linking the site to your academic profiles. Keep the title and description in `index.html` and `content.js` consistent when updating them. Identity metadata lives in `index.html`; `robots.txt` and `sitemap.xml` are copied into the public build. The sitemap lists the canonical homepage, not section fragments.
+
+To monitor Google indexing, add `https://piyushwanchoo.com/` as a URL-prefix property in Google Search Console, verify ownership, submit `sitemap.xml`, and inspect the homepage to request indexing. Search Console provides a unique verification tag if you choose HTML-tag verification; add that tag inside the HTML head. Link this website from your GitHub, LinkedIn, Google Scholar, and university profile where you control the links. These steps support discovery and identification; ranking is determined by Google.
+
+The final typography block in `styles.css` keeps descriptions at 16px, secondary text at 14px, and small labels at 12px, using rem units so browser font preferences continue to apply.
+
 Example publication:
 
 ```js

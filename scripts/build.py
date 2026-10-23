@@ -9,7 +9,7 @@ DESTINATION = ROOT / "_site"
 if DESTINATION.exists():
     shutil.rmtree(DESTINATION)
 DESTINATION.mkdir()
-for name in ("index.html", "styles.css", "content.js", "app.js", "sculpture.js", "logo.jpg", ".nojekyll"):
+for name in ("index.html", "styles.css", "content.js", "app.js", "sculpture.js", "logo.jpg", ".nojekyll", "robots.txt", "sitemap.xml"):
     shutil.copy2(ROOT / name, DESTINATION / name)
 shutil.copytree(ROOT / "assets", DESTINATION / "assets")
 html = (ROOT / "index.html").read_text(encoding="utf-8")
