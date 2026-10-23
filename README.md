@@ -74,7 +74,7 @@ git push
 
 Stage any other files you edited as well. Check deployment progress at https://github.com/Piyushjhu/Piyushjhu.github.io/actions.
 
-The workflow stages only public site files into `_site/`, keeping scripts, documentation, and repository files out of the deployed artifact. You can run `python3 scripts/build.py` to inspect it locally. Add extra public directories to that script if needed; files inside `assets/` are included automatically.
+The workflow stages only public site files into `_site/`, keeping scripts, documentation, and repository files out of the deployed artifact. JavaScript and CSS references in the staged HTML use filenames derived from each file’s contents, so a refreshed homepage loads updated files instead of a previously cached version. Source HTML keeps the original filenames for local previews. You can run `python3 scripts/build.py` to inspect the published version locally. Add extra public directories to that script if needed; files inside `assets/` are included automatically.
 
 Official instructions: [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
