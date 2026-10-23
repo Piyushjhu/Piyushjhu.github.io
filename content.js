@@ -54,7 +54,7 @@ window.SITE_CONTENT = {
       title: "HELIX. Transforming impact research.",
       summary: "I designed and built an automated laser-driven microflyer impact facility at Johns Hopkins to make systematic studies of dynamic material behavior practical across a much wider range of conditions.",
       institution: "Johns Hopkins University", tags: ["Laser-driven impact", "Robotics", "AIMD-L"],
-      image: "./assets/research/helix-facility.jpg",
+      image: "./assets/research/helix-facility-blurred.jpg",
       imageAlt: "HELIX laser-driven microflyer impact facility with robotic arms, optical equipment, and sample trays at Johns Hopkins",
       caption: "HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials in extreme environments.",
       details: [
@@ -110,7 +110,7 @@ window.SITE_CONTENT = {
   gallery: [
     {
       id: "helix-facility", title: "Inside HELIX.",
-      image: "./assets/research/helix-facility.jpg", width: 1680, height: 1036,
+      image: "./assets/research/helix-facility-blurred.jpg", width: 1680, height: 1036,
       alt: "HELIX facility showing robotic arms, optical equipment, and trays for automated sample handling",
       event: "HELIX · AIMD-L", location: "Johns Hopkins University", dateLabel: "In the lab",
       caption: "The automated laser-driven microflyer impact facility I designed and built to transform how we explore dynamic strength and failure. HELIX is part of AIMD-L, an automated laboratory I co-developed for materials in extreme environments."
@@ -291,7 +291,7 @@ window.SITE_CONTENT = {
       title: "HELIX. Experiments, accelerated.", category: "experiments", label: "AUTONOMOUS EXPERIMENTAL MECHANICS",
       description: "An automated laser-driven impact platform for exploring material strength and failure at extreme strain rates.",
       detail: "I designed and built HELIX, an automated laser-driven microflyer impact facility at Johns Hopkins that has transformed how impact research is conducted. By integrating automated experimentation, rapid data analysis, and closed-loop workflows, we can explore dynamic strength and failure systematically across materials, microstructures, compositions, and loading conditions. The platform supports studies ranging from spall failure in copper to composition- and kinetics-resolved measurements in Cu–Ti, Al–Mg, and Ti–V alloys. HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials in extreme environments.",
-      tags: ["Shock physics", "Automation", "AIMD-L"], art: "lab", image: "./assets/research/helix-facility.jpg",
+      tags: ["Shock physics", "Automation", "AIMD-L"], art: "lab", image: "./assets/research/helix-facility-blurred.jpg",
       imageAlt: "HELIX laser-driven microflyer impact facility with robotic arms, optical equipment, and sample trays at Johns Hopkins",
       url: "https://arxiv.org/abs/2603.06835", linkLabel: "Read the AIMD-L preprint"
     },
