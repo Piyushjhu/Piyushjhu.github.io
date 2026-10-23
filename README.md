@@ -2,7 +2,7 @@
 
 A lightweight, Apple-inspired personal website with original interactive 3D artwork, project filters and detail dialogs, active and past research, publications, a news feed, a work timeline, a personal overview, teaching, and a photo gallery. Plain HTML, CSS, and JavaScript. No package installation, build framework, paid service, or API key required. All assets are local.
 
-**Website:** https://piyushjhu.github.io/
+**Website:** https://piyushwanchoo.com/
 
 **Repository:** https://github.com/Piyushjhu/Piyushjhu.github.io
 
@@ -78,10 +78,26 @@ The workflow stages only public site files into `_site/`, keeping scripts, docum
 
 Official instructions: [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
+### Custom domain
+
+`piyushwanchoo.com` is assigned to this repository in **Settings → Pages → Custom domain**. The domain is registered with Spaceship, and hosting remains on GitHub Pages. Keep the Spaceship nameservers and configure these records in **Advanced DNS → DNS records → Custom records**:
+
+```text
+A      @      185.199.108.153
+A      @      185.199.109.153
+A      @      185.199.110.153
+A      @      185.199.111.153
+CNAME  www    piyushjhu.github.io
+```
+
+Use the default TTL and replace conflicting parking or redirect records for `@` and `www`. Preserve any email records. GitHub provides the HTTPS certificate after DNS is correct; enable **Enforce HTTPS** once the certificate is ready. With both DNS names configured, `www.piyushwanchoo.com` redirects to `piyushwanchoo.com`.
+
+This site uses a custom GitHub Actions workflow, so the domain is configured in Pages settings rather than a `CNAME` file. Official instructions: [GitHub Pages custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+
 ## Design and accessibility
 
 The interface uses system fonts, a frosted navigation bar, responsive layouts, keyboard focus styles, semantic sections, a skip link, native dialogs, and a mobile menu. Motion respects the visitor’s reduced-motion setting; the sculpture pauses outside the viewport and in inactive tabs. Browsers without WebGL receive a local SVG alternative. External links open in a new tab with `noopener noreferrer`.
 
 Validation performed: JavaScript and CSS syntax, DOM-based functional checks for research tabs and keyboard navigation, media behavior, direct links, gallery dialogs, and existing project/publication filters, news, teaching, and contact details. Media files are inspected and the Pages build output is checked against source files. Live visual/browser testing was unavailable because this session has no browser connector and computer-control permission was not granted.
 
-The social preview SVG is a source asset. For social sharing, export it to a 1200 × 630 PNG and add `og:image` metadata in `index.html` with its **absolute public URL**. The canonical URL and `og:url` are set to `https://piyushjhu.github.io/`. Also update the initial `<title>` and descriptions in `index.html` if changing the name, since link-preview crawlers may not run JavaScript.
+The social preview SVG is a source asset. For social sharing, export it to a 1200 × 630 PNG and add `og:image` metadata in `index.html` with its **absolute public URL**. The canonical URL and `og:url` are set to `https://piyushwanchoo.com/`. Also update the initial `<title>` and descriptions in `index.html` if changing the name, since link-preview crawlers may not run JavaScript.
