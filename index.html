@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f8fa" />
+    <meta name="description" content="Piyush Wanchoo is a postdoctoral fellow at Johns Hopkins University working on experimental mechanics, autonomous experiments, and materials under extreme conditions." />
+    <meta property="og:title" content="Piyush Wanchoo — Materials at extremes. Discovery, accelerated." />
+    <meta property="og:description" content="Experimental mechanics, autonomous laboratories, and data-driven materials discovery at Johns Hopkins University." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://piyushjhu.github.io/" />
+    <link rel="canonical" href="https://piyushjhu.github.io/" />
+    <title>Piyush Wanchoo — Materials at extremes. Discovery, accelerated.</title>
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./content.js" defer></script>
+    <script src="./app.js" defer></script>
+    <script src="./sculpture.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <nav class="nav shell" aria-label="Main navigation">
+        <a class="wordmark" href="#home" aria-label="Piyush Wanchoo, home"><span class="monogram">pw<span>·</span></span><span class="wordmark-name" data-name>Piyush Wanchoo</span></a>
+        <div class="nav-links" id="navigation">
+          <a href="#work" data-nav="work">Work</a>
+          <a href="#research" data-nav="research">Research</a>
+          <a href="#journey" data-nav="journey">Journey</a>
+          <a href="#about" data-nav="about">About</a>
+        </div>
+        <button class="button button-small nav-contact" type="button" data-contact>Let’s talk <svg class="icon" aria-hidden="true"><use href="#arrow-up-right" /></svg></button>
+        <button class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="home" aria-labelledby="hero-title">
+        <div class="hero-copy shell">
+          <p class="eyebrow hero-eyebrow"><span class="status-dot"></span> PIYUSH WANCHOO · JOHNS HOPKINS UNIVERSITY</p>
+          <h1 id="hero-title">Materials at extremes.<br /><span>Discovery, accelerated.</span></h1>
+          <p class="hero-description" data-hero-description>I build experiments and tools to understand materials at their limits—and accelerate what we can discover.</p>
+          <div class="hero-actions"><a class="button" href="#work">Explore my work <svg class="icon" aria-hidden="true"><use href="#arrow-down" /></svg></a><a class="text-link" href="#about">A little about me <svg class="icon" aria-hidden="true"><use href="#arrow-up-right" /></svg></a></div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="sculpture-glow"></div>
+          <canvas id="sculpture" width="1400" height="550"></canvas>
+          <div class="sculpture-shadow"></div>
+          <div class="visual-note"><span class="mini-cross">+</span> EXPERIMENT. UNDERSTAND. DISCOVER.</div>
+          <div class="visual-index">SCROLL TO EXPLORE <svg class="icon"><use href="#arrow-down" /></svg></div>
+        </div>
+      </section>
+
+      <div class="intro-strip shell"><p>Postdoctoral Fellow. <span>Hopkins Extreme Materials Institute.</span></p><span class="intro-signature">Baltimore, Maryland <svg class="icon" aria-hidden="true"><use href="#sparkle" /></svg></span></div>
+      <div class="metrics shell" id="metrics" aria-label="Research highlights"></div>
+
+      <section class="section shell" id="work" aria-labelledby="work-title">
+        <div class="section-top reveal"><div><p class="eyebrow">01 / SELECTED WORK</p><h2 id="work-title">Better experiments.<br /><span>Deeper understanding.</span></h2></div><div class="section-aside"><p>Building the platforms and tools<br />that move discovery forward.</p><a class="text-link" href="#projects" id="github-link" hidden>Find me on GitHub <svg class="icon" aria-hidden="true"><use href="#arrow-up-right" /></svg></a></div></div>
+        <div class="project-controls reveal"><div class="filter-tabs" role="group" aria-label="Filter projects"><button type="button" class="filter active" data-filter="all" aria-pressed="true">All work</button><button type="button" class="filter" data-filter="code" aria-pressed="false">Software & tools</button><button type="button" class="filter" data-filter="experiments" aria-pressed="false">Experiments</button></div><span class="sample-label" id="sample-label" hidden>Illustrative projects</span></div>
+        <div class="projects-grid" id="projects" aria-live="polite"></div>
+      </section>
+
+      <section class="research-section" id="research" aria-labelledby="research-title">
+        <div class="research-inner shell">
+          <div class="research-copy reveal"><p class="eyebrow">02 / RESEARCH & PUBLICATIONS</p><h2 id="research-title">Good questions.<br /><span>New perspectives.</span></h2><p class="research-description" data-research-description>How do materials deform and fail under extreme loading? I combine high-throughput experiments, shock physics, and machine learning to uncover the relationships that drive their performance.</p><a class="text-link light-link" href="#publications">Explore publications <svg class="icon" aria-hidden="true"><use href="#arrow-down" /></svg></a></div>
+          <div class="research-art" aria-hidden="true"><div class="orbital orbital-one"></div><div class="orbital orbital-two"></div><div class="orbital orbital-three"></div><div class="research-orb"></div><span class="orb-point point-one"></span><span class="orb-point point-two"></span><span class="orb-point point-three"></span><div class="art-label">A DIFFERENT WAY TO SEE.</div></div>
+        </div>
+        <div class="publication-toolbar shell"><div class="filter-tabs publication-tabs" role="group" aria-label="Filter publications"><button class="filter active" type="button" data-paper-filter="selected" aria-pressed="true">Selected papers</button><button class="filter" type="button" data-paper-filter="all" aria-pressed="false">All 14 articles</button><button class="filter" type="button" data-paper-filter="progress" aria-pressed="false">Preprints & in progress</button></div><span class="scholar-metrics">h-index 9 · i10-index 9 <span> / SEP 2026</span></span></div>
+        <div class="publications shell" id="publications" aria-live="polite"></div>
+        <div class="publications-bottom shell"><a class="text-link light-link" href="https://scholar.google.com/citations?user=L0GoOBAAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener noreferrer" id="scholar-link">View on Google Scholar <svg class="icon" aria-hidden="true"><use href="#arrow-up-right" /></svg></a><span>Publication details and metrics: September 2026 CV</span></div>
+      </section>
+
+      <section class="section shell journey-section" id="journey" aria-labelledby="journey-title">
+        <div class="section-top reveal"><div><p class="eyebrow">03 / THE JOURNEY SO FAR</p><h2 id="journey-title">Every chapter<br /><span>adds something.</span></h2></div><p class="section-aside">The people, places, and experiences<br />that shape the way I think.</p></div>
+        <div class="timeline" id="timeline"></div>
+        <a class="text-link resume-link" id="resume-link" hidden>Download my résumé <svg class="icon" aria-hidden="true"><use href="#arrow-down" /></svg></a>
+      </section>
+
+      <section class="about-section" id="about" aria-labelledby="about-title">
+        <div class="about-grid shell">
+          <div class="about-image-wrap reveal"><div class="portrait-frame"><img class="portrait" src="./logo.jpg" width="250" height="250" alt="Piyush Wanchoo" loading="lazy" data-portrait /><span class="portrait-corner" aria-hidden="true">PW.</span></div><span class="photo-note"><span class="status-dot"></span> THE PERSON BEHIND THE PIXELS</span></div>
+          <div class="about-copy reveal"><p class="eyebrow">04 / A LITTLE ABOUT ME</p><h2 id="about-title">Curiosity is<br /><span>the common thread.</span></h2><div class="about-bio" id="about-bio"><p>I’m a Postdoctoral Fellow at the Hopkins Extreme Materials Institute, Johns Hopkins University, working with K.T. Ramesh. My research connects experimental mechanics, laboratory automation, and data-driven materials discovery.</p></div><div class="interests" id="interests"><span>Experimental mechanics</span><span>Autonomous laboratories</span><span>Data-driven materials</span></div><a class="text-link" href="#academic">Education & beyond <svg class="icon" aria-hidden="true"><use href="#arrow-down" /></svg></a></div>
+        </div>
+      </section>
+
+      <section class="academic-section section shell" id="academic" aria-labelledby="academic-title"><div class="section-top reveal"><div><p class="eyebrow">05 / EDUCATION & BEYOND</p><h2 id="academic-title">More than<br /><span>the experiments.</span></h2></div><p class="section-aside">Learning, teaching, and contributing<br />to the mechanics community.</p></div><div class="academic-accordion" id="academic-accordion"></div></section>
+
+      <section class="contact-section shell reveal" aria-labelledby="contact-title"><p class="eyebrow">THE NEXT DISCOVERY STARTS WITH A CONVERSATION.</p><h2 id="contact-title">Let’s explore<br /><span>what’s next.</span><span class="contact-asterisk" aria-hidden="true">✳</span></h2><button class="button" type="button" data-contact>Say hello <svg class="icon" aria-hidden="true"><use href="#arrow-up-right" /></svg></button><p class="contact-affiliation">Hopkins Extreme Materials Institute<br />Johns Hopkins University · Baltimore, MD</p></section>
+    </main>
+
+    <footer class="site-footer shell"><div><a class="footer-name" href="#home" data-name>Piyush Wanchoo</a><p>A work in progress. Just like the rest of us.</p></div><div class="footer-right"><div class="social-links" id="social-links"></div><span>© <span id="year">2026</span> <span data-name>Piyush Wanchoo</span><span class="footer-dot">·</span>Built with care.</span></div></footer>
+
+    <dialog class="detail-dialog" id="detail-dialog" aria-labelledby="dialog-title"><button class="dialog-close" type="button" aria-label="Close dialog"><svg class="icon" aria-hidden="true"><use href="#close" /></svg></button><div id="dialog-content"></div></dialog>
+    <noscript><div class="noscript-note">JavaScript is turned off. You can still explore this page; project and publication details need JavaScript.</div></noscript>
+
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><symbol id="arrow-up-right" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12" /></symbol><symbol id="arrow-down" viewBox="0 0 24 24"><path d="M12 4v16m-6-6 6 6 6-6" /></symbol><symbol id="arrow-right" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" /></symbol><symbol id="sparkle" viewBox="0 0 24 24"><path d="m12 2 2.8 7.2L22 12l-7.2 2.8L12 22l-2.8-7.2L2 12l7.2-2.8L12 2Z" /></symbol><symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6" /></symbol><symbol id="github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4a3.5 3.5 0 0 0-1-2.7c3.3-.4 6.7-1.6 6.7-7.3A5.7 5.7 0 0 0 19.2 4a5.3 5.3 0 0 0-.1-4S17.9-.4 15 1.5a14 14 0 0 0-7 0C5.1-.4 3.9 0 3.9 0a5.3 5.3 0 0 0-.1 4A5.7 5.7 0 0 0 2.3 8c0 5.7 3.4 6.9 6.7 7.3A3.5 3.5 0 0 0 8 18v4" transform="translate(1 1) scale(.9)" /></symbol></defs></svg>
+  </body>
+</html>
