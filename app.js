@@ -79,7 +79,11 @@
       const dateText = `<span class="news-year">${escape(year)}</span>${dateLabel ? `<span class="news-date-label">${escape(dateLabel)}</span>` : ""}`;
       const date = /^\d{4}-\d{2}-\d{2}$/.test(story.date || "") ? `<time class="news-date" datetime="${escape(story.date)}">${dateText}</time>` : `<div class="news-date">${dateText}</div>`;
       const presentations = story.presentations || [];
-      return `<li><article class="news-entry" data-news-id="${escape(story.id)}">${date}<div class="news-body"><p class="news-meta"><span class="news-status news-status-${timing}">${newsStatusLabels[timing]}</span><span>${escape(story.category)}</span></p><h3>${escape(story.title)}</h3><p class="news-venue">${escape(story.event)}${story.location ? `<span>${escape(story.location)}</span>` : ""}</p><p class="news-summary">${escape(story.summary)}</p>${presentations.length ? `<details class="news-details" data-news-id="${escape(story.id)}"${openDetails.has(story.id) ? " open" : ""}><summary>View ${presentations.length > 1 ? `${presentations.length} presentations` : "presentation"} ${icon("arrow-down")}</summary><ul>${presentations.map(presentation => `<li><h4>${escape(presentation.title)}</h4><p class="news-presenter">Presenting author${(presentation.presenter || "").includes(";") ? "s" : ""}: ${escape(presentation.presenter)}</p><p class="news-format">${escape(presentation.format)}</p></li>`).join("")}</ul></details>` : ""}</div></article></li>`;
+      const detailsText = (story.detailsText || []).map(paragraph => `<p class="news-story-text">${escape(paragraph)}</p>`).join("");
+      const presentationDetails = presentations.length ? `<ul>${presentations.map(presentation => `<li><h4>${escape(presentation.title)}</h4><p class="news-presenter">Presenting author${(presentation.presenter || "").includes(";") ? "s" : ""}: ${escape(presentation.presenter)}</p><p class="news-format">${escape(presentation.format)}</p></li>`).join("")}</ul>` : "";
+      const detailsLabel = story.detailsTitle || `View ${presentations.length > 1 ? `${presentations.length} presentations` : "presentation"}`;
+      const links = (story.links || []).filter(link => safeUrl(link.url)).map(link => externalLink(link.url, link.label)).join("");
+      return `<li><article class="news-entry" data-news-id="${escape(story.id)}">${date}<div class="news-body"><p class="news-meta"><span class="news-status news-status-${timing}">${newsStatusLabels[timing]}</span><span>${escape(story.category)}</span></p><h3>${escape(story.title)}</h3><p class="news-venue">${escape(story.event)}${story.location ? `<span>${escape(story.location)}</span>` : ""}</p><p class="news-summary">${escape(story.summary)}</p>${presentationDetails || detailsText ? `<details class="news-details" data-news-id="${escape(story.id)}"${openDetails.has(story.id) ? " open" : ""}><summary>${escape(detailsLabel)} ${icon("arrow-down")}</summary>${presentationDetails}${detailsText}</details>` : ""}${story.note ? `<p class="news-note">${escape(story.note)}</p>` : ""}${links || story.gallery ? `<div class="news-links">${links}${story.gallery ? `<a class="text-link" href="#gallery">See the gallery ${icon("arrow-down")}</a>` : ""}</div>` : ""}</div></article></li>`;
     }).join("") : '<li class="news-empty">No updates in this category yet. Explore all updates for more presentations.</li>';
     $("#news-count").textContent = `${visible.length} of ${stories.length} update${stories.length === 1 ? "" : "s"}`;
     const toggle = $("#news-toggle");
@@ -99,6 +103,18 @@
     renderNews();
   }));
   $("#news-toggle").addEventListener("click", () => { newsExpanded = !newsExpanded; renderNews(); });
+
+  const teachingApproach = content.teachingApproach || {};
+  $("#teaching-intro").textContent = teachingApproach.intro || "";
+  $("#teaching-principles").innerHTML = (teachingApproach.principles || []).map((principle, index) => `<article class="teaching-principle"><span aria-hidden="true">0${index + 1}</span><h3>${escape(principle.title)}</h3><p>${escape(principle.text)}</p></article>`).join("");
+  $("#teaching-courses").innerHTML = (content.teaching || []).map(course => `<article class="teaching-course"><p class="course-role">${escape(course.role)}</p><h3>${escape(course.title)}</h3><p class="course-institution">${escape(course.institution)}</p><p class="course-description">${escape(course.detail)}</p></article>`).join("");
+  $("#teaching-areas").innerHTML = (teachingApproach.areas || []).map(area => `<span>${escape(area)}</span>`).join("");
+  $("#gallery-grid").innerHTML = (content.gallery || []).map((item, index) => {
+    const imageUrl = safeUrl(item.image, true);
+    if (!imageUrl) return "";
+    const sourceUrl = safeUrl(item.sourceUrl);
+    return `<figure class="gallery-card${item.kind === "document" ? " gallery-document" : ""}"><button type="button" class="gallery-open" data-gallery="${index}" aria-label="Enlarge ${escape(item.title)}" aria-haspopup="dialog"><img src="${escape(imageUrl)}" alt="${escape(item.alt)}" width="${Number(item.width) || 1600}" height="${Number(item.height) || 1200}" loading="lazy" /><span class="gallery-enlarge">View image ${icon("arrow-up-right")}</span></button><figcaption><p class="gallery-meta">${escape(item.dateLabel)}<span>${escape(item.location)}</span></p><h3>${escape(item.title)}</h3><p>${escape(item.caption)}</p>${sourceUrl ? externalLink(sourceUrl, item.sourceLabel || "View source") : ""}</figcaption></figure>`;
+  }).join("");
 
   const art = {
     code: `<div class="mini-window" aria-hidden="true"><div class="window-top"><i></i><i></i><i></i><span>HELIX / analysis workflow</span></div><div class="code-lines"><div class="code-comment"># From signals to understanding.</div><div><em>experiment</em> → raw_signal</div><div>&nbsp;</div><div><em>analysis</em> = {</div><div class="code-indent">velocity: <b>extract(signal)</b>,</div><div class="code-indent">strength: <b>detect_spall()</b>,</div><div class="code-indent">uncertainty: <b>quantify()</b></div><div>}</div><div class="code-comment"># Discover. Repeat.</div></div></div>`,
@@ -159,7 +175,7 @@
     ["Education", (content.education || []).map(item => academicItem(item.period, item.degree, item.institution, item.detail)).join("")],
     ["Awards & recognition", (content.awards || []).map(item => academicItem(item.year, item.text, "")).join("")],
     ["Experimental & computational capabilities", (content.capabilities || []).map(item => academicItem("", item.title, "", item.text)).join("")],
-    ["Teaching & mentorship", (content.teaching || []).map(item => academicItem(item.role, item.title, item.institution, item.detail)).join("") + `<div class="mentorship-note"><h4>Mentoring the next generation</h4><p>${escape(content.mentorship)}</p></div>`],
+    ["Mentorship & outreach", `<div class="mentorship-note"><h4>Mentoring the next generation</h4><p>${escape(content.mentorship)}</p><h4>Learning beyond the classroom</h4><p>${escape(content.outreach)}</p></div>`],
     ["Selected talks & presentations", (content.talks || []).map(item => academicItem(item.year, item.title, item.detail)).join("")],
     ["Service & community", `<ul class="service-list">${(content.service || []).map(item => `<li>${escape(item)}</li>`).join("")}</ul>`]
   ];
@@ -167,8 +183,9 @@
 
   const dialog = $("#detail-dialog");
   let previousFocus = null;
-  const openDialog = html => {
+  const openDialog = (html, mode = "") => {
     previousFocus = document.activeElement;
+    dialog.classList.toggle("gallery-dialog", mode === "gallery");
     $("#dialog-content").innerHTML = html;
     dialog.showModal();
     document.body.classList.add("modal-open");
@@ -184,6 +201,17 @@
   dialog.addEventListener("close", () => {
     document.body.classList.remove("modal-open");
     previousFocus?.focus({preventScroll: true});
+  });
+  $("#gallery-grid").addEventListener("click", event => {
+    const button = event.target.closest("[data-gallery]");
+    if (!button) return;
+    const index = Number(button.dataset.gallery);
+    const item = Number.isInteger(index) ? (content.gallery || [])[index] : null;
+    if (!item) return;
+    const imageUrl = safeUrl(item.image, true);
+    if (!imageUrl) return;
+    const sourceUrl = safeUrl(item.sourceUrl);
+    openDialog(`<figure class="gallery-lightbox"><img src="${escape(imageUrl)}" alt="${escape(item.alt)}" width="${Number(item.width) || 1600}" height="${Number(item.height) || 1200}" /><figcaption><p class="dialog-eyebrow">${escape(item.event)} · ${escape(item.dateLabel)}</p><h2 id="dialog-title">${escape(item.title)}</h2><p>${escape(item.caption)}</p>${sourceUrl ? externalLink(sourceUrl, item.sourceLabel || "View source") : ""}</figcaption></figure>`, "gallery");
   });
   $("#projects").addEventListener("click", event => {
     const card = event.target.closest("[data-project]");
@@ -208,7 +236,7 @@
   $$(".nav-links a").forEach(link => link.addEventListener("click", closeMenu));
   document.addEventListener("keydown", event => { if (event.key === "Escape" && menu.getAttribute("aria-expanded") === "true") { closeMenu(); menu.focus(); } });
   document.addEventListener("click", event => { if (!event.target.closest(".nav")) closeMenu(); });
-  const desktopQuery = window.matchMedia("(min-width: 761px)");
+  const desktopQuery = window.matchMedia("(min-width: 1051px)");
   desktopQuery.addEventListener("change", event => { if (event.matches) closeMenu(); });
 
   if ("IntersectionObserver" in window) {

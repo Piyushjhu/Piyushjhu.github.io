@@ -6,11 +6,11 @@ window.SITE_CONTENT = {
   initials: "PW",
   title: "Piyush Wanchoo — Materials at extremes. Discovery, accelerated.",
   description: "Piyush Wanchoo is a postdoctoral fellow at Johns Hopkins University working on experimental mechanics, autonomous experiments, and materials under extreme conditions.",
-  heroDescription: "I build experiments and tools to understand materials at their limits—and accelerate what we can discover.",
+  heroDescription: "I’m an experimental mechanician, researcher, and educator at Johns Hopkins. I build experiments to understand—and design—materials for extreme environments.",
   bio: [
-    "I’m a Postdoctoral Fellow at the Hopkins Extreme Materials Institute, Johns Hopkins University, working with K.T. Ramesh. My research connects experimental mechanics, laboratory automation, and data-driven materials discovery.",
-    "I designed and built an automated laser-driven microflyer impact facility for high-throughput studies of dynamic strength and failure. I’m interested in how microstructure, composition, and loading conditions shape a material’s response—and how better experiments can help us see the whole picture.",
-    "Previously, I earned my Ph.D. in Mechanical Engineering at the University of Rhode Island with Arun Shukla, studying composite structures under air blast and underwater shock. Before that, I worked in industrial R&D in Bangalore."
+    "I’m Piyush, a Postdoctoral Fellow at the Hopkins Extreme Materials Institute, Johns Hopkins University, working with K.T. Ramesh. I study how materials deform and fail when the loading is fast, intense, and far from everyday conditions.",
+    "I designed and built HELIX and co-developed AIMD-L to transform how we explore material behavior through automated experiments. My broader aim is to connect measurements, physical understanding, and data-driven models so that failure becomes more predictable—and better materials can be designed with confidence.",
+    "My path has taken me from robotics and all-terrain vehicle teams to industrial R&D, a Ph.D. with Arun Shukla at the University of Rhode Island, and research at Johns Hopkins. Along the way, building things and helping others understand how they work have remained the common threads."
   ],
   portrait: "./logo.jpg",
   interests: ["Experimental mechanics", "Autonomous laboratories", "Data-driven materials"],
@@ -22,11 +22,58 @@ window.SITE_CONTENT = {
   resume: "",
   location: "Baltimore, Maryland",
   affiliation: "Hopkins Extreme Materials Institute · Johns Hopkins University",
-  researchDescription: "How do materials deform and fail under extreme loading? I combine high-throughput experiments, shock physics, and machine learning to uncover the relationships that drive their performance.",
-  // Selected conference presentations and invited talks from my September 2026 CV.
+  researchDescription: "I study how composition, microstructure, and loading history govern dynamic strength and failure. By connecting automated impact experiments, advanced diagnostics, and models that learn from the data, I aim to make material failure more predictable—and accelerate the discovery and qualification of materials for extreme environments.",
+  teachingApproach: {
+    intro: "I start with a physical problem students can observe, ask what they already understand, and build the mechanics needed to explain it. My goal is to help students ask good questions, test assumptions, and connect theory with evidence.",
+    principles: [
+      { title: "Start with something real.", text: "Connect mechanics to observable problems—from impact protection to spacecraft—and use experiments to make abstract ideas tangible." },
+      { title: "Test the understanding.", text: "Use conceptual questions, simplified models, and predictions that students can compare with experimental or computational data." },
+      { title: "Learn through exchange.", text: "Build confidence through discussion, peer teaching, and open-ended team analyses that bring different engineering backgrounds together." }
+    ],
+    areas: ["Solid mechanics", "Experimental methods", "Fracture & composites", "Impact & shock"]
+  },
+  outreach: "My teaching began with hands-on robotics workshops and mentoring BAJA vehicle teams. It has grown through science-fair outreach at IISc, industry training, and demonstrations of hydrostatic loading and impact protection for middle and high school students. My practice is also informed by training through the JHU Teaching Institute.",
+  gallery: [
+    {
+      id: "rising-stars-2026", title: "Rising Stars, shared perspectives.",
+      image: "./assets/gallery/rising-stars-stanford-2026.jpg", width: 2200, height: 1202,
+      alt: "Rising Stars in Mechanical Engineering 2026 cohort gathered outdoors at Stanford University",
+      event: "Rising Stars in Mechanical Engineering", location: "Stanford University", dateLabel: "September 24–25, 2026",
+      caption: "A cohort spanning mechanics, biomechanics, robotics, fluids, and thermal sciences—and thoughtful conversations about research, mentorship, and academic life."
+    },
+    {
+      id: "ramesh-lab-pasadena-2026", title: "Good science. Great company.",
+      image: "./assets/gallery/ramesh-lab-pasadena-2026.jpg", width: 2000, height: 1500,
+      alt: "Ramesh lab group gathered for dinner during USNC/TAM 2026 in Pasadena",
+      event: "Ramesh lab group dinner · USNC/TAM", location: "Pasadena, California", dateLabel: "June 2026",
+      caption: "An evening with the Ramesh lab during the U.S. National Congress on Theoretical and Applied Mechanics in Pasadena."
+    },
+    {
+      id: "sem-symposium-2027", title: "A forum for data-driven mechanics.", kind: "document",
+      image: "./assets/gallery/sem-symposium-2027.jpg", width: 920, height: 1190,
+      alt: "Call for papers for the SEM 2027 symposium Data-Driven Mechanics: From High-Throughput Experiments to Predictive Models",
+      event: "SEM Annual Conference", location: "Vancouver, Washington", dateLabel: "June 7–10, 2027",
+      caption: "Our symposium connects high-throughput experiments, robotics, and predictive models. The call for papers lists an original abstract deadline of October 12, 2026.",
+      sourceUrl: "https://sem.org/Files/events/27s/27s%20CFP/CFP-27s-Data-Driven-Mechanics-From-High-Throughput-Experiments-to-Predictive-Models.pdf", sourceLabel: "View official call for papers"
+    }
+  ],
+  // Conference presentations from my CV, plus workshop and organizing updates.
   // Dates are event dates. Year-only dates preserve the precision of the CV.
   // Presenting authors follow the CV's asterisks; coauthorship is not a speaking role.
   news: [
+    {
+      id: "sem-symposium-2027", date: "2027-06-07", endDate: "2027-06-10", dateLabel: "Jun 7–10, 2027",
+      category: "Symposium organizer", title: "Connecting experiments and predictive models at SEM 2027.",
+      event: "SEM Annual Conference", location: "Vancouver, WA",
+      summary: "I’m co-organizing Data-Driven Mechanics: From High-Throughput Experiments to Predictive Models with Konrad Muly, Angkur Jyoti Dipanka Shaikeea, and Akash Pandey. We’re bringing mechanics, robotics, and machine learning into a shared conversation about automated experiments and predictive models.",
+      detailsTitle: "About the symposium",
+      detailsText: ["Topics include high-throughput mechanics, full-field and multi-sensor measurements, autonomous laboratories, physics-informed models, active learning, and uncertainty quantification. A central theme is connecting models with experiments through validation and feedback.", "Our aim is to create a forum where experimentalists, modelers, materials scientists, and researchers in robotics and scientific machine learning can exchange ideas and build a common language."],
+      note: "Original abstract deadline: October 12, 2026.",
+      links: [
+        { label: "Conference details", url: "https://sem.org/annual" },
+        { label: "Symposium call for papers", url: "https://sem.org/Files/events/27s/27s%20CFP/CFP-27s-Data-Driven-Mechanics-From-High-Throughput-Experiments-to-Predictive-Models.pdf" }
+      ]
+    },
     {
       id: "tms-2027", date: "2027", dateLabel: "2027",
       category: "Coauthored presentations", title: "Two accepted talks at TMS 2027.",
@@ -56,6 +103,15 @@ window.SITE_CONTENT = {
         { title: "High Throughput laser driven flyer impact system for evaluating shock response of binary alloys", presenter: "Piyush Wanchoo", format: "Accepted oral presentation · Track 7: New Frontiers in Mechanics" },
         { title: "A high-throughput exploration of shock response in Al-Mg binary alloy", presenter: "K.T. Ramesh", format: "Accepted oral presentation · Track 4: Advanced Materials" }
       ]
+    },
+    {
+      id: "rising-stars-2026", date: "2026-09-24", endDate: "2026-09-25", dateLabel: "Sep 24–25, 2026",
+      category: "Academic community", title: "Rising Stars in Mechanical Engineering at Stanford.",
+      event: "Rising Stars in Mechanical Engineering Workshop", location: "Stanford University, CA",
+      summary: "I participated in the 2026 Rising Stars workshop at Stanford, joining peers across mechanics, biomechanics, robotics, fluids, and thermal sciences. The conversations about building sustainable research programs, mentoring future scholars, and navigating academic careers were invaluable.",
+      detailsTitle: "Reflections & thanks",
+      detailsText: ["Thank you to organizers Xun Wendy Gu and Allison Okamura, the faculty leadership at Stanford and UC Berkeley, and the Stanford staff for an exceptional workshop—and to my fellow Rising Stars for the thoughtful exchange of ideas.", "I’m grateful to K.T. Ramesh for nominating me and for his continued mentorship and guidance."],
+      links: [{ label: "Workshop details", url: "https://risingstarsme.stanford.edu/" }], gallery: true
     },
     {
       id: "usnctam-2026", date: "2026-06-21", endDate: "2026-06-25", dateLabel: "Jun 21–25, 2026",
@@ -242,9 +298,9 @@ window.SITE_CONTENT = {
     { year: "2021–22", text: "Enhancement of Graduate Research Award · University of Rhode Island" }
   ],
   teaching: [
-    { role: "Instructor", title: "Mechanics and Materials for Extreme Applications", institution: "Johns Hopkins University · EN.500.111 · Fall 2024", detail: "Designed and taught an undergraduate HEART course with no prerequisites, integrating experimental demonstrations, laboratory tours, and open-ended case-study analysis." },
-    { role: "Teaching Assistant", title: "Mechanical Engineering Experimentation", institution: "University of Rhode Island · MCE 414 · 2021–2022", detail: "Laboratory lectures on photoelasticity, digital image correlation, and dynamic testing." },
-    { role: "Teaching Assistant", title: "Introduction to Fracture Mechanics", institution: "University of Rhode Island · MCE 576 · 2021", detail: "" }
+    { role: "Instructor", title: "Mechanics and Materials for Extreme Applications", institution: "Johns Hopkins University · EN.500.111 · Fall 2024", detail: "I designed the syllabus, lectures, assignments, and assessments for this undergraduate HEART course, open across engineering disciplines with no prerequisites. Lectures, lab tours, and group discussions introduced rate-sensitive material behavior. Team projects used NASA’s DART mission and SpaceX Starship as case studies to identify loading conditions, assess material choices, and critique engineering decisions." },
+    { role: "Teaching Assistant", title: "Mechanical Engineering Experimentation", institution: "University of Rhode Island · MCE 414 · 2021–2022", detail: "Taught solid-mechanics labs using photoelasticity, digital image correlation, and impact loading to explore metals, elastomers, and composites. Helped develop online lab demonstrations during the COVID shutdowns." },
+    { role: "Teaching Assistant", title: "Introduction to Fracture Mechanics", institution: "University of Rhode Island · MCE 576 · 2021", detail: "Supported graduate teaching through assignments, assessment, lecture materials, and the transition to online instruction." }
   ],
   capabilities: [
     { title: "Dynamic experiments", text: "Laser-driven microflyer impact; PDV and VISAR interferometry; shock tube and underwater blast; ultra-high-speed imaging; 3D digital image correlation; photoelasticity; pressure instrumentation." },
@@ -258,7 +314,7 @@ window.SITE_CONTENT = {
     { year: "2026", title: "Toward impact-resistant alloys: high-throughput studies of shock response and spall strength in binary metals", detail: "SEM Annual Conference · Norfolk · June 1–4" }
   ],
   service: [
-    "Symposium organizer, Data-Driven Mechanics: From High-Throughput Experiments to Predictive Models · 2027 SEM Annual Conference.",
+    "Lead symposium organizer, Data-Driven Mechanics: From High-Throughput Experiments to Predictive Models · SEM Annual Conference, Vancouver, Washington, June 7–10, 2027. Co-organizers: Konrad Muly, Angkur Jyoti Dipanka Shaikeea, and Akash Pandey.",
     "Organizing committee member · 2026 Materials Genome Initiative PI Workshop, Materials Research Data Alliance (MaRDA).",
     "Session chair · SEM Annual Conferences, Dynamic Behavior of Materials · 2023–2026.",
     "Contributor · SEM Technical Division on Dynamic Behavior of Materials.",
