@@ -98,13 +98,17 @@ window.SITE_CONTENT = {
     }
   ],
   teachingApproach: {
-    intro: "I start with a physical problem students can observe, ask what they already understand, and build the mechanics needed to explain it. My goal is to help students ask good questions, test assumptions, and connect theory with evidence.",
+    intro: "Mechanics helps us understand why a structure holds, why a material fails, and how a design could be improved. I want students to recognize these questions in the world around them, then develop the confidence to turn an observation into a model, an experiment, and a better engineering decision.",
     principles: [
-      { title: "Start with something real.", text: "Connect mechanics to observable problems—from impact protection to spacecraft—and use experiments to make abstract ideas tangible." },
-      { title: "Test the understanding.", text: "Use conceptual questions, simplified models, and predictions that students can compare with experimental or computational data." },
-      { title: "Learn through exchange.", text: "Build confidence through discussion, peer teaching, and open-ended team analyses that bring different engineering backgrounds together." }
+      { title: "Start with an observation.", text: "A demonstration or a design challenge gives us a shared starting point, whatever our engineering background." },
+      { title: "Make a prediction.", text: "We build simple models, state our assumptions, and discuss what we expect to happen before looking at the results." },
+      { title: "Learn through discussion.", text: "Explaining an idea to someone else helps us find gaps in our reasoning, question assumptions, and refine our understanding." }
     ],
-    areas: ["Solid mechanics", "Experimental methods", "Fracture & composites", "Impact & shock"]
+    areas: ["Solid mechanics", "Experimental methods", "Fracture & composites", "Impact & shock"],
+    outlook: {
+      title: "From stress waves to materials discovery.",
+      text: "I’d like to develop an Impact and Shock elective that brings together wave mechanics, high-rate experiments, and material performance under extreme conditions. I also want to bring AI-assisted materials design into the classroom, helping students formulate hypotheses, examine uncertainty, and test predictions against first principles and experimental evidence."
+    }
   },
   outreach: "My teaching began with hands-on robotics workshops and mentoring BAJA vehicle teams. It has grown through science-fair outreach at IISc, industry training, and demonstrations of hydrostatic loading and impact protection for middle and high school students. My practice is also informed by training through the JHU Teaching Institute.",
   gallery: [
@@ -390,9 +394,9 @@ window.SITE_CONTENT = {
     { year: "2021–22", text: "Enhancement of Graduate Research Award · University of Rhode Island" }
   ],
   teaching: [
-    { role: "Instructor", title: "Mechanics and Materials for Extreme Applications", institution: "Johns Hopkins University · EN.500.111 · Fall 2024", detail: "I designed the syllabus, lectures, assignments, and assessments for this undergraduate HEART course, open across engineering disciplines with no prerequisites. Lectures, lab tours, and group discussions introduced rate-sensitive material behavior. Team projects used NASA’s DART mission and SpaceX Starship as case studies to identify loading conditions, assess material choices, and critique engineering decisions." },
-    { role: "Teaching Assistant", title: "Mechanical Engineering Experimentation", institution: "University of Rhode Island · MCE 414 · 2021–2022", detail: "Taught solid-mechanics labs using photoelasticity, digital image correlation, and impact loading to explore metals, elastomers, and composites. Helped develop online lab demonstrations during the COVID shutdowns." },
-    { role: "Teaching Assistant", title: "Introduction to Fracture Mechanics", institution: "University of Rhode Island · MCE 576 · 2021", detail: "Supported graduate teaching through assignments, assessment, lecture materials, and the transition to online instruction." }
+    { label: "Mechanics & materials", title: "How materials carry load.", detail: "I teach the connections between forces, deformation, and material response, from foundational solid mechanics to behavior under rapid loading. We discuss how a material’s structure and the rate of loading affect its response, using impact protection and aerospace applications to connect mechanics with material choices." },
+    { label: "Experimental thinking", title: "How we know what we know.", detail: "Experiments give us a way to connect equations with something we can observe. Through methods such as photoelasticity and digital image correlation, we discuss what a measurement tells us, where uncertainty enters, and how to design an experiment that answers a useful question." },
+    { label: "Fracture & design", title: "Learning from failure.", detail: "Cracks, interfaces, and damage help explain why similar-looking structures can behave very differently. We explore fracture, composites, and energy absorption, connecting the mechanics of failure to decisions about safety, durability, and impact protection. The aim is to build judgment students can carry into unfamiliar design problems." }
   ],
   capabilities: [
     { title: "Dynamic experiments", text: "Laser-driven microflyer impact; PDV and VISAR interferometry; shock tube and underwater blast; ultra-high-speed imaging; 3D digital image correlation; photoelasticity; pressure instrumentation." },

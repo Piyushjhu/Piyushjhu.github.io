@@ -156,6 +156,9 @@ h1{font-size:clamp(48px,6.6vw,90px);letter-spacing:-5.4px}
 .teaching-interests{display:flex;align-items:baseline;flex-wrap:wrap;gap:15px;margin-top:24px}
 .teaching-interests>span{font-size:10px;color:#807087}
 .teaching-interests .interests{margin:0}
+.teaching-outlook{margin-top:36px;padding-top:28px;border-top:1px solid #ded5e7;max-width:840px}
+.teaching-outlook .eyebrow{margin-bottom:12px}.teaching-outlook h3{font-size:22px;font-weight:550;line-height:1.4;letter-spacing:-.5px;margin-bottom:12px}
+.teaching-outlook>p:not(.eyebrow){font-size:14px;line-height:1.9;color:#74667d;margin-bottom:0}
 .mentorship-note h4:not(:first-child){margin-top:24px}
 
 .gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 28px}

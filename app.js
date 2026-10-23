@@ -158,8 +158,10 @@
   const teachingApproach = content.teachingApproach || {};
   $("#teaching-intro").textContent = teachingApproach.intro || "";
   $("#teaching-principles").innerHTML = (teachingApproach.principles || []).map((principle, index) => `<article class="teaching-principle"><span aria-hidden="true">0${index + 1}</span><h3>${escape(principle.title)}</h3><p>${escape(principle.text)}</p></article>`).join("");
-  $("#teaching-courses").innerHTML = (content.teaching || []).map(course => `<article class="teaching-course"><p class="course-role">${escape(course.role)}</p><h3>${escape(course.title)}</h3><p class="course-institution">${escape(course.institution)}</p><p class="course-description">${escape(course.detail)}</p></article>`).join("");
+  $("#teaching-courses").innerHTML = (content.teaching || []).map(topic => `<article class="teaching-course"><p class="course-role">${escape(topic.label)}</p><h3>${escape(topic.title)}</h3><p class="course-description">${escape(topic.detail)}</p></article>`).join("");
   $("#teaching-areas").innerHTML = (teachingApproach.areas || []).map(area => `<span>${escape(area)}</span>`).join("");
+  $("#teaching-outlook-title").textContent = teachingApproach.outlook?.title || "";
+  $("#teaching-outlook-text").textContent = teachingApproach.outlook?.text || "";
   $("#gallery-grid").innerHTML = (content.gallery || []).map((item, index) => {
     const imageUrl = safeUrl(item.image, true);
     if (!imageUrl) return "";
