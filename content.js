@@ -296,6 +296,18 @@ window.SITE_CONTENT = {
       url: "https://arxiv.org/abs/2603.06835", linkLabel: "Read the AIMD-L preprint"
     },
     {
+      title: "Dynamic Ashby Atlas.", category: "code", label: "INTERACTIVE MATERIAL MAPS",
+      description: "Explore spall strength and Hugoniot elastic limit across published shock-physics studies, with links to the original sources.",
+      detail: "Dynamic Ashby Atlas brings published shock-physics measurements into an interactive material map. Explore spall strength versus Hugoniot elastic limit, follow measurements back to linked publications and evidence provenance, and browse the source library. The public website also provides downloadable literature records and reviewed property data.",
+      tags: ["Material maps", "Shock physics", "Literature data"], art: "orb",
+      image: "./assets/dynamic-ashby-atlas.svg",
+      imageAlt: "Schematic dynamic Ashby map showing illustrative clusters against Hugoniot elastic limit and spall strength, not measured data",
+      links: [
+        { label: "Explore the atlas", url: "https://piyushwanchoo.com/Dynamic-Ashby-Atlas/" },
+        { label: "View on GitHub", url: "https://github.com/Piyushjhu/Dynamic-Ashby-Atlas" }
+      ]
+    },
+    {
       title: "HELIX Toolbox.", category: "code", label: "OPEN-SOURCE RESEARCH SOFTWARE",
       description: "From raw velocimetry signals to useful insights. A Python toolbox for automated analysis of high-rate impact experiments.",
       detail: "HELIX Toolbox brings together signal processing and automated analysis for laser-driven microflyer impact experiments. It supports analysis of photonic Doppler velocimetry data, extraction of spall strength and Hugoniot elastic limits, and uncertainty quantification. The repository includes ALPSS and SPADE workflows, with graphical and batch-processing interfaces.",

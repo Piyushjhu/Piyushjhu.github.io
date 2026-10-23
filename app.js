@@ -268,8 +268,8 @@
     const card = event.target.closest("[data-project]");
     if (!card) return;
     const project = content.projects[Number(card.dataset.project)];
-    const url = safeUrl(project.url);
-    openDialog(`<p class="dialog-eyebrow">${escape(project.label)}${project.example ? " · ILLUSTRATIVE PROJECT" : ""}</p><h2 id="dialog-title">${escape(project.title)}</h2>${projectArt(project, true)}${project.imageCredit ? `<p class="image-credit">${escape(project.imageCredit)}</p>` : ""}<p>${escape(project.detail || project.description)}</p><div class="project-tags">${(project.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${url ? `<div class="dialog-actions">${externalLink(url, project.linkLabel || "Explore project", "button")}</div>` : ""}`);
+    const links = (project.links || [{ url: project.url, label: project.linkLabel || "Explore project" }]).filter(link => safeUrl(link.url));
+    openDialog(`<p class="dialog-eyebrow">${escape(project.label)}${project.example ? " · ILLUSTRATIVE PROJECT" : ""}</p><h2 id="dialog-title">${escape(project.title)}</h2>${projectArt(project, true)}${project.imageCredit ? `<p class="image-credit">${escape(project.imageCredit)}</p>` : ""}<p>${escape(project.detail || project.description)}</p><div class="project-tags">${(project.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${links.length ? `<div class="dialog-actions">${links.map((link, index) => externalLink(link.url, link.label, index ? "button button-outline" : "button")).join("")}</div>` : ""}`);
   });
   $$('[data-contact]').forEach(button => button.addEventListener("click", () => {
     const emails = [["University", content.email], ["Personal", content.personalEmail]].filter(([, address]) => typeof address === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address));
