@@ -26,7 +26,7 @@ window.SITE_CONTENT = {
     {
       title: "HELIX. Experiments, accelerated.", category: "experiments", label: "AUTONOMOUS EXPERIMENTAL MECHANICS",
       description: "An automated laser-driven impact platform for exploring material strength and failure at extreme strain rates.",
-      detail: "I designed and built an automated laser-driven microflyer impact facility at Johns Hopkins that has enabled more than 1,700 impact experiments. The platform achieves up to 1,000× the throughput of conventional plate-impact methods at approximately one-hundredth the cost per data point. It has supported studies of spall failure in copper and composition- and kinetics-resolved measurements in Cu–Ti, Al–Mg, and Ti–V alloys. HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials in extreme environments.",
+      detail: "I designed and built HELIX, an automated laser-driven microflyer impact facility at Johns Hopkins that has transformed how impact research is conducted. By integrating automated experimentation, rapid data analysis, and closed-loop workflows, we can explore dynamic strength and failure systematically across materials, microstructures, compositions, and loading conditions. The platform supports studies ranging from spall failure in copper to composition- and kinetics-resolved measurements in Cu–Ti, Al–Mg, and Ti–V alloys. HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials in extreme environments.",
       tags: ["Shock physics", "Automation", "AIMD-L"], art: "lab", image: "./assets/aimdl-laboratory.png",
       imageAlt: "The AIMD-L laboratory at Johns Hopkins University, showing experimental stations and robotic sample handling",
       imageCredit: "AIMD-L photograph: Hufnagel et al. (2026), Figure 2a. CC BY-NC-ND 4.0.",
@@ -92,7 +92,7 @@ window.SITE_CONTENT = {
     { title: "Gaussian process regression for uncertainty-aware prediction of spall strength across materials and shock conditions", authors: "A. Shargh, P. Wanchoo, J. El-Awady, K.T. Ramesh", year: "In preparation" }
   ],
   metrics: [
-    { value: "1,700+", label: "Automated impact experiments" },
+    { value: "HELIX", label: "Transforming impact research" },
     { value: "1,000×", label: "Throughput vs. plate impact, up to" },
     { value: "14", label: "Journal articles · 7 first-authored" },
     { value: "272", label: "Citations · September 2026" }
