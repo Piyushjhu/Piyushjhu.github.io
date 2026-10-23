@@ -36,6 +36,8 @@ The homepage has a descriptive name-first title, a canonical URL, and `WebSite`,
 
 To monitor Google indexing, add `https://piyushwanchoo.com/` as a URL-prefix property in Google Search Console, verify ownership, submit `sitemap.xml`, and inspect the homepage to request indexing. Search Console provides a unique verification tag if you choose HTML-tag verification; add that tag inside the HTML head. Link this website from your GitHub, LinkedIn, Google Scholar, and university profile where you control the links. These steps support discovery and identification; ranking is determined by Google.
 
+The supplied HTML-file verification token, `googled4d0811a1c9ead7f.html`, is published unchanged at the site root and explicitly included in the build. Keep this file in place so Google can continue checking ownership. Finish verification in Search Console using the HTML file upload method.
+
 The final typography block in `styles.css` keeps descriptions at 16px, secondary text at 14px, and small labels at 12px, using rem units so browser font preferences continue to apply.
 
 Example publication:
