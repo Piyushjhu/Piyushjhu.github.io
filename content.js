@@ -15,13 +15,38 @@ window.SITE_CONTENT = {
   portrait: "./logo.jpg",
   interests: ["Experimental mechanics", "Autonomous laboratories", "Data-driven materials"],
   email: "pwanchoo@jhu.edu",
+  personalEmail: "piyushwanchoo@gmail.com",
   github: "https://github.com/Piyushjhu",
   scholar: "https://scholar.google.com/citations?user=L0GoOBAAAAAJ&hl=en&oi=ao",
-  linkedin: "",
+  linkedin: "https://www.linkedin.com/in/piyush-wanchoo/",
   resume: "",
   location: "Baltimore, Maryland",
   affiliation: "Hopkins Extreme Materials Institute · Johns Hopkins University",
   researchDescription: "How do materials deform and fail under extreme loading? I combine high-throughput experiments, shock physics, and machine learning to uncover the relationships that drive their performance.",
+  // Curated summaries of my LinkedIn posts. Years identify the research or event,
+  // not an inferred posting date. Use a direct post URL whenever available.
+  news: [
+    {
+      category: "Research spotlight", year: "2026", topic: "SHOCK PHYSICS", art: "wave",
+      title: "A clearer picture of spall failure.",
+      summary: "Our JMPS paper explores how shock stress, tensile strain rate, and microstructure shape spall failure in copper. Automated, high-throughput experiments help separate these effects and turn material variability into insight for materials design.",
+      url: "https://www.linkedin.com/in/piyush-wanchoo/", linkLabel: "View LinkedIn activity",
+      paperUrl: "https://doi.org/10.1016/j.jmps.2026.106523"
+    },
+    {
+      category: "Conference notes", year: "2026", topic: "IDEAS IN EXCHANGE", art: "exchange",
+      title: "Taking impact research into the conversation.",
+      summary: "I shared speaking updates for the 20th U.S. National Congress on Theoretical and Applied Mechanics and the SEM Annual Conference. My presentations explored high-throughput impact experiments, spall strength, and the search for impact-resistant alloys.",
+      url: "https://www.linkedin.com/in/piyush-wanchoo/", linkLabel: "View LinkedIn activity"
+    },
+    {
+      category: "From the archive", year: "2023", topic: "MATERIALS THAT PROTECT", art: "layers",
+      title: "Designing composites for extreme loading.",
+      summary: "A look back at our Mechanics of Materials study of rubber-modified carbon-fiber composite laminates under air shock. We investigated how resin modification affects structural damping and dynamic fracture toughness, and how to quantify the loading that drives failure.",
+      url: "https://www.linkedin.com/posts/piyush-wanchoo_we-are-delighted-to-announce-that-we-are-activity-7073742111036071936-azBh", linkLabel: "Read LinkedIn post",
+      paperUrl: "https://doi.org/10.1016/j.mechmat.2023.104685"
+    }
+  ],
   projects: [
     {
       title: "HELIX. Experiments, accelerated.", category: "experiments", label: "AUTONOMOUS EXPERIMENTAL MECHANICS",

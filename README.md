@@ -1,6 +1,6 @@
 # Piyush’s personal website
 
-A lightweight, Apple-inspired personal website with original interactive 3D artwork, project filters and detail dialogs, publications, a work timeline, and a portrait. Plain HTML, CSS, and JavaScript. No package installation, build framework, paid service, or API key required. All assets are local.
+A lightweight, Apple-inspired personal website with original interactive 3D artwork, project filters and detail dialogs, publications, LinkedIn news stories, a work timeline, and a portrait. Plain HTML, CSS, and JavaScript. No package installation, build framework, paid service, or API key required. All assets are local.
 
 **Website:** https://piyushjhu.github.io/
 
@@ -20,7 +20,8 @@ Open **http://localhost:8000**. You can also open `index.html` directly, but a l
 
 Edit **content.js**. This file controls your name, bio, interests, portrait, projects, papers, career history, education, teaching, awards, capabilities, talks, service, email, résumé, and profile links. The site is populated with the professional details you supplied, your existing portrait, six research/software projects, 14 journal articles (including the accepted article), and five preprints/manuscripts with their status shown. Bibliographic details and metrics use your September 2026 CV; they do not update automatically. The source and license for the laboratory photo are in `assets/CREDITS.md` and attributed in the HELIX project dialog.
 
-- Your GitHub, Google Scholar, and university email are connected. Add your exact LinkedIn URL to `linkedin` when ready; it is hidden until configured.
+- Your GitHub, Google Scholar, LinkedIn, university email, and Gmail are connected. `email` and `personalEmail` appear with separate labels in the contact dialog.
+- Edit `news` to add or update story cards. These are curated summaries, not an automatically synchronized LinkedIn feed. Each entry has `category`, `year`, `topic`, `title`, `summary`, `url`, and `linkLabel`; `paperUrl` is optional. Decorative `art` can be `"wave"`, `"exchange"`, or `"layers"`. The years refer to the research or conference, not an inferred post date. The initial stories summarize your publicly visible JMPS announcement, USNC-TAM/SEM speaking updates, and 2023 composite research post. The first two link to your LinkedIn profile because direct post permalinks were not publicly available; replace those `url` values when you have the links. The archive story links directly to your original post.
 - Save a résumé under `assets/`, then set `resume: "./assets/resume.pdf"`.
 - Put your images under `assets/` and use relative paths such as `"./assets/my-project.webp"`. Supply descriptive `imageAlt` text. Aim for landscape images around 1200px wide. For a sharper portrait, replace the 250px original with a photo at least 800px wide and update `portrait`.
 - Update or add `projects` entries. Use `category: "code"` or `"experiments"` for filtering and add a repository or paper `url`. `detail` is the longer text shown when a card is opened; `linkLabel` customizes its action. `art` can be `"code"`, `"data"`, `"wave"`, `"signal"`, `"bubble"`, or `"orb"` when no image is provided. Decorative data illustrations are marked as illustrations, not measurements.

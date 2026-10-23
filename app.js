@@ -53,6 +53,21 @@
   const socials = [["GitHub", content.github], ["Google Scholar", content.scholar], ["LinkedIn", content.linkedin]].filter(([, url]) => safeUrl(url));
   $("#social-links").innerHTML = socials.map(([label, url]) => externalLink(url, label, "social-link")).join("");
 
+  const linkedinUrl = safeUrl(content.linkedin);
+  if (linkedinUrl) $("#news-linkedin-link").href = linkedinUrl;
+  else $("#news-linkedin-link").hidden = true;
+  const newsArt = {
+    wave: '<path d="M0 84h51l16-54 19 91 22-67 19 30h113"/><path class="news-art-echo" d="M0 105h240M0 63h240"/>',
+    exchange: '<circle cx="66" cy="84" r="31"/><circle cx="174" cy="84" r="31"/><path d="M104 65h31m-8-8 8 8-8 8M136 103h-31m8-8-8 8 8 8"/>',
+    layers: '<path d="m38 60 82-32 82 32-82 33ZM38 83l82 32 82-32M38 106l82 32 82-32"/>'
+  };
+  $("#news-stories").innerHTML = (content.news || []).map((story, index) => {
+    const url = safeUrl(story.url);
+    const paperUrl = safeUrl(story.paperUrl);
+    const artKey = Object.hasOwn(newsArt, story.art) ? story.art : "wave";
+    return `<article class="news-card"><div class="news-art news-art-${artKey}" aria-hidden="true"><span class="news-topic">${escape(story.topic)}</span><svg viewBox="0 0 240 168">${newsArt[artKey]}</svg><span class="news-index">${String(index + 1).padStart(2, "0")}</span></div><div class="news-body"><p class="news-meta"><span>${escape(story.category)}</span><span>${escape(story.year)}</span></p><h3>${escape(story.title)}</h3><p class="news-summary">${escape(story.summary)}</p><div class="news-actions">${url ? externalLink(url, story.linkLabel || "Read LinkedIn post") : ""}${paperUrl ? externalLink(paperUrl, "Read paper", "news-paper-link") : ""}</div></div></article>`;
+  }).join("");
+
   const art = {
     code: `<div class="mini-window" aria-hidden="true"><div class="window-top"><i></i><i></i><i></i><span>HELIX / analysis workflow</span></div><div class="code-lines"><div class="code-comment"># From signals to understanding.</div><div><em>experiment</em> → raw_signal</div><div>&nbsp;</div><div><em>analysis</em> = {</div><div class="code-indent">velocity: <b>extract(signal)</b>,</div><div class="code-indent">strength: <b>detect_spall()</b>,</div><div class="code-indent">uncertainty: <b>quantify()</b></div><div>}</div><div class="code-comment"># Discover. Repeat.</div></div></div>`,
     data: `<div class="chart-window" aria-hidden="true"><div class="chart-caption">ACTIVE LEARNING</div><div class="chart-value">What’s next?<span>↗ Explore</span></div><div class="chart-bars">${[26, 39, 32, 48, 42, 59, 53, 73, 68, 89].map(height => `<i style="height:${height}%"></i>`).join("")}</div><div class="chart-axis"><span>OBSERVE · LEARN · SELECT</span><span>ILLUSTRATION</span></div></div>`,
@@ -146,8 +161,8 @@
     openDialog(`<p class="dialog-eyebrow">${escape(project.label)}${project.example ? " · ILLUSTRATIVE PROJECT" : ""}</p><h2 id="dialog-title">${escape(project.title)}</h2>${projectArt(project, true)}${project.imageCredit ? `<p class="image-credit">${escape(project.imageCredit)}</p>` : ""}<p>${escape(project.detail || project.description)}</p><div class="project-tags">${(project.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${url ? `<div class="dialog-actions">${externalLink(url, project.linkLabel || "Explore project", "button")}</div>` : ""}`);
   });
   $$('[data-contact]').forEach(button => button.addEventListener("click", () => {
-    const email = typeof content.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(content.email) ? content.email : "";
-    openDialog(`<p class="dialog-eyebrow">A CONVERSATION IS A GOOD START.</p><h2 id="dialog-title">Good things start<br />with a hello.</h2><p>Interested in experimental mechanics, autonomous laboratories, or a research collaboration? I’d love to hear what you have in mind.</p>${email ? `<a class="contact-email" href="mailto:${escape(email)}">${escape(email)}</a><div class="dialog-actions"><a class="button" href="mailto:${escape(email)}">Email ${escape(content.firstName)} ${icon("arrow-up-right")}</a></div>` : '<div class="contact-detail"><p>Contact details are coming soon. Thanks for stopping by.</p></div>'}${socials.length ? `<div class="dialog-actions">${socials.map(([label, url]) => externalLink(url, label, "button button-outline")).join("")}</div>` : ""}<p class="dialog-affiliation">${escape(content.affiliation)}<br />${escape(content.location)}</p>`);
+    const emails = [["University", content.email], ["Personal", content.personalEmail]].filter(([, address]) => typeof address === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address));
+    openDialog(`<p class="dialog-eyebrow">A CONVERSATION IS A GOOD START.</p><h2 id="dialog-title">Good things start<br />with a hello.</h2><p>Interested in experimental mechanics, autonomous laboratories, or a research collaboration? I’d love to hear what you have in mind.</p>${emails.length ? `<div class="contact-addresses">${emails.map(([label, address]) => `<div><span class="contact-address-label">${escape(label)}</span><a class="contact-email" href="mailto:${escape(address)}">${escape(address)}</a></div>`).join("")}</div>` : '<div class="contact-detail"><p>Contact details are coming soon. Thanks for stopping by.</p></div>'}${socials.length ? `<div class="dialog-actions">${socials.map(([label, url]) => externalLink(url, label, "button button-outline")).join("")}</div>` : ""}<p class="dialog-affiliation">${escape(content.affiliation)}<br />${escape(content.location)}</p>`);
   }));
 
   const menu = $(".menu-toggle");
