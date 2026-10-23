@@ -23,28 +23,130 @@ window.SITE_CONTENT = {
   location: "Baltimore, Maryland",
   affiliation: "Hopkins Extreme Materials Institute · Johns Hopkins University",
   researchDescription: "How do materials deform and fail under extreme loading? I combine high-throughput experiments, shock physics, and machine learning to uncover the relationships that drive their performance.",
-  // Curated summaries of my LinkedIn posts. Years identify the research or event,
-  // not an inferred posting date. Use a direct post URL whenever available.
+  // Selected conference presentations and invited talks from my September 2026 CV.
+  // Dates are event dates. Year-only dates preserve the precision of the CV.
+  // Presenting authors follow the CV's asterisks; coauthorship is not a speaking role.
   news: [
     {
-      category: "Research spotlight", year: "2026", topic: "SHOCK PHYSICS", art: "wave",
-      title: "A clearer picture of spall failure.",
-      summary: "Our JMPS paper explores how shock stress, tensile strain rate, and microstructure shape spall failure in copper. Automated, high-throughput experiments help separate these effects and turn material variability into insight for materials design.",
-      url: "https://www.linkedin.com/in/piyush-wanchoo/", linkLabel: "View LinkedIn activity",
-      paperUrl: "https://doi.org/10.1016/j.jmps.2026.106523"
+      id: "tms-2027", date: "2027", dateLabel: "2027",
+      category: "Coauthored presentations", title: "Two accepted talks at TMS 2027.",
+      event: "TMS Annual Meeting & Exhibition", location: "",
+      summary: "Two accepted, coauthored contributions explore uncertainty-guided active learning for spall experiments and the transition from automated experiments to trusted autonomous discovery in AIMD-L.",
+      presentations: [
+        { title: "Uncertainty-Guided Active Learning for Autonomous Spall Strength Experimentation", presenter: "A. Shargh", format: "Accepted oral presentation" },
+        { title: "From Automated Materials Experiments to Trusted Autonomous Discovery in AIMD-L", presenter: "C. Stiles", format: "Accepted oral presentation" }
+      ]
     },
     {
-      category: "Conference notes", year: "2026", topic: "IDEAS IN EXCHANGE", art: "exchange",
-      title: "Taking impact research into the conversation.",
-      summary: "I shared speaking updates for the 20th U.S. National Congress on Theoretical and Applied Mechanics and the SEM Annual Conference. My presentations explored high-throughput impact experiments, spall strength, and the search for impact-resistant alloys.",
-      url: "https://www.linkedin.com/in/piyush-wanchoo/", linkLabel: "View LinkedIn activity"
+      id: "mrs-2026", date: "2026-11-29", endDate: "2026-12-04", dateLabel: "Nov 29 – Dec 4, 2026",
+      category: "Coauthored presentations", title: "Bringing autonomous materials discovery to MRS.",
+      event: "MRS Fall Meeting", location: "Boston, MA",
+      summary: "Our AIMD-L work features in two contributions: an invited presentation on integrated characterization workflows and an accepted talk on advancing from automation to trusted autonomy.",
+      presentations: [
+        { title: "Integrated Workflows for Automated High-Throughput Characterization of Structure and Properties of Structural Materials", presenter: "T.C. Hufnagel", format: "Invited presentation · Symposium CH05" },
+        { title: "Driving AIMD-L from Automated Experimentation to Trusted Autonomy to Enhance Materials Discovery", presenter: "C.D. Stiles", format: "Accepted oral presentation · Symposium MT01" }
+      ]
     },
     {
-      category: "From the archive", year: "2023", topic: "MATERIALS THAT PROTECT", art: "layers",
-      title: "Designing composites for extreme loading.",
-      summary: "A look back at our Mechanics of Materials study of rubber-modified carbon-fiber composite laminates under air shock. We investigated how resin modification affects structural damping and dynamic fracture toughness, and how to quantify the loading that drives failure.",
-      url: "https://www.linkedin.com/posts/piyush-wanchoo_we-are-delighted-to-announce-that-we-are-activity-7073742111036071936-azBh", linkLabel: "Read LinkedIn post",
-      paperUrl: "https://doi.org/10.1016/j.mechmat.2023.104685"
+      id: "ses-2026", date: "2026", dateLabel: "2026",
+      category: "Accepted presentations", title: "Mapping alloy shock response at SES 2026.",
+      event: "SES Annual Technical Meeting", location: "",
+      summary: "My accepted talk focuses on high-throughput laser-driven flyer impact experiments in binary alloys. A second coauthored contribution examines shock response in the Al–Mg alloy system.",
+      presentations: [
+        { title: "High Throughput laser driven flyer impact system for evaluating shock response of binary alloys", presenter: "Piyush Wanchoo", format: "Accepted oral presentation · Track 7: New Frontiers in Mechanics" },
+        { title: "A high-throughput exploration of shock response in Al-Mg binary alloy", presenter: "K.T. Ramesh", format: "Accepted oral presentation · Track 4: Advanced Materials" }
+      ]
+    },
+    {
+      id: "usnctam-2026", date: "2026-06-21", endDate: "2026-06-25", dateLabel: "Jun 21–25, 2026",
+      category: "Conference presentations", title: "High-throughput impact mechanics at USNC/TAM.",
+      event: "20th U.S. National Congress on Theoretical and Applied Mechanics", location: "Pasadena, CA",
+      summary: "Two contributions connect laser-driven spall strength mapping with statistical studies of elastic–plastic transition and failure in metals and alloys.",
+      presentations: [
+        { title: "A laser-driven approach for high-throughput spall strength mapping and data-driven exploration in binary alloys", presenter: "Piyush Wanchoo; K.T. Ramesh", format: "Conference presentation" },
+        { title: "Statistical characterization of shock-induced elastic–plastic transition and spall failure in metals and alloys using high-throughput laser-driven impact experiments", presenter: "Piyush Wanchoo", format: "Conference presentation" }
+      ]
+    },
+    {
+      id: "sem-2026", date: "2026-06-01", endDate: "2026-06-04", dateLabel: "Jun 1–4, 2026",
+      category: "Conference presentation", title: "Toward impact-resistant alloys.",
+      event: "SEM Annual Conference", location: "Norfolk, VA",
+      summary: "My SEM presentation examines how high-throughput studies of shock response and spall strength can guide the exploration of binary metals.",
+      presentations: [
+        { title: "Toward impact-resistant alloys: high-throughput studies of shock response and spall strength in binary metals", presenter: "Piyush Wanchoo", format: "Conference presentation" }
+      ]
+    },
+    {
+      id: "tms-2026", date: "2026-03-15", endDate: "2026-03-19", dateLabel: "Mar 15–19, 2026",
+      category: "Coauthored presentation", title: "Accelerating Cu–Ti alloy characterization.",
+      event: "TMS Annual Meeting & Exhibition", location: "San Diego, CA",
+      summary: "Coauthored work presented by R. Berlia brings together high-throughput processing and accelerated characterization of Cu–Ti alloys.",
+      presentations: [
+        { title: "High-throughput processing and accelerated characterization of Cu–Ti alloys", presenter: "R. Berlia", format: "Conference presentation" }
+      ]
+    },
+    {
+      id: "iisc-2025", date: "2025-11-10", dateLabel: "Nov 10, 2025",
+      category: "Invited seminar", title: "From Shock to Shield at the Indian Institute of Science.",
+      event: "Department of Aerospace Engineering, Indian Institute of Science", location: "Online",
+      summary: "An invited department seminar on designing materials for space, defense, and other extreme applications.",
+      presentations: [
+        { title: "From Shock to Shield: Designing Materials for Space, Defense, and Beyond", presenter: "Piyush Wanchoo", format: "Invited department seminar" }
+      ]
+    },
+    {
+      id: "ses-2025", date: "2025-10-13", endDate: "2025-10-15", dateLabel: "Oct 13–15, 2025",
+      category: "Conference presentation", title: "A scalable route to dynamic strength mapping.",
+      event: "SES Annual Technical Meeting", location: "Atlanta, GA",
+      summary: "My presentation connects scalable laser-driven experiments with high-throughput dynamic strength mapping and data-driven exploration of binary alloys.",
+      presentations: [
+        { title: "A scalable laser-driven approach for high-throughput dynamic strength mapping and data-driven exploration in binary alloys", presenter: "Piyush Wanchoo", format: "Conference presentation" }
+      ]
+    },
+    {
+      id: "amerimech-2025", date: "2025-09-22", endDate: "2025-09-24", dateLabel: "Sep 22–24, 2025",
+      category: "Conference presentation", title: "Automating the experiment. Accelerating discovery.",
+      event: "AmeriMech Symposium · Brown University", location: "Providence, RI",
+      summary: "A presentation on the automated high-throughput laser-driven impact system developed to accelerate characterization of material shock response.",
+      presentations: [
+        { title: "An automated high-throughput laser-driven impact system for accelerated characterization of material shock response", presenter: "Piyush Wanchoo", format: "Conference presentation" }
+      ]
+    },
+    {
+      id: "aps-sccm-2025", date: "2025-06-22", endDate: "2025-06-27", dateLabel: "Jun 22–27, 2025",
+      category: "Conference presentation", title: "Unravelling the dependencies of spall strength.",
+      event: "APS SCCM · 24th Biennial Conference on Shock Compression of Condensed Matter", location: "Washington, DC",
+      summary: "My contribution explores spall strength dependencies through high-throughput laser-driven micro-plate impact experiments.",
+      presentations: [
+        { title: "Unraveling spall strength dependencies through laser-driven micro-plate impact high-throughput experiments", presenter: "Piyush Wanchoo", format: "Conference presentation" }
+      ]
+    },
+    {
+      id: "mach-2025", date: "2025-04-09", endDate: "2025-04-11", dateLabel: "Apr 9–11, 2025",
+      category: "Conference presentation", title: "Grain size, orientation, and failure in copper.",
+      event: "MACH Conference", location: "Annapolis, MD",
+      summary: "A high-throughput investigation of how grain size and crystallographic orientation influence spall in copper.",
+      presentations: [
+        { title: "High-throughput investigation of spall in copper: the influence of grain size and crystallographic orientation", presenter: "Piyush Wanchoo", format: "Conference presentation" }
+      ]
+    },
+    {
+      id: "tms-2025", date: "2025-03-23", endDate: "2025-03-27", dateLabel: "Mar 23–27, 2025",
+      category: "Coauthored presentation", title: "Connecting alloy synthesis with rapid measurements.",
+      event: "TMS Annual Meeting & Exhibition", location: "Las Vegas, NV",
+      summary: "Coauthored work presented by R. Berlia explores high-throughput synthesis and rapid characterization of copper and Cu–Ti alloys.",
+      presentations: [
+        { title: "High-throughput synthesis and rapid characterization of Cu and Cu–Ti alloys", presenter: "R. Berlia", format: "Conference presentation" }
+      ]
+    },
+    {
+      id: "uri-2025", date: "2025-02-25", dateLabel: "Feb 25, 2025",
+      category: "Invited talk", title: "Unlocking material performance at extremes.",
+      event: "University of Rhode Island", location: "Kingston, RI",
+      summary: "An invited talk on how high-throughput experiments can support AI-driven materials design.",
+      presentations: [
+        { title: "Unlocking material performance at extremes: high-throughput experiments for AI-driven design", presenter: "Piyush Wanchoo", format: "Invited talk" }
+      ]
     }
   ],
   projects: [

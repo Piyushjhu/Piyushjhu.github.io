@@ -56,17 +56,49 @@
   const linkedinUrl = safeUrl(content.linkedin);
   if (linkedinUrl) $("#news-linkedin-link").href = linkedinUrl;
   else $("#news-linkedin-link").hidden = true;
-  const newsArt = {
-    wave: '<path d="M0 84h51l16-54 19 91 22-67 19 30h113"/><path class="news-art-echo" d="M0 105h240M0 63h240"/>',
-    exchange: '<circle cx="66" cy="84" r="31"/><circle cx="174" cy="84" r="31"/><path d="M104 65h31m-8-8 8 8-8 8M136 103h-31m8-8-8 8 8 8"/>',
-    layers: '<path d="m38 60 82-32 82 32-82 33ZM38 83l82 32 82-32M38 106l82 32 82-32"/>'
+  const newsDate = new Date();
+  const newsToday = `${newsDate.getFullYear()}-${String(newsDate.getMonth() + 1).padStart(2, "0")}-${String(newsDate.getDate()).padStart(2, "0")}`;
+  const newsTiming = story => {
+    const date = typeof story.date === "string" ? story.date : "";
+    if (/^\d{4}$/.test(date)) return date > newsToday.slice(0, 4) ? "upcoming" : date < newsToday.slice(0, 4) ? "past" : "announced";
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return "announced";
+    if (date > newsToday) return "upcoming";
+    return (story.endDate || date) < newsToday ? "past" : "ongoing";
   };
-  $("#news-stories").innerHTML = (content.news || []).map((story, index) => {
-    const url = safeUrl(story.url);
-    const paperUrl = safeUrl(story.paperUrl);
-    const artKey = Object.hasOwn(newsArt, story.art) ? story.art : "wave";
-    return `<article class="news-card"><div class="news-art news-art-${artKey}" aria-hidden="true"><span class="news-topic">${escape(story.topic)}</span><svg viewBox="0 0 240 168">${newsArt[artKey]}</svg><span class="news-index">${String(index + 1).padStart(2, "0")}</span></div><div class="news-body"><p class="news-meta"><span>${escape(story.category)}</span><span>${escape(story.year)}</span></p><h3>${escape(story.title)}</h3><p class="news-summary">${escape(story.summary)}</p><div class="news-actions">${url ? externalLink(url, story.linkLabel || "Read LinkedIn post") : ""}${paperUrl ? externalLink(paperUrl, "Read paper", "news-paper-link") : ""}</div></div></article>`;
-  }).join("");
+  const newsStatusLabels = { upcoming: "Upcoming", past: "Past event", announced: "Announced", ongoing: "In progress" };
+  let newsFilter = "all";
+  let newsExpanded = false;
+  const renderNews = () => {
+    const stories = (content.news || []).filter(story => newsFilter === "all" || newsTiming(story) === newsFilter);
+    const visible = newsExpanded ? stories : stories.slice(0, 6);
+    const openDetails = new Set($$("#news-stories details[open]").map(detail => detail.dataset.newsId));
+    $("#news-stories").innerHTML = visible.length ? visible.map(story => {
+      const timing = newsTiming(story);
+      const year = (story.date || "").slice(0, 4);
+      const dateLabel = typeof story.dateLabel === "string" && story.dateLabel !== year ? story.dateLabel.replace(/,? \d{4}$/, "") : "";
+      const dateText = `<span class="news-year">${escape(year)}</span>${dateLabel ? `<span class="news-date-label">${escape(dateLabel)}</span>` : ""}`;
+      const date = /^\d{4}-\d{2}-\d{2}$/.test(story.date || "") ? `<time class="news-date" datetime="${escape(story.date)}">${dateText}</time>` : `<div class="news-date">${dateText}</div>`;
+      const presentations = story.presentations || [];
+      return `<li><article class="news-entry" data-news-id="${escape(story.id)}">${date}<div class="news-body"><p class="news-meta"><span class="news-status news-status-${timing}">${newsStatusLabels[timing]}</span><span>${escape(story.category)}</span></p><h3>${escape(story.title)}</h3><p class="news-venue">${escape(story.event)}${story.location ? `<span>${escape(story.location)}</span>` : ""}</p><p class="news-summary">${escape(story.summary)}</p>${presentations.length ? `<details class="news-details" data-news-id="${escape(story.id)}"${openDetails.has(story.id) ? " open" : ""}><summary>View ${presentations.length > 1 ? `${presentations.length} presentations` : "presentation"} ${icon("arrow-down")}</summary><ul>${presentations.map(presentation => `<li><h4>${escape(presentation.title)}</h4><p class="news-presenter">Presenting author${(presentation.presenter || "").includes(";") ? "s" : ""}: ${escape(presentation.presenter)}</p><p class="news-format">${escape(presentation.format)}</p></li>`).join("")}</ul></details>` : ""}</div></article></li>`;
+    }).join("") : '<li class="news-empty">No updates in this category yet. Explore all updates for more presentations.</li>';
+    $("#news-count").textContent = `${visible.length} of ${stories.length} update${stories.length === 1 ? "" : "s"}`;
+    const toggle = $("#news-toggle");
+    toggle.hidden = stories.length <= 6;
+    toggle.setAttribute("aria-expanded", String(newsExpanded));
+    toggle.innerHTML = `${newsExpanded ? "Show fewer updates" : `Show ${stories.length - visible.length} more updates`} ${icon("arrow-down")}`;
+  };
+  renderNews();
+  $$("[data-news-filter]").forEach(button => button.addEventListener("click", () => {
+    newsFilter = button.dataset.newsFilter;
+    newsExpanded = false;
+    $$("[data-news-filter]").forEach(filter => {
+      const active = button === filter;
+      filter.classList.toggle("active", active);
+      filter.setAttribute("aria-pressed", String(active));
+    });
+    renderNews();
+  }));
+  $("#news-toggle").addEventListener("click", () => { newsExpanded = !newsExpanded; renderNews(); });
 
   const art = {
     code: `<div class="mini-window" aria-hidden="true"><div class="window-top"><i></i><i></i><i></i><span>HELIX / analysis workflow</span></div><div class="code-lines"><div class="code-comment"># From signals to understanding.</div><div><em>experiment</em> → raw_signal</div><div>&nbsp;</div><div><em>analysis</em> = {</div><div class="code-indent">velocity: <b>extract(signal)</b>,</div><div class="code-indent">strength: <b>detect_spall()</b>,</div><div class="code-indent">uncertainty: <b>quantify()</b></div><div>}</div><div class="code-comment"># Discover. Repeat.</div></div></div>`,
