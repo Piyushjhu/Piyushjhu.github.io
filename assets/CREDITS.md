@@ -1,5 +1,8 @@
 # Image credits
 
+- `research/helix-facility.jpg`: HELIX facility photograph supplied by Piyush as `Picture1.png`. The full composition is preserved, with JPEG optimization and embedded metadata removed. Used in the HELIX project, active research, and gallery.
+- `research/cuti-plate-impact-spall.mp4`: Cu–Ti plate-impact and spall-formation schematic animation supplied by Piyush. H.264 video is preserved without re-encoding, with web playback metadata moved to the start of the file. The visible caption identifies the animation as a schematic rather than an experimental recording.
+- `research/cuti-spall-poster.jpg`: Still frame from the supplied Cu–Ti animation, used as the video poster.
 - `aimdl-laboratory.png`: Figure 2a from Hufnagel et al., “AIMD-L: An automated laboratory for high-throughput characterization of structural materials for extreme environments,” arXiv:2603.06835 (2026). Piyush Wanchoo is a coauthor. The image is reproduced unchanged, with attribution, for this noncommercial personal academic website. [Source](https://arxiv.org/html/2603.06835v1/fig2a_aimdl_interior_large.png). [Paper](https://arxiv.org/abs/2603.06835). [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 - `../logo.jpg`: Existing portrait supplied in the project directory.
 - `gallery/rising-stars-stanford-2026.jpg`: Rising Stars in Mechanical Engineering 2026 cohort photograph supplied by Piyush. Local source: the full-resolution copy matching the attached group photo. Resized and optimized for this website. [Workshop](https://risingstarsme.stanford.edu/).

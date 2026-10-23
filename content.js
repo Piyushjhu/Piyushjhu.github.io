@@ -22,7 +22,81 @@ window.SITE_CONTENT = {
   resume: "",
   location: "Baltimore, Maryland",
   affiliation: "Hopkins Extreme Materials Institute · Johns Hopkins University",
-  researchDescription: "I study how composition, microstructure, and loading history govern dynamic strength and failure. By connecting automated impact experiments, advanced diagnostics, and models that learn from the data, I aim to make material failure more predictable—and accelerate the discovery and qualification of materials for extreme environments.",
+  researchDescription: "My goal is to shorten the design and qualification cycle for materials in aerospace and defense. I connect automated impact experiments, physical understanding, and predictive models to learn how materials fail—and use that knowledge to guide what we design and test next.",
+  researchVision: {
+    title: "From a promising material to reliable performance.",
+    description: "A new composition is only the beginning. Understanding how it behaves under impact, shock, and changing loading conditions is essential to designing with confidence. My research aims to make that path faster by generating reliable measurements, resolving the mechanisms behind them, and targeting the experiments that reduce uncertainty.",
+    steps: [
+      { title: "Measure", text: "Generate systematic dynamic-property data across compositions, microstructures, and loading conditions." },
+      { title: "Understand", text: "Connect measurements with the mechanisms that control strength, damage, and failure." },
+      { title: "Guide design", text: "Use uncertainty-aware models to choose informative experiments and build evidence toward qualification." }
+    ]
+  },
+  // Add research stories here; status is "active" or "past".
+  // Video entries use a local MP4, poster, and a visible descriptive caption.
+  researchStudies: [
+    {
+      id: "spall-strength", status: "active", label: "DYNAMIC STRENGTH & FAILURE",
+      title: "How spall strength evolves in metals.",
+      summary: "How do composition, microstructure, and loading kinetics change a metal’s resistance to internal fracture? I use high-throughput impact experiments to separate these effects and map the conditions that govern failure.",
+      institution: "Johns Hopkins University", tags: ["Cu–Ti", "Al–Mg", "Ti–V", "Spall failure"],
+      video: "./assets/research/cuti-plate-impact-spall.mp4", poster: "./assets/research/cuti-spall-poster.jpg",
+      mediaLabel: "Plate impact and spall formation in Cu–Ti",
+      caption: "Schematic animation: a flyer strikes a Cu–Ti target, launching compression waves. Release waves create internal tension, followed by void nucleation, growth, and coalescence into a spall plane. Microstructure, dislocation evolution, and void kinetics are illustrative.",
+      details: [
+        { title: "The question", text: "Spall is internal fracture driven by tension after shock loading. I study how alloy composition, microstructural state, and loading history influence the onset and evolution of this failure—and how to distinguish repeatable trends from experimental variability." },
+        { title: "Current direction", text: "Building on statistical studies of spall in copper, I investigate composition- and kinetics-resolved behavior in Cu–Ti, Al–Mg, and Ti–V alloys. The aim is to connect dynamic strength measurements with physical mechanisms and identify material states worth exploring further." }
+      ],
+      links: [{ label: "Read the copper spall study", url: "https://doi.org/10.1016/j.jmps.2026.106523" }]
+    },
+    {
+      id: "helix", status: "active", label: "EXPERIMENTAL PLATFORMS",
+      title: "HELIX. Transforming impact research.",
+      summary: "I designed and built an automated laser-driven microflyer impact facility at Johns Hopkins to make systematic studies of dynamic material behavior practical across a much wider range of conditions.",
+      institution: "Johns Hopkins University", tags: ["Laser-driven impact", "Robotics", "AIMD-L"],
+      image: "./assets/research/helix-facility.jpg",
+      imageAlt: "HELIX laser-driven microflyer impact facility with robotic arms, optical equipment, and sample trays at Johns Hopkins",
+      caption: "HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials in extreme environments.",
+      details: [
+        { title: "What changes", text: "Automated experimentation and rapid data reduction allow us to explore strength and failure systematically across materials, microstructures, compositions, and loading conditions. The focus shifts from isolated measurements toward connected experimental campaigns that test physical hypotheses." },
+        { title: "A connected laboratory", text: "HELIX forms part of AIMD-L, linking dynamic measurements with material synthesis, characterization, and machine-learning workflows. Together, these capabilities support a feedback loop between the material we make, the response we measure, and the experiment we choose next." }
+      ],
+      links: [{ label: "Read the AIMD-L preprint", url: "https://arxiv.org/abs/2603.06835" }]
+    },
+    {
+      id: "autonomous-discovery", status: "active", label: "MODELS & AUTONOMY",
+      title: "Making the next experiment count.",
+      summary: "Connecting high-throughput measurements with Gaussian processes, Bayesian optimization, and active learning to guide materials exploration under extreme loading.",
+      institution: "Johns Hopkins University", tags: ["Active learning", "Uncertainty", "Materials discovery"],
+      details: [
+        { title: "The approach", text: "I develop and contribute to workflows that connect automated data reduction with uncertainty-aware models. Rather than treating experimentation and modeling as separate stages, the aim is to let each new measurement inform the next experimental decision." },
+        { title: "The longer view", text: "The research direction is a closed loop that combines reliable measurements, interpretable physical relationships, and explicit uncertainty. This can help focus resources on the experiments most useful for materials design and, ultimately, qualification." }
+      ],
+      links: [{ label: "Explore the software", url: "https://github.com/Piyushjhu/bayesian-optimization-on-LMI-data" }]
+    },
+    {
+      id: "blast-composites", status: "past", label: "COMPOSITES & PROTECTIVE STRUCTURES",
+      title: "Understanding how structures withstand blast.",
+      summary: "During my Ph.D., I developed air-blast and underwater-shock experiments to study damage, energy transfer, and failure in composite laminates and sandwich structures.",
+      institution: "Ph.D. research · University of Rhode Island", tags: ["Air blast", "Underwater shock", "Composites"],
+      details: [
+        { title: "The approach", text: "Working with Arun Shukla, I designed and built experimental facilities and combined high-speed imaging, full-field measurements, and pressure instrumentation to characterize structural response under rapid loading." },
+        { title: "What this adds", text: "The work examines how material architecture and protective layers influence damage and energy transfer, including rubber-modified composite laminates and PVC foam-cladded composite plates. It established the experimental foundations for my work on materials at extremes." }
+      ],
+      links: [{ label: "Energy transfer under underwater loading", url: "https://doi.org/10.1016/j.jmps.2024.105646" }, { label: "Composite laminate failure", url: "https://doi.org/10.1016/j.mechmat.2023.104685" }]
+    },
+    {
+      id: "porous-materials", status: "past", label: "POROUS MATERIALS & WAVE PROPAGATION",
+      title: "Following stress waves through foams.",
+      summary: "Investigating how closed-cell polymeric foams deform, transmit force, and interact with stress waves under air shock and hydrostatic high-rate loading.",
+      institution: "Ph.D. research · University of Rhode Island", tags: ["Polymeric foams", "Stress waves", "Dynamic response"],
+      details: [
+        { title: "The question", text: "Protective materials must be understood in the loading conditions they actually experience. I examined how foam density and loading conditions influence high-rate deformation and force transmission." },
+        { title: "The approach", text: "Experiments using air shock and water-filled shock tubes, together with three-dimensional digital image correlation, connected the measured response with deformation in porous materials." }
+      ],
+      links: [{ label: "Stress waves and force transmission", url: "https://doi.org/10.1016/j.eml.2023.102061" }, { label: "Hydrostatic high-rate response", url: "https://doi.org/10.1016/j.compositesb.2022.110318" }]
+    }
+  ],
   teachingApproach: {
     intro: "I start with a physical problem students can observe, ask what they already understand, and build the mechanics needed to explain it. My goal is to help students ask good questions, test assumptions, and connect theory with evidence.",
     principles: [
@@ -34,6 +108,13 @@ window.SITE_CONTENT = {
   },
   outreach: "My teaching began with hands-on robotics workshops and mentoring BAJA vehicle teams. It has grown through science-fair outreach at IISc, industry training, and demonstrations of hydrostatic loading and impact protection for middle and high school students. My practice is also informed by training through the JHU Teaching Institute.",
   gallery: [
+    {
+      id: "helix-facility", title: "Inside HELIX.",
+      image: "./assets/research/helix-facility.jpg", width: 1680, height: 1036,
+      alt: "HELIX facility showing robotic arms, optical equipment, and trays for automated sample handling",
+      event: "HELIX · AIMD-L", location: "Johns Hopkins University", dateLabel: "In the lab",
+      caption: "The automated laser-driven microflyer impact facility I designed and built to transform how we explore dynamic strength and failure. HELIX is part of AIMD-L, an automated laboratory I co-developed for materials in extreme environments."
+    },
     {
       id: "rising-stars-2026", title: "Rising Stars, shared perspectives.",
       image: "./assets/gallery/rising-stars-stanford-2026.jpg", width: 2200, height: 1202,
@@ -210,9 +291,8 @@ window.SITE_CONTENT = {
       title: "HELIX. Experiments, accelerated.", category: "experiments", label: "AUTONOMOUS EXPERIMENTAL MECHANICS",
       description: "An automated laser-driven impact platform for exploring material strength and failure at extreme strain rates.",
       detail: "I designed and built HELIX, an automated laser-driven microflyer impact facility at Johns Hopkins that has transformed how impact research is conducted. By integrating automated experimentation, rapid data analysis, and closed-loop workflows, we can explore dynamic strength and failure systematically across materials, microstructures, compositions, and loading conditions. The platform supports studies ranging from spall failure in copper to composition- and kinetics-resolved measurements in Cu–Ti, Al–Mg, and Ti–V alloys. HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials in extreme environments.",
-      tags: ["Shock physics", "Automation", "AIMD-L"], art: "lab", image: "./assets/aimdl-laboratory.png",
-      imageAlt: "The AIMD-L laboratory at Johns Hopkins University, showing experimental stations and robotic sample handling",
-      imageCredit: "AIMD-L photograph: Hufnagel et al. (2026), Figure 2a. CC BY-NC-ND 4.0.",
+      tags: ["Shock physics", "Automation", "AIMD-L"], art: "lab", image: "./assets/research/helix-facility.jpg",
+      imageAlt: "HELIX laser-driven microflyer impact facility with robotic arms, optical equipment, and sample trays at Johns Hopkins",
       url: "https://arxiv.org/abs/2603.06835", linkLabel: "Read the AIMD-L preprint"
     },
     {

@@ -26,6 +26,57 @@
   $('meta[property="og:title"]').content = document.title;
   $("[data-hero-description]").textContent = content.heroDescription;
   $("[data-research-description]").textContent = content.researchDescription;
+  const researchVision = content.researchVision || {};
+  $("#research-vision-title").textContent = researchVision.title || "";
+  $("#research-vision-description").textContent = researchVision.description || "";
+  $("#research-steps").innerHTML = (researchVision.steps || []).map((step, index) => `<li><span class="research-step-number">0${index + 1}</span><h4>${escape(step.title)}</h4><p>${escape(step.text)}</p></li>`).join("");
+  const researchStudies = content.researchStudies || [];
+  const renderResearchStudies = status => researchStudies.filter(study => study.status === status).map((study, index) => {
+    const videoUrl = safeUrl(study.video, true);
+    const imageUrl = safeUrl(study.image, true);
+    const posterUrl = safeUrl(study.poster, true);
+    const studyId = `research-${study.id}`;
+    const captionId = `${studyId}-caption`;
+    const media = videoUrl ? `<video controls playsinline preload="none"${posterUrl ? ` poster="${escape(posterUrl)}"` : ""} width="1920" height="1080" aria-label="${escape(study.mediaLabel || study.title)}" aria-describedby="${escape(captionId)}"><source src="${escape(videoUrl)}" type="video/mp4" /><p>Your browser does not support this video. <a href="${escape(videoUrl)}">Download the animation</a>.</p></video>` : imageUrl ? `<img src="${escape(imageUrl)}" alt="${escape(study.imageAlt || study.title)}" width="1680" height="1036" loading="lazy" />` : "";
+    const links = (study.links || []).filter(link => safeUrl(link.url)).map(link => externalLink(link.url, link.label)).join("");
+    return `<article class="research-study${media ? " has-media" : ""}" id="${escape(studyId)}">${media ? `<figure class="study-media">${media}<figcaption id="${escape(captionId)}">${escape(study.caption)}${study.imageCredit ? `<span class="study-credit">${escape(study.imageCredit)}</span>` : ""}</figcaption></figure>` : `<div class="study-marker" aria-hidden="true"><span>${status === "active" ? "EXPLORING" : "FOUNDATIONS"}</span><strong>0${index + 1}</strong></div>`}<div class="study-copy"><p class="study-label">${escape(study.label)}</p><h3>${escape(study.title)}</h3><p class="study-institution">${escape(study.institution)}</p><p class="study-summary">${escape(study.summary)}</p><div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research details ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}${links ? `<div class="study-links">${links}</div>` : ""}</div></article>`;
+  }).join("");
+  $("#active-research").innerHTML = renderResearchStudies("active");
+  $("#past-research").innerHTML = renderResearchStudies("past");
+
+  const researchTabs = $$("[data-research-tab]");
+  const activateResearchTab = (name, moveFocus = false) => {
+    const selected = researchTabs.find(tab => tab.dataset.researchTab === name);
+    if (!selected) return;
+    researchTabs.forEach(tab => {
+      const active = tab === selected;
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+      const panel = document.getElementById(tab.getAttribute("aria-controls"));
+      panel.hidden = !active;
+      if (!active) $$("video", panel).forEach(video => video.pause());
+    });
+    if (moveFocus) selected.focus();
+  };
+  researchTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activateResearchTab(tab.dataset.researchTab));
+    tab.addEventListener("keydown", event => {
+      const next = event.key === "ArrowRight" ? (index + 1) % researchTabs.length : event.key === "ArrowLeft" ? (index + researchTabs.length - 1) % researchTabs.length : event.key === "Home" ? 0 : event.key === "End" ? researchTabs.length - 1 : -1;
+      if (next < 0) return;
+      event.preventDefault();
+      activateResearchTab(researchTabs[next].dataset.researchTab, true);
+    });
+  });
+  const revealResearchAnchor = () => {
+    const hash = window.location.hash.slice(1);
+    const anchor = document.getElementById(hash);
+    const panel = anchor?.closest('[role="tabpanel"]');
+    if (!panel || !panel.id.startsWith("research-panel-")) return;
+    activateResearchTab(panel.id.slice("research-panel-".length));
+    window.requestAnimationFrame(() => anchor.scrollIntoView({block: "start"}));
+  };
+  window.addEventListener("hashchange", revealResearchAnchor);
+  revealResearchAnchor();
   $("#about-bio").innerHTML = content.bio.map(paragraph => `<p>${escape(paragraph)}</p>`).join("");
   $("#interests").innerHTML = content.interests.map(interest => `<span>${escape(interest)}</span>`).join("");
   const portraitUrl = safeUrl(content.portrait, true);
@@ -113,7 +164,7 @@
     const imageUrl = safeUrl(item.image, true);
     if (!imageUrl) return "";
     const sourceUrl = safeUrl(item.sourceUrl);
-    return `<figure class="gallery-card${item.kind === "document" ? " gallery-document" : ""}"><button type="button" class="gallery-open" data-gallery="${index}" aria-label="Enlarge ${escape(item.title)}" aria-haspopup="dialog"><img src="${escape(imageUrl)}" alt="${escape(item.alt)}" width="${Number(item.width) || 1600}" height="${Number(item.height) || 1200}" loading="lazy" /><span class="gallery-enlarge">View image ${icon("arrow-up-right")}</span></button><figcaption><p class="gallery-meta">${escape(item.dateLabel)}<span>${escape(item.location)}</span></p><h3>${escape(item.title)}</h3><p>${escape(item.caption)}</p>${sourceUrl ? externalLink(sourceUrl, item.sourceLabel || "View source") : ""}</figcaption></figure>`;
+    return `<figure class="gallery-card${item.kind === "document" ? " gallery-document" : ""}"><button type="button" class="gallery-open" data-gallery="${index}" aria-label="Enlarge ${escape(item.title)}" aria-haspopup="dialog" style="--gallery-aspect:${Number(item.width) || 1600}/${Number(item.height) || 1200}"><img src="${escape(imageUrl)}" alt="${escape(item.alt)}" width="${Number(item.width) || 1600}" height="${Number(item.height) || 1200}" loading="lazy" /><span class="gallery-enlarge">View image ${icon("arrow-up-right")}</span></button><figcaption><p class="gallery-meta">${escape(item.dateLabel)}<span>${escape(item.location)}</span></p><h3>${escape(item.title)}</h3><p>${escape(item.caption)}</p>${sourceUrl ? externalLink(sourceUrl, item.sourceLabel || "View source") : ""}</figcaption></figure>`;
   }).join("");
 
   const art = {
