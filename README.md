@@ -104,6 +104,24 @@ Use the default TTL and replace conflicting parking or redirect records for `@` 
 
 This site uses a custom GitHub Actions workflow, so the domain is configured in Pages settings rather than a `CNAME` file. Official instructions: [GitHub Pages custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
 
+## Security and deployment checks
+
+The homepage uses a restrictive Content Security Policy and an explicit `strict-origin-when-cross-origin` referrer policy. Scripts, stylesheets, images, fonts, and video must be local. Inline executable JavaScript, event handlers, inline CSS markup, frames, plugins, workers, and script network connections are disabled. Gallery dimensions are assigned through trusted JavaScript style properties; illustrative chart bars use stylesheet rules. The JSON-LD identity metadata is allowed by its exact SHA-256 hash, which the build regenerates automatically. After editing structured data, run `python3 scripts/security_policy.py` to refresh the source-preview hash as well.
+
+Before publishing, run:
+
+```sh
+python3 scripts/build.py
+python3 scripts/check_site.py
+python3 -m unittest discover -s tests
+```
+
+These checks reject weakened policies, executable inline scripts, nonlocal page subresources, missing files, common credential patterns, and accidentally staged internal paths. They do not replace reviewing every file placed in `assets/`, which is public. The workflow runs validation for pull requests with read-only permissions; only pushes to `main` or manual dispatches can deploy. Official Actions are pinned to verified full commit IDs, checkout does not persist credentials, and Dependabot proposes weekly Actions updates as pull requests.
+
+HTML meta policies cannot supply HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Permissions-Policy`, or CSP `frame-ancestors`. These response-header protections require a header-capable serving layer. Do not claim they are enabled by this HTML policy, or add an ineffective `_headers` file to GitHub Pages. Domain ownership verification belongs in **GitHub profile Settings → Pages**, separately from the repository's custom-domain setting and Google Search Console. Keep the generated GitHub verification TXT record in Spaceship DNS after verification.
+
+The prepared edge configuration and account setup steps are in [deployment/README.md](deployment/README.md). They are not activated by the GitHub Pages workflow. For a browser check, serve this repository on localhost and open `tests/browser-security.html`; the harness exercises the staged site and controlled injection probes. It is excluded from the public build.
+
 ## Design and accessibility
 
 The interface uses system fonts, a frosted navigation bar, responsive layouts, keyboard focus styles, semantic sections, a skip link, native dialogs, and a mobile menu. Motion respects the visitor’s reduced-motion setting; the sculpture pauses outside the viewport and in inactive tabs. Browsers without WebGL receive a local SVG alternative. External links open in a new tab with `noopener noreferrer`.

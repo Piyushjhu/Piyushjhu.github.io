@@ -3,6 +3,7 @@
 from pathlib import Path
 import hashlib
 import shutil
+from security_policy import secure_html
 
 ROOT = Path(__file__).resolve().parent.parent
 DESTINATION = ROOT / "_site"
@@ -19,5 +20,5 @@ for name in ("styles.css", "content.js", "app.js", "sculpture.js"):
     versioned_name = f"{source.stem}.{digest}{source.suffix}"
     shutil.copy2(source, DESTINATION / versioned_name)
     html = html.replace(f'"./{name}"', f'"./{versioned_name}"')
-(DESTINATION / "index.html").write_text(html, encoding="utf-8")
+(DESTINATION / "index.html").write_text(secure_html(html), encoding="utf-8")
 print(f"Site ready: {DESTINATION}")
