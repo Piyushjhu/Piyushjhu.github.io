@@ -1,6 +1,6 @@
-# Remaining account and edge protections
+# Account protections and optional response headers
 
-The source and workflow protections are implemented in the personal-site repository. This directory contains the concrete configuration for response-header protections that HTML meta elements cannot supply. **The edge configuration is prepared, not active.** GitHub Pages remains the origin.
+The source, workflow, domain-verification, and account checks for the current Spaceship + GitHub Pages setup are complete. This directory also contains an optional configuration for response-header protections that HTML meta elements cannot supply. **Cloudflare is deferred by choice; the edge configuration is prepared, not active.**
 
 ## GitHub domain ownership
 
@@ -13,13 +13,13 @@ GitHub domain verification was completed on October 26, 2026. The authenticated 
 
 ## Spaceship account and domain
 
-In Spaceship, confirm 2FA or a passkey in Security Center, keep recovery methods somewhere private, and confirm domain transfer lock and auto-renewal for `piyushwanchoo.com`. Domain renewal and transfer settings are account-specific and have not been changed. Never send passwords, authenticator seeds, one-time codes, or recovery codes through the chat.
+On October 26, 2026, the account owner confirmed that Spaceship two-factor authentication is enabled and auto-renewal is on. These private settings were confirmed by the owner rather than independently inspected through account access. A public Verisign RDAP check independently confirmed `client transfer prohibited`, indicating an active transfer lock, and a registration expiration of October 23, 2029. Keep account recovery methods private.
 
-## Full response headers while retaining GitHub Pages
+## Optional full response headers while retaining GitHub Pages
 
-The optional [Worker](cloudflare/security-headers.js) adds HSTS, MIME-sniffing protection, anti-framing headers, an explicit referrer policy, and restrictions on unused browser features. It preserves origin response bodies, status codes, redirects, content types, media range responses, and existing CSP. It applies across the profile and Atlas paths without imposing the profile's script restrictions on the separate Atlas application.
+The optional [Worker](cloudflare/security-headers.js), if activated in the future, adds HSTS, MIME-sniffing protection, anti-framing headers, an explicit referrer policy, and restrictions on unused browser features. It preserves origin response bodies, status codes, redirects, content types, media range responses, and existing CSP. It applies across the profile and Atlas paths without imposing the profile's script restrictions on the separate Atlas application. Activating this layer is not required for the selected hosting setup; the profile's tested HTML CSP and referrer policy are already deployed.
 
-Deployment requires a Cloudflare account and proxy configuration for this domain. Before changing nameservers, import and verify **every existing DNS record**, including email and verification records, and inspect whether DNSSEC requires coordinated changes. Keep the Spaceship registration and GitHub Pages custom-domain configuration. Do not change nameservers until this DNS comparison has been reviewed.
+Future deployment requires a Cloudflare account and proxy configuration for this domain. Before changing nameservers, import and verify **every existing DNS record**, including email and verification records. DNSSEC was active in the public DS record on October 26, 2026, so any migration must coordinate DNSSEC changes as well. Keep the Spaceship registration and GitHub Pages custom-domain configuration. Do not change nameservers until this DNS comparison has been reviewed.
 
 After the domain is active in Cloudflare, use Full (strict) TLS and proxy the GitHub Pages DNS records. Deploy this module as routes `piyushwanchoo.com/*` and `www.piyushwanchoo.com/*`. The Worker uses the normal route `fetch(request)` to reach the existing origin. Avoid a Custom Domain Worker configuration that replaces the GitHub Pages origin.
 
