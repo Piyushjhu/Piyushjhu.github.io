@@ -6,11 +6,11 @@ window.SITE_CONTENT = {
   initials: "PW",
   title: "Piyush Wanchoo | Experimental Mechanics & Materials Research",
   description: "Piyush Wanchoo is a Johns Hopkins researcher studying impact, fracture, autonomous experiments, and data-driven materials design.",
-  heroDescription: "I’m an experimental mechanician, researcher, and educator at Johns Hopkins. I build experiments to understand—and design—materials for extreme environments.",
+  heroDescription: "I’m a postdoctoral fellow at Johns Hopkins. I study how materials deform and fail under rapid loading, and build automated experiments to measure that response.",
   bio: [
-    "I’m Piyush, a Postdoctoral Fellow at the Hopkins Extreme Materials Institute, Johns Hopkins University, working with K.T. Ramesh. I study how materials deform and fail when the loading is fast, intense, and far from everyday conditions.",
-    "I designed and built HELIX and co-developed AIMD-L to transform how we explore material behavior through automated experiments. My broader aim is to connect measurements, physical understanding, and data-driven models so that failure becomes more predictable—and better materials can be designed with confidence.",
-    "My path has taken me from robotics and all-terrain vehicle teams to a master’s in Mechanical Engineering at the Indian Institute of Science (IISc), Bangalore, followed by industrial R&D, a Ph.D. with Arun Shukla at the University of Rhode Island, and research at Johns Hopkins. Along the way, building things and helping others understand how they work have remained the common threads."
+    "I’m Piyush, a postdoctoral fellow at the Hopkins Extreme Materials Institute at Johns Hopkins University, working with K.T. Ramesh. My research is in experimental mechanics, with a focus on impact, shock, and material failure.",
+    "Much of my work involves building the equipment and analysis tools for these experiments. I designed and built HELIX, an automated laser-driven impact facility, and co-developed AIMD-L, a laboratory for high-throughput materials characterization. I use these systems to study how composition, microstructure, and loading conditions affect material strength.",
+    "I got started with robotics workshops and all-terrain vehicle teams. I later earned my master’s at the Indian Institute of Science in Bangalore, worked in industrial R&D, and completed my Ph.D. with Arun Shukla at the University of Rhode Island. I still enjoy the hands-on parts of research: building a setup, working through a measurement, and helping a student do the same."
   ],
   portrait: "./logo.jpg",
   interests: ["Experimental mechanics", "Autonomous laboratories", "Data-driven materials"],
@@ -22,14 +22,14 @@ window.SITE_CONTENT = {
   resume: "",
   location: "Baltimore, Maryland",
   affiliation: "Hopkins Extreme Materials Institute · Johns Hopkins University",
-  researchDescription: "My goal is to shorten the design and qualification cycle for materials in aerospace and defense. I connect automated impact experiments, physical understanding, and predictive models to learn how materials fail—and use that knowledge to guide what we design and test next.",
+  researchDescription: "I study how metals, composites, and foams respond to impact and shock. My current work combines automated experiments and statistical models to measure dynamic strength, explain failure, and choose which materials and loading conditions to test next.",
   researchVision: {
-    title: "From a promising material to reliable performance.",
-    description: "A new composition is only the beginning. Understanding how it behaves under impact, shock, and changing loading conditions is essential to designing with confidence. My research aims to make that path faster by generating reliable measurements, resolving the mechanisms behind them, and targeting the experiments that reduce uncertainty.",
+    title: "Materials design and qualification",
+    description: "My goal is to shorten the design and qualification process for materials in aerospace and defense. That requires data across many compositions, microstructures, and loading conditions. I develop automated experiments to collect these measurements and use models to identify which tests would reduce uncertainty.",
     steps: [
-      { title: "Measure", text: "Generate systematic dynamic-property data across compositions, microstructures, and loading conditions." },
-      { title: "Understand", text: "Connect measurements with the mechanisms that control strength, damage, and failure." },
-      { title: "Guide design", text: "Use uncertainty-aware models to choose informative experiments and build evidence toward qualification." }
+      { title: "Measure", text: "Measure dynamic properties across alloy compositions, microstructures, and loading conditions." },
+      { title: "Explain", text: "Identify the mechanisms behind the measured strength, damage, and failure." },
+      { title: "Choose the next test", text: "Use model predictions and their uncertainty to decide which experiment would be most informative." }
     ]
   },
   // Add research stories here; status is "active" or "past".
@@ -37,108 +37,108 @@ window.SITE_CONTENT = {
   researchStudies: [
     {
       id: "spall-strength", status: "active", label: "DYNAMIC STRENGTH & FAILURE",
-      title: "How spall strength evolves in metals.",
-      summary: "How do composition, microstructure, and loading kinetics change a metal’s resistance to internal fracture? I use high-throughput impact experiments to separate these effects and map the conditions that govern failure.",
+      title: "Spall strength in metals",
+      summary: "Spall is internal fracture caused by tensile waves after impact. I use high-throughput experiments to study how alloy composition, microstructure, and loading rate affect a metal’s resistance to this failure.",
       institution: "Johns Hopkins University", tags: ["Cu–Ti", "Al–Mg", "Ti–V", "Spall failure"],
       video: "./assets/research/cuti-plate-impact-spall.mp4", poster: "./assets/research/cuti-spall-poster.jpg",
       mediaLabel: "Plate impact and spall formation in Cu–Ti",
       caption: "Schematic animation: a flyer strikes a Cu–Ti target, launching compression waves. Release waves create internal tension, followed by void nucleation, growth, and coalescence into a spall plane. Microstructure, dislocation evolution, and void kinetics are illustrative.",
       details: [
-        { title: "The question", text: "Spall is internal fracture driven by tension after shock loading. I study how alloy composition, microstructural state, and loading history influence the onset and evolution of this failure—and how to distinguish repeatable trends from experimental variability." },
-        { title: "Current direction", text: "Building on statistical studies of spall in copper, I investigate composition- and kinetics-resolved behavior in Cu–Ti, Al–Mg, and Ti–V alloys. The aim is to connect dynamic strength measurements with physical mechanisms and identify material states worth exploring further." }
+        { title: "The question", text: "How much of the variation in spall strength comes from the material, and how much comes from the experiment? I study the effects of composition, microstructure, and loading history, using repeated measurements to distinguish trends from experimental variability." },
+        { title: "Current work", text: "After studying the statistics of spall in copper, I’m now examining Cu–Ti, Al–Mg, and Ti–V alloys. I’m interested in how composition and loading rate change their dynamic strength, and which physical mechanisms explain those changes." }
       ],
       links: [{ label: "Read the copper spall study", url: "https://doi.org/10.1016/j.jmps.2026.106523" }]
     },
     {
       id: "helix", status: "active", label: "EXPERIMENTAL PLATFORMS",
-      title: "HELIX. Transforming impact research.",
-      summary: "I designed and built an automated laser-driven microflyer impact facility at Johns Hopkins to make systematic studies of dynamic material behavior practical across a much wider range of conditions.",
+      title: "HELIX: automated impact experiments",
+      summary: "I designed and built HELIX, a laser-driven microflyer impact facility at Johns Hopkins. Automation allows us to run repeated tests across many samples and loading conditions.",
       institution: "Johns Hopkins University", tags: ["Laser-driven impact", "Robotics", "AIMD-L"],
       image: "./assets/research/helix-facility.jpg",
       imageAlt: "HELIX laser-driven microflyer impact facility with robotic arms, optical equipment, and sample trays at Johns Hopkins",
       caption: "HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials in extreme environments.",
       details: [
-        { title: "What changes", text: "Automated experimentation and rapid data reduction allow us to explore strength and failure systematically across materials, microstructures, compositions, and loading conditions. The focus shifts from isolated measurements toward connected experimental campaigns that test physical hypotheses." },
-        { title: "A connected laboratory", text: "HELIX forms part of AIMD-L, linking dynamic measurements with material synthesis, characterization, and machine-learning workflows. Together, these capabilities support a feedback loop between the material we make, the response we measure, and the experiment we choose next." }
+        { title: "The facility", text: "HELIX combines automated experiments with rapid data analysis. This makes it practical to collect repeated measurements and compare strength and failure across compositions, microstructures, and loading conditions." },
+        { title: "Part of AIMD-L", text: "HELIX provides dynamic measurements within AIMD-L, alongside material synthesis, characterization, and machine-learning workflows. The goal is to use results from each stage to guide the materials and experiments we try next." }
       ],
       links: [{ label: "Read the AIMD-L preprint", url: "https://arxiv.org/abs/2603.06835" }]
     },
     {
       id: "autonomous-discovery", status: "active", label: "MODELS & AUTONOMY",
-      title: "Making the next experiment count.",
-      summary: "Connecting high-throughput measurements with Gaussian processes, Bayesian optimization, and active learning to guide materials exploration under extreme loading.",
+      title: "Active learning for impact experiments",
+      summary: "I work on Gaussian-process models, Bayesian optimization, and active learning to help choose the next impact experiment based on the measurements already available.",
       institution: "Johns Hopkins University", tags: ["Active learning", "Uncertainty", "Materials discovery"],
       details: [
-        { title: "The approach", text: "I develop and contribute to workflows that connect automated data reduction with uncertainty-aware models. Rather than treating experimentation and modeling as separate stages, the aim is to let each new measurement inform the next experimental decision." },
-        { title: "The longer view", text: "The research direction is a closed loop that combines reliable measurements, interpretable physical relationships, and explicit uncertainty. This can help focus resources on the experiments most useful for materials design and, ultimately, qualification." }
+        { title: "The approach", text: "I develop and contribute to workflows that feed processed experimental data into models of material response. The models estimate both properties and uncertainty, helping us identify where another measurement would be useful." },
+        { title: "Research goal", text: "I’m working toward a loop in which experiments update a model and the model recommends the next test. This requires reliable measurements, meaningful uncertainty estimates, and predictions we can check against the physics." }
       ],
       links: [{ label: "Explore the software", url: "https://github.com/Piyushjhu/bayesian-optimization-on-LMI-data" }]
     },
     {
       id: "blast-composites", status: "past", label: "COMPOSITES & PROTECTIVE STRUCTURES",
-      title: "Understanding how structures withstand blast.",
+      title: "Composite structures under blast loading",
       summary: "During my Ph.D., I developed air-blast and underwater-shock experiments to study damage, energy transfer, and failure in composite laminates and sandwich structures.",
       institution: "Ph.D. research · University of Rhode Island", tags: ["Air blast", "Underwater shock", "Composites"],
       details: [
         { title: "The approach", text: "Working with Arun Shukla, I designed and built experimental facilities and combined high-speed imaging, full-field measurements, and pressure instrumentation to characterize structural response under rapid loading." },
-        { title: "What this adds", text: "The work examines how material architecture and protective layers influence damage and energy transfer, including rubber-modified composite laminates and PVC foam-cladded composite plates. It established the experimental foundations for my work on materials at extremes." }
+        { title: "Materials studied", text: "I examined how material architecture and protective layers affect damage and energy transfer in rubber-modified composite laminates and PVC foam-cladded composite plates." }
       ],
       links: [{ label: "Energy transfer under underwater loading", url: "https://doi.org/10.1016/j.jmps.2024.105646" }, { label: "Composite laminate failure", url: "https://doi.org/10.1016/j.mechmat.2023.104685" }]
     },
     {
       id: "porous-materials", status: "past", label: "POROUS MATERIALS & WAVE PROPAGATION",
-      title: "Following stress waves through foams.",
-      summary: "Investigating how closed-cell polymeric foams deform, transmit force, and interact with stress waves under air shock and hydrostatic high-rate loading.",
+      title: "Stress waves in polymeric foams",
+      summary: "During my Ph.D., I studied how closed-cell polymeric foams deform and transmit force under air shock and rapid hydrostatic loading.",
       institution: "Ph.D. research · University of Rhode Island", tags: ["Polymeric foams", "Stress waves", "Dynamic response"],
       details: [
-        { title: "The question", text: "Protective materials must be understood in the loading conditions they actually experience. I examined how foam density and loading conditions influence high-rate deformation and force transmission." },
-        { title: "The approach", text: "Experiments using air shock and water-filled shock tubes, together with three-dimensional digital image correlation, connected the measured response with deformation in porous materials." }
+        { title: "The question", text: "How do foam density and loading conditions affect deformation, stress-wave propagation, and the force transmitted through a protective layer?" },
+        { title: "The approach", text: "I used air shock and water-filled shock tubes, with three-dimensional digital image correlation to measure deformation in the foams." }
       ],
       links: [{ label: "Stress waves and force transmission", url: "https://doi.org/10.1016/j.eml.2023.102061" }, { label: "Hydrostatic high-rate response", url: "https://doi.org/10.1016/j.compositesb.2022.110318" }]
     }
   ],
   teachingApproach: {
-    intro: "Mechanics helps us understand why a structure holds, why a material fails, and how a design could be improved. I want students to recognize these questions in the world around them, then develop the confidence to turn an observation into a model, an experiment, and a better engineering decision.",
+    intro: "I like teaching mechanics through problems students can observe and test. A demonstration gives us something concrete to discuss: what do we expect to happen, which assumptions does our model need, and how would we check the result?",
     principles: [
-      { title: "Start with an observation.", text: "A demonstration or a design challenge gives us a shared starting point, whatever our engineering background." },
-      { title: "Make a prediction.", text: "We build simple models, state our assumptions, and discuss what we expect to happen before looking at the results." },
-      { title: "Learn through discussion.", text: "Explaining an idea to someone else helps us find gaps in our reasoning, question assumptions, and refine our understanding." }
+      { title: "Observe", text: "Start with a demonstration or a design problem that everyone in the class can examine." },
+      { title: "Predict", text: "Build a simple model, state its assumptions, and predict the result before running the experiment." },
+      { title: "Discuss", text: "Compare predictions with measurements and ask students to explain where they agree or differ." }
     ],
     areas: ["Solid mechanics", "Experimental methods", "Fracture & composites", "Impact & shock"],
     outlook: {
-      title: "From stress waves to materials discovery.",
-      text: "I’d like to develop an Impact and Shock elective that brings together wave mechanics, high-rate experiments, and material performance under extreme conditions. I also want to bring AI-assisted materials design into the classroom, helping students formulate hypotheses, examine uncertainty, and test predictions against first principles and experimental evidence."
+      title: "Courses I’d like to develop",
+      text: "I’d like to develop an Impact and Shock elective covering wave mechanics, high-rate experiments, and material response. I’m also interested in teaching AI-assisted materials design, with students checking model predictions against physical principles and experimental data."
     }
   },
-  outreach: "My teaching began with hands-on robotics workshops and mentoring BAJA vehicle teams. It has grown through science-fair outreach at IISc, industry training, and demonstrations of hydrostatic loading and impact protection for middle and high school students. My practice is also informed by training through the JHU Teaching Institute.",
+  outreach: "I’ve taught robotics workshops, mentored BAJA vehicle teams, taken part in science-fair outreach at IISc, and led industry training. I’ve also demonstrated hydrostatic loading and impact protection for middle and high school students, and completed training through the JHU Teaching Institute.",
   gallery: [
     {
-      id: "helix-facility", title: "Inside HELIX.",
+      id: "helix-facility", title: "The HELIX facility",
       image: "./assets/research/helix-facility.jpg", width: 1680, height: 1036,
       alt: "HELIX facility showing robotic arms, optical equipment, and trays for automated sample handling",
       event: "HELIX · AIMD-L", location: "Johns Hopkins University", dateLabel: "In the lab",
-      caption: "The automated laser-driven microflyer impact facility I designed and built to transform how we explore dynamic strength and failure. HELIX is part of AIMD-L, an automated laboratory I co-developed for materials in extreme environments."
+      caption: "The laser-driven microflyer impact facility I designed and built at Johns Hopkins. HELIX is part of AIMD-L, an automated materials laboratory I co-developed."
     },
     {
-      id: "rising-stars-2026", title: "Rising Stars, shared perspectives.",
+      id: "rising-stars-2026", title: "Rising Stars at Stanford",
       image: "./assets/gallery/rising-stars-stanford-2026.jpg", width: 2200, height: 1202,
       alt: "Rising Stars in Mechanical Engineering 2026 cohort gathered outdoors at Stanford University",
       event: "Rising Stars in Mechanical Engineering", location: "Stanford University", dateLabel: "September 24–25, 2026",
-      caption: "A cohort spanning mechanics, biomechanics, robotics, fluids, and thermal sciences—and thoughtful conversations about research, mentorship, and academic life."
+      caption: "With the 2026 Rising Stars in Mechanical Engineering cohort at Stanford. The workshop covered research programs, mentoring, and academic careers."
     },
     {
-      id: "ramesh-lab-pasadena-2026", title: "Good science. Great company.",
+      id: "ramesh-lab-pasadena-2026", title: "Ramesh lab dinner in Pasadena",
       image: "./assets/gallery/ramesh-lab-pasadena-2026.jpg", width: 2000, height: 1500,
       alt: "Ramesh lab group gathered for dinner during USNC/TAM 2026 in Pasadena",
       event: "Ramesh lab group dinner · USNC/TAM", location: "Pasadena, California", dateLabel: "June 2026",
       caption: "An evening with the Ramesh lab during the U.S. National Congress on Theoretical and Applied Mechanics in Pasadena."
     },
     {
-      id: "sem-symposium-2027", title: "A forum for data-driven mechanics.", kind: "document",
+      id: "sem-symposium-2027", title: "SEM 2027 symposium", kind: "document",
       image: "./assets/gallery/sem-symposium-2027.jpg", width: 920, height: 1190,
       alt: "Call for papers for the SEM 2027 symposium Data-Driven Mechanics: From High-Throughput Experiments to Predictive Models",
       event: "SEM Annual Conference", location: "Vancouver, Washington", dateLabel: "June 7–10, 2027",
-      caption: "Our symposium connects high-throughput experiments, robotics, and predictive models. The call for papers lists an original abstract deadline of October 12, 2026.",
+      caption: "The call for papers for our symposium on high-throughput experiments and predictive models. The flyer lists the original abstract deadline of October 12, 2026.",
       sourceUrl: "https://sem.org/Files/events/27s/27s%20CFP/CFP-27s-Data-Driven-Mechanics-From-High-Throughput-Experiments-to-Predictive-Models.pdf", sourceLabel: "View official call for papers"
     }
   ],
@@ -148,11 +148,11 @@ window.SITE_CONTENT = {
   news: [
     {
       id: "sem-symposium-2027", date: "2027-06-07", endDate: "2027-06-10", dateLabel: "Jun 7–10, 2027",
-      category: "Symposium organizer", title: "Connecting experiments and predictive models at SEM 2027.",
+      category: "Symposium organizer", title: "Co-organizing a data-driven mechanics symposium at SEM 2027",
       event: "SEM Annual Conference", location: "Vancouver, WA",
-      summary: "I’m co-organizing Data-Driven Mechanics: From High-Throughput Experiments to Predictive Models with Konrad Muly, Angkur Jyoti Dipanka Shaikeea, and Akash Pandey. We’re bringing mechanics, robotics, and machine learning into a shared conversation about automated experiments and predictive models.",
+      summary: "I’m co-organizing Data-Driven Mechanics: From High-Throughput Experiments to Predictive Models with Konrad Muly, Angkur Jyoti Dipanka Shaikeea, and Akash Pandey. The symposium covers automated experiments and their use in developing and testing predictive models.",
       detailsTitle: "About the symposium",
-      detailsText: ["Topics include high-throughput mechanics, full-field and multi-sensor measurements, autonomous laboratories, physics-informed models, active learning, and uncertainty quantification. A central theme is connecting models with experiments through validation and feedback.", "Our aim is to create a forum where experimentalists, modelers, materials scientists, and researchers in robotics and scientific machine learning can exchange ideas and build a common language."],
+      detailsText: ["Topics include high-throughput mechanics, full-field and multi-sensor measurements, autonomous laboratories, physics-informed models, active learning, and uncertainty quantification.", "We’re interested in how experiments can test model predictions, and how models can help select the next experiment. We welcome work from mechanics, materials science, robotics, and scientific machine learning."],
       note: "Original abstract deadline: October 12, 2026.",
       links: [
         { label: "Conference details", url: "https://sem.org/annual" },
@@ -161,9 +161,9 @@ window.SITE_CONTENT = {
     },
     {
       id: "tms-2027", date: "2027", dateLabel: "2027",
-      category: "Coauthored presentations", title: "Two accepted talks at TMS 2027.",
+      category: "Coauthored presentations", title: "Two coauthored talks accepted at TMS 2027",
       event: "TMS Annual Meeting & Exhibition", location: "",
-      summary: "Two accepted, coauthored contributions explore uncertainty-guided active learning for spall experiments and the transition from automated experiments to trusted autonomous discovery in AIMD-L.",
+      summary: "A. Shargh and C. Stiles will present coauthored work on active learning for spall experiments and autonomous experimentation in AIMD-L.",
       presentations: [
         { title: "Uncertainty-Guided Active Learning for Autonomous Spall Strength Experimentation", presenter: "A. Shargh", format: "Accepted oral presentation" },
         { title: "From Automated Materials Experiments to Trusted Autonomous Discovery in AIMD-L", presenter: "C. Stiles", format: "Accepted oral presentation" }
@@ -171,9 +171,9 @@ window.SITE_CONTENT = {
     },
     {
       id: "mrs-2026", date: "2026-11-29", endDate: "2026-12-04", dateLabel: "Nov 29 – Dec 4, 2026",
-      category: "Coauthored presentations", title: "Bringing autonomous materials discovery to MRS.",
+      category: "Coauthored presentations", title: "AIMD-L presentations at MRS Fall 2026",
       event: "MRS Fall Meeting", location: "Boston, MA",
-      summary: "Our AIMD-L work features in two contributions: an invited presentation on integrated characterization workflows and an accepted talk on advancing from automation to trusted autonomy.",
+      summary: "T.C. Hufnagel will give an invited presentation on integrated characterization workflows. C.D. Stiles will present an accepted talk on autonomous experimentation in AIMD-L. I’m a coauthor on both contributions.",
       presentations: [
         { title: "Integrated Workflows for Automated High-Throughput Characterization of Structure and Properties of Structural Materials", presenter: "T.C. Hufnagel", format: "Invited presentation · Symposium CH05" },
         { title: "Driving AIMD-L from Automated Experimentation to Trusted Autonomy to Enhance Materials Discovery", presenter: "C.D. Stiles", format: "Accepted oral presentation · Symposium MT01" }
@@ -181,7 +181,7 @@ window.SITE_CONTENT = {
     },
     {
       id: "ses-2026", date: "2026", dateLabel: "2026",
-      category: "Accepted presentations", title: "Mapping alloy shock response at SES 2026.",
+      category: "Accepted presentations", title: "Alloy shock response at SES 2026",
       event: "SES Annual Technical Meeting", location: "",
       summary: "My accepted talk focuses on high-throughput laser-driven flyer impact experiments in binary alloys. A second coauthored contribution examines shock response in the Al–Mg alloy system.",
       presentations: [
@@ -191,18 +191,18 @@ window.SITE_CONTENT = {
     },
     {
       id: "rising-stars-2026", date: "2026-09-24", endDate: "2026-09-25", dateLabel: "Sep 24–25, 2026",
-      category: "Academic community", title: "Rising Stars in Mechanical Engineering at Stanford.",
+      category: "Academic community", title: "Rising Stars in Mechanical Engineering at Stanford",
       event: "Rising Stars in Mechanical Engineering Workshop", location: "Stanford University, CA",
-      summary: "I participated in the 2026 Rising Stars workshop at Stanford, joining peers across mechanics, biomechanics, robotics, fluids, and thermal sciences. The conversations about building sustainable research programs, mentoring future scholars, and navigating academic careers were invaluable.",
-      detailsTitle: "Reflections & thanks",
-      detailsText: ["Thank you to organizers Xun Wendy Gu and Allison Okamura, the faculty leadership at Stanford and UC Berkeley, and the Stanford staff for an exceptional workshop—and to my fellow Rising Stars for the thoughtful exchange of ideas.", "I’m grateful to K.T. Ramesh for nominating me and for his continued mentorship and guidance."],
+      summary: "I took part in the 2026 Rising Stars workshop at Stanford. We discussed starting a research group, mentoring students, and preparing for academic careers with researchers from across mechanical engineering.",
+      detailsTitle: "Acknowledgments",
+      detailsText: ["Thank you to Xun Wendy Gu, Allison Okamura, the faculty at Stanford and UC Berkeley, the Stanford staff, and the other participants for the discussions and advice.", "I’m grateful to K.T. Ramesh for nominating me and for his mentorship."],
       links: [{ label: "Workshop details", url: "https://risingstarsme.stanford.edu/" }], gallery: true
     },
     {
       id: "usnctam-2026", date: "2026-06-21", endDate: "2026-06-25", dateLabel: "Jun 21–25, 2026",
-      category: "Conference presentations", title: "High-throughput impact mechanics at USNC/TAM.",
+      category: "Conference presentations", title: "Impact experiments at USNC/TAM 2026",
       event: "20th U.S. National Congress on Theoretical and Applied Mechanics", location: "Pasadena, CA",
-      summary: "Two contributions connect laser-driven spall strength mapping with statistical studies of elastic–plastic transition and failure in metals and alloys.",
+      summary: "Our two contributions covered spall strength mapping in binary alloys and statistical measurements of elastic–plastic transition and failure in metals and alloys.",
       presentations: [
         { title: "A laser-driven approach for high-throughput spall strength mapping and data-driven exploration in binary alloys", presenter: "Piyush Wanchoo; K.T. Ramesh", format: "Conference presentation" },
         { title: "Statistical characterization of shock-induced elastic–plastic transition and spall failure in metals and alloys using high-throughput laser-driven impact experiments", presenter: "Piyush Wanchoo", format: "Conference presentation" }
@@ -210,25 +210,25 @@ window.SITE_CONTENT = {
     },
     {
       id: "sem-2026", date: "2026-06-01", endDate: "2026-06-04", dateLabel: "Jun 1–4, 2026",
-      category: "Conference presentation", title: "Toward impact-resistant alloys.",
+      category: "Conference presentation", title: "Binary alloy impact studies at SEM 2026",
       event: "SEM Annual Conference", location: "Norfolk, VA",
-      summary: "My SEM presentation examines how high-throughput studies of shock response and spall strength can guide the exploration of binary metals.",
+      summary: "My presentation covered high-throughput measurements of shock response and spall strength in binary metals.",
       presentations: [
         { title: "Toward impact-resistant alloys: high-throughput studies of shock response and spall strength in binary metals", presenter: "Piyush Wanchoo", format: "Conference presentation" }
       ]
     },
     {
       id: "tms-2026", date: "2026-03-15", endDate: "2026-03-19", dateLabel: "Mar 15–19, 2026",
-      category: "Coauthored presentation", title: "Accelerating Cu–Ti alloy characterization.",
+      category: "Coauthored presentation", title: "Cu–Ti alloy characterization at TMS 2026",
       event: "TMS Annual Meeting & Exhibition", location: "San Diego, CA",
-      summary: "Coauthored work presented by R. Berlia brings together high-throughput processing and accelerated characterization of Cu–Ti alloys.",
+      summary: "R. Berlia presented our coauthored work on high-throughput processing and characterization of Cu–Ti alloys.",
       presentations: [
         { title: "High-throughput processing and accelerated characterization of Cu–Ti alloys", presenter: "R. Berlia", format: "Conference presentation" }
       ]
     },
     {
       id: "iisc-2025", date: "2025-11-10", dateLabel: "Nov 10, 2025",
-      category: "Invited seminar", title: "From Shock to Shield at the Indian Institute of Science.",
+      category: "Invited seminar", title: "Invited seminar at the Indian Institute of Science",
       event: "Department of Aerospace Engineering, Indian Institute of Science", location: "Online",
       summary: "An invited department seminar on designing materials for space, defense, and other extreme applications.",
       presentations: [
@@ -237,34 +237,34 @@ window.SITE_CONTENT = {
     },
     {
       id: "ses-2025", date: "2025-10-13", endDate: "2025-10-15", dateLabel: "Oct 13–15, 2025",
-      category: "Conference presentation", title: "A scalable route to dynamic strength mapping.",
+      category: "Conference presentation", title: "Dynamic strength mapping at SES 2025",
       event: "SES Annual Technical Meeting", location: "Atlanta, GA",
-      summary: "My presentation connects scalable laser-driven experiments with high-throughput dynamic strength mapping and data-driven exploration of binary alloys.",
+      summary: "I presented a laser-driven experimental approach for measuring dynamic strength across binary alloy compositions.",
       presentations: [
         { title: "A scalable laser-driven approach for high-throughput dynamic strength mapping and data-driven exploration in binary alloys", presenter: "Piyush Wanchoo", format: "Conference presentation" }
       ]
     },
     {
       id: "amerimech-2025", date: "2025-09-22", endDate: "2025-09-24", dateLabel: "Sep 22–24, 2025",
-      category: "Conference presentation", title: "Automating the experiment. Accelerating discovery.",
+      category: "Conference presentation", title: "Automated impact experiments at AmeriMech 2025",
       event: "AmeriMech Symposium · Brown University", location: "Providence, RI",
-      summary: "A presentation on the automated high-throughput laser-driven impact system developed to accelerate characterization of material shock response.",
+      summary: "I presented our automated laser-driven impact system for high-throughput measurements of material shock response.",
       presentations: [
         { title: "An automated high-throughput laser-driven impact system for accelerated characterization of material shock response", presenter: "Piyush Wanchoo", format: "Conference presentation" }
       ]
     },
     {
       id: "aps-sccm-2025", date: "2025-06-22", endDate: "2025-06-27", dateLabel: "Jun 22–27, 2025",
-      category: "Conference presentation", title: "Unravelling the dependencies of spall strength.",
+      category: "Conference presentation", title: "Spall strength measurements at APS SCCM 2025",
       event: "APS SCCM · 24th Biennial Conference on Shock Compression of Condensed Matter", location: "Washington, DC",
-      summary: "My contribution explores spall strength dependencies through high-throughput laser-driven micro-plate impact experiments.",
+      summary: "I presented high-throughput laser-driven micro-plate impact experiments examining the factors that affect spall strength.",
       presentations: [
         { title: "Unraveling spall strength dependencies through laser-driven micro-plate impact high-throughput experiments", presenter: "Piyush Wanchoo", format: "Conference presentation" }
       ]
     },
     {
       id: "mach-2025", date: "2025-04-09", endDate: "2025-04-11", dateLabel: "Apr 9–11, 2025",
-      category: "Conference presentation", title: "Grain size, orientation, and failure in copper.",
+      category: "Conference presentation", title: "Copper spall experiments at MACH 2025",
       event: "MACH Conference", location: "Annapolis, MD",
       summary: "A high-throughput investigation of how grain size and crystallographic orientation influence spall in copper.",
       presentations: [
@@ -273,16 +273,16 @@ window.SITE_CONTENT = {
     },
     {
       id: "tms-2025", date: "2025-03-23", endDate: "2025-03-27", dateLabel: "Mar 23–27, 2025",
-      category: "Coauthored presentation", title: "Connecting alloy synthesis with rapid measurements.",
+      category: "Coauthored presentation", title: "Copper and Cu–Ti characterization at TMS 2025",
       event: "TMS Annual Meeting & Exhibition", location: "Las Vegas, NV",
-      summary: "Coauthored work presented by R. Berlia explores high-throughput synthesis and rapid characterization of copper and Cu–Ti alloys.",
+      summary: "R. Berlia presented our coauthored work on high-throughput synthesis and rapid characterization of copper and Cu–Ti alloys.",
       presentations: [
         { title: "High-throughput synthesis and rapid characterization of Cu and Cu–Ti alloys", presenter: "R. Berlia", format: "Conference presentation" }
       ]
     },
     {
       id: "uri-2025", date: "2025-02-25", dateLabel: "Feb 25, 2025",
-      category: "Invited talk", title: "Unlocking material performance at extremes.",
+      category: "Invited talk", title: "Invited talk at the University of Rhode Island",
       event: "University of Rhode Island", location: "Kingston, RI",
       summary: "An invited talk on how high-throughput experiments can support AI-driven materials design.",
       presentations: [
@@ -292,17 +292,17 @@ window.SITE_CONTENT = {
   ],
   projects: [
     {
-      title: "HELIX. Experiments, accelerated.", category: "experiments", label: "AUTONOMOUS EXPERIMENTAL MECHANICS",
+      title: "HELIX impact facility", category: "experiments", label: "AUTOMATED IMPACT EXPERIMENTS",
       description: "An automated laser-driven impact platform for exploring material strength and failure at extreme strain rates.",
-      detail: "I designed and built HELIX, an automated laser-driven microflyer impact facility at Johns Hopkins that has transformed how impact research is conducted. By integrating automated experimentation, rapid data analysis, and closed-loop workflows, we can explore dynamic strength and failure systematically across materials, microstructures, compositions, and loading conditions. The platform supports studies ranging from spall failure in copper to composition- and kinetics-resolved measurements in Cu–Ti, Al–Mg, and Ti–V alloys. HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials in extreme environments.",
+      detail: "I designed and built HELIX, an automated laser-driven microflyer impact facility at Johns Hopkins. It combines robotic sample handling, impact experiments, and rapid data analysis to measure dynamic strength and failure across compositions, microstructures, and loading conditions. We use it to study spall in copper and shock response in Cu–Ti, Al–Mg, and Ti–V alloys. HELIX is part of AIMD-L, an automated laboratory I co-developed for characterizing structural materials under extreme loading.",
       tags: ["Shock physics", "Automation", "AIMD-L"], art: "lab", image: "./assets/research/helix-facility.jpg",
       imageAlt: "HELIX laser-driven microflyer impact facility with robotic arms, optical equipment, and sample trays at Johns Hopkins",
       url: "https://arxiv.org/abs/2603.06835", linkLabel: "Read the AIMD-L preprint"
     },
     {
-      id: "dynamic-ashby-atlas", title: "Dynamic Ashby Atlas.", category: "code", label: "INTERACTIVE MATERIAL MAPS",
+      id: "dynamic-ashby-atlas", title: "Dynamic Ashby Atlas", category: "code", label: "INTERACTIVE MATERIAL MAPS",
       description: "Explore spall strength and Hugoniot elastic limit across published shock-physics studies, with links to the original sources.",
-      detail: "Dynamic Ashby Atlas brings published shock-physics measurements into an interactive material map. Explore spall strength versus Hugoniot elastic limit, follow measurements back to linked publications and evidence provenance, and browse the source library. The public website also provides downloadable literature records and reviewed property data.",
+      detail: "Dynamic Ashby Atlas plots published spall strength and Hugoniot elastic limit measurements on interactive material maps. Each measurement links to its source so you can check the original publication. The website also includes a source library, downloadable literature records, and reviewed property data.",
       tags: ["Material maps", "Shock physics", "Literature data"], art: "orb",
       image: "./assets/dynamic-ashby-atlas.svg",
       imageAlt: "Schematic dynamic Ashby map showing illustrative clusters against Hugoniot elastic limit and spall strength, not measured data",
@@ -312,37 +312,37 @@ window.SITE_CONTENT = {
       ]
     },
     {
-      title: "HELIX Toolbox.", category: "code", label: "OPEN-SOURCE RESEARCH SOFTWARE",
-      description: "From raw velocimetry signals to useful insights. A Python toolbox for automated analysis of high-rate impact experiments.",
+      title: "HELIX Toolbox", category: "code", label: "OPEN-SOURCE RESEARCH SOFTWARE",
+      description: "A Python toolbox for processing velocimetry signals and analyzing high-rate impact experiments.",
       detail: "HELIX Toolbox brings together signal processing and automated analysis for laser-driven microflyer impact experiments. It supports analysis of photonic Doppler velocimetry data, extraction of spall strength and Hugoniot elastic limits, and uncertainty quantification. The repository includes ALPSS and SPADE workflows, with graphical and batch-processing interfaces.",
       tags: ["Python", "PDV", "Signal processing"], art: "code",
       url: "https://github.com/Piyushjhu/HELIX_Toolbox", linkLabel: "View on GitHub"
     },
     {
-      title: "Learning what to test next.", category: "code", label: "BAYESIAN OPTIMIZATION & MACHINE LEARNING",
+      title: "Bayesian optimization for spall data", category: "code", label: "BAYESIAN OPTIMIZATION & MACHINE LEARNING",
       description: "Gaussian processes, uncertainty-aware predictions, and Bayesian optimization for spall strength data.",
-      detail: "A machine-learning package for analyzing laser-driven microflyer impact data. The project combines enhanced Bayesian optimization, Gaussian processes, and visualization to explore spall strength and support data-driven experimental decisions.",
+      detail: "A package for analyzing laser-driven microflyer impact data with Gaussian-process models and Bayesian optimization. It includes tools for visualizing spall strength predictions and their uncertainty, and for selecting further experiments.",
       tags: ["Bayesian optimization", "Gaussian processes"], art: "data",
       url: "https://github.com/Piyushjhu/bayesian-optimization-on-LMI-data", linkLabel: "Explore the repository"
     },
     {
-      title: "pyko-enhanced.", category: "code", label: "COMPUTATIONAL SHOCK PHYSICS",
+      title: "pyko-enhanced", category: "code", label: "COMPUTATIONAL SHOCK PHYSICS",
       description: "Extending one-dimensional shock simulation with hybrid spall detection and interface-separation modeling.",
       detail: "An extension of the open-source PyKO elastic–plastic finite-difference shock simulation framework. My work includes hybrid spall detection, interface-separation analysis, and example problems for investigating shock-driven material response. PyKO was originally developed by Sarah T. Stewart; the repository credits the original authors and contributors.",
       tags: ["Python", "Simulation", "Wave propagation"], art: "wave",
       url: "https://github.com/Piyushjhu/pyko-enhanced", linkLabel: "View on GitHub"
     },
     {
-      title: "SPADE.", category: "code", label: "AUTOMATED DATA REDUCTION",
-      description: "Shock Physics Automated Data Extraction: turning VISAR and PDV time series into reproducible measurements.",
-      detail: "SPADE is a toolkit for processing time-series data from shock experiments. It supports automated extraction of material response from VISAR and PDV measurements and forms part of the HELIX Toolbox analysis ecosystem.",
+      title: "SPADE", category: "code", label: "AUTOMATED DATA REDUCTION",
+      description: "Shock Physics Automated Data Extraction: a toolkit for processing VISAR and PDV time series.",
+      detail: "SPADE processes time-series data from shock experiments and extracts material response from VISAR and PDV measurements. It is part of HELIX Toolbox.",
       tags: ["Data extraction", "VISAR", "PDV"], art: "signal",
       url: "https://github.com/Piyushjhu/HELIX_Toolbox/tree/main/SPADE", linkLabel: "Explore SPADE"
     },
     {
-      title: "Following the bubble.", category: "experiments", label: "HIGH-SPEED IMAGING & UNDERWATER SHOCK",
+      title: "Underwater bubble tracking", category: "experiments", label: "HIGH-SPEED IMAGING & UNDERWATER SHOCK",
       description: "A Jupyter workflow for tracking the evolution of underwater spark-generated bubbles.",
-      detail: "An image-analysis workflow for tracking underwater spark-generated bubbles. The project connects high-speed experimental imaging with reproducible analysis in Jupyter notebooks.",
+      detail: "Jupyter notebooks for tracking underwater spark-generated bubbles in high-speed images.",
       tags: ["Image analysis", "Jupyter", "Fluid dynamics"], art: "bubble",
       url: "https://github.com/Piyushjhu/Underwater_spark_bubble_tracking", linkLabel: "View the workflow"
     }
@@ -371,7 +371,7 @@ window.SITE_CONTENT = {
     { title: "Gaussian process regression for uncertainty-aware prediction of spall strength across materials and shock conditions", authors: "A. Shargh, P. Wanchoo, J. El-Awady, K.T. Ramesh", year: "In preparation" }
   ],
   metrics: [
-    { value: "HELIX", label: "Transforming impact research" },
+    { value: "HELIX", label: "Automated impact facility" },
     { value: "1,000×", label: "Throughput vs. plate impact, up to" },
     { value: "14", label: "Journal articles · 7 first-authored" },
     { value: "272", label: "Citations · September 2026" }
@@ -394,9 +394,9 @@ window.SITE_CONTENT = {
     { year: "2021–22", text: "Enhancement of Graduate Research Award · University of Rhode Island" }
   ],
   teaching: [
-    { label: "Mechanics & materials", title: "How materials carry load.", detail: "I teach the connections between forces, deformation, and material response, from foundational solid mechanics to behavior under rapid loading. We discuss how a material’s structure and the rate of loading affect its response, using impact protection and aerospace applications to connect mechanics with material choices." },
-    { label: "Experimental thinking", title: "How we know what we know.", detail: "Experiments give us a way to connect equations with something we can observe. Through methods such as photoelasticity and digital image correlation, we discuss what a measurement tells us, where uncertainty enters, and how to design an experiment that answers a useful question." },
-    { label: "Fracture & design", title: "Learning from failure.", detail: "Cracks, interfaces, and damage help explain why similar-looking structures can behave very differently. We explore fracture, composites, and energy absorption, connecting the mechanics of failure to decisions about safety, durability, and impact protection. The aim is to build judgment students can carry into unfamiliar design problems." }
+    { label: "Mechanics & materials", title: "Forces, deformation, and material response", detail: "I use examples from impact protection and aerospace to discuss how material structure and loading rate affect deformation. Students work through the assumptions behind a model and consider how those assumptions affect material selection." },
+    { label: "Experimental methods", title: "Measurement and uncertainty", detail: "Methods such as photoelasticity and digital image correlation let students compare a calculation with an observed response. We discuss what each method measures, where uncertainty enters, and how to design an experiment around a specific question." },
+    { label: "Fracture & design", title: "Cracks, interfaces, and energy absorption", detail: "I use problems in fracture and composites to examine how cracks and interfaces affect structural failure. We discuss what those mechanisms mean for durability and impact protection, and how to use the evidence when making design decisions." }
   ],
   capabilities: [
     { title: "Dynamic experiments", text: "Laser-driven microflyer impact; PDV and VISAR interferometry; shock tube and underwater blast; ultra-high-speed imaging; 3D digital image correlation; photoelasticity; pressure instrumentation." },

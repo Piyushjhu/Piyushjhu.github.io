@@ -21,8 +21,8 @@
   $(".wordmark").setAttribute("aria-label", `${content.name}, home`);
   $(".monogram").innerHTML = `${escape(content.initials.toLowerCase())}<span>·</span>`;
   $(".portrait-corner").textContent = `${content.initials}.`;
-  document.title = content.title || `${content.name} — Research & Discovery`;
-  $('meta[name="description"]').content = content.description || `The personal space of ${content.name}. Projects, research, experiences, and a little curiosity.`;
+  document.title = content.title || `${content.name} — Research`;
+  $('meta[name="description"]').content = content.description || `Research, software, and publications by ${content.name}.`;
   $('meta[property="og:title"]').content = document.title;
   $("[data-hero-description]").textContent = content.heroDescription;
   $("[data-research-description]").textContent = content.researchDescription;
@@ -174,12 +174,12 @@
   });
 
   const art = {
-    code: `<div class="mini-window" aria-hidden="true"><div class="window-top"><i></i><i></i><i></i><span>HELIX / analysis workflow</span></div><div class="code-lines"><div class="code-comment"># From signals to understanding.</div><div><em>experiment</em> → raw_signal</div><div>&nbsp;</div><div><em>analysis</em> = {</div><div class="code-indent">velocity: <b>extract(signal)</b>,</div><div class="code-indent">strength: <b>detect_spall()</b>,</div><div class="code-indent">uncertainty: <b>quantify()</b></div><div>}</div><div class="code-comment"># Discover. Repeat.</div></div></div>`,
-    data: '<div class="chart-window" aria-hidden="true"><div class="chart-caption">ACTIVE LEARNING</div><div class="chart-value">What’s next?<span>↗ Explore</span></div><div class="chart-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="chart-axis"><span>OBSERVE · LEARN · SELECT</span><span>ILLUSTRATION</span></div></div>',
+    code: `<div class="mini-window" aria-hidden="true"><div class="window-top"><i></i><i></i><i></i><span>HELIX / analysis workflow</span></div><div class="code-lines"><div class="code-comment"># Process impact data</div><div><em>experiment</em> → raw_signal</div><div>&nbsp;</div><div><em>analysis</em> = {</div><div class="code-indent">velocity: <b>extract(signal)</b>,</div><div class="code-indent">strength: <b>detect_spall()</b>,</div><div class="code-indent">uncertainty: <b>quantify()</b></div><div>}</div><div class="code-comment"># Save results</div></div></div>`,
+    data: '<div class="chart-window" aria-hidden="true"><div class="chart-caption">ACTIVE LEARNING</div><div class="chart-value">Next test<span>↗ Select</span></div><div class="chart-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="chart-axis"><span>PREDICTION · UNCERTAINTY</span><span>ILLUSTRATION</span></div></div>',
     orb: '<div class="small-orb" aria-hidden="true"></div>',
     wave: '<div class="wave-illustration" aria-hidden="true"><span>SHOCK → RESPONSE</span><svg viewBox="0 0 300 160"><path class="wave-grid" d="M0 40h300M0 80h300M0 120h300M50 0v160M100 0v160M150 0v160M200 0v160M250 0v160"/><path class="wave-area" d="M0 130H50L65 30H105L123 56H147L166 93L179 68L198 106H300V160H0Z"/><path class="wave-trace" d="M0 130H50L65 30H105L123 56H147L166 93L179 68L198 106H300"/></svg><small>ONE-DIMENSIONAL HYDROCODE · ILLUSTRATION</small></div>',
-    signal: '<div class="signal-illustration" aria-hidden="true"><div class="signal-label">SPADE <span>SIGNAL → INSIGHT</span></div><svg viewBox="0 0 300 145"><path class="signal-noise" d="m0 85 7-12 7 19 7-9 7 12 7-25 7 13 7-6 7 10 7-60 7 13 7-22 7 17 7-9 7 13 7-8 7 17 7-6 7 15 7-8 7 11 7-3 7 17 7-7 7 16 7-10 7 3 7-16 7 11 7-6 7 13 7-4 7 16 7-8 7 8 7-9 7 5 7-2 7 6 7-8 7 5 13-2"/><path class="signal-clean" d="M0 85H53L66 29C90 16 119 49 149 66S177 103 198 85S230 100 256 103H300"/></svg><small>AUTOMATED EXTRACTION · ILLUSTRATION</small></div>',
-    bubble: '<div class="bubble-illustration" aria-hidden="true"><span>THE MOMENT BETWEEN FRAMES.</span><div class="bubble-row"><i></i><i></i><i></i><i></i><i></i></div><small>HIGH-SPEED IMAGING · ILLUSTRATION</small></div>'
+    signal: '<div class="signal-illustration" aria-hidden="true"><div class="signal-label">SPADE <span>TIME-SERIES ANALYSIS</span></div><svg viewBox="0 0 300 145"><path class="signal-noise" d="m0 85 7-12 7 19 7-9 7 12 7-25 7 13 7-6 7 10 7-60 7 13 7-22 7 17 7-9 7 13 7-8 7 17 7-6 7 15 7-8 7 11 7-3 7 17 7-7 7 16 7-10 7 3 7-16 7 11 7-6 7 13 7-4 7 16 7-8 7 8 7-9 7 5 7-2 7 6 7-8 7 5 13-2"/><path class="signal-clean" d="M0 85H53L66 29C90 16 119 49 149 66S177 103 198 85S230 100 256 103H300"/></svg><small>AUTOMATED EXTRACTION · ILLUSTRATION</small></div>',
+    bubble: '<div class="bubble-illustration" aria-hidden="true"><span>UNDERWATER BUBBLE TRACKING</span><div class="bubble-row"><i></i><i></i><i></i><i></i><i></i></div><small>HIGH-SPEED IMAGING · ILLUSTRATION</small></div>'
   };
   const projectArt = (project, dialog = false) => {
     const imageUrl = safeUrl(project.image, true);
@@ -189,7 +189,7 @@
   const renderProjects = (filter = "all") => {
     const projects = content.projects.map((project, index) => ({...project, index})).filter(project => filter === "all" || project.category === filter);
     $("#sample-label").hidden = !projects.some(project => project.example);
-    $("#projects").innerHTML = projects.length ? projects.map(project => `<article class="project-card"${project.id ? ` id="project-${escape(project.id)}"` : ""}>${projectArt(project)}<div class="project-body"><p class="project-label">${escape(project.label)}</p><h3>${escape(project.title)}</h3>${icon("arrow-up-right").replace('class="icon"', 'class="icon project-arrow"')}<p>${escape(project.description)}</p><div class="project-tags">${(project.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div></div><button type="button" class="project-open" data-project="${project.index}" aria-label="Explore ${escape(project.title)}${project.example ? " (illustrative project)" : ""}"></button></article>`).join("") : '<p class="empty-filter">More projects are on the way. Explore another category.</p>';
+    $("#projects").innerHTML = projects.length ? projects.map(project => `<article class="project-card"${project.id ? ` id="project-${escape(project.id)}"` : ""}>${projectArt(project)}<div class="project-body"><p class="project-label">${escape(project.label)}</p><h3>${escape(project.title)}</h3>${icon("arrow-up-right").replace('class="icon"', 'class="icon project-arrow"')}<p>${escape(project.description)}</p><div class="project-tags">${(project.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div></div><button type="button" class="project-open" data-project="${project.index}" aria-label="Explore ${escape(project.title)}${project.example ? " (illustrative project)" : ""}"></button></article>`).join("") : '<p class="empty-filter">No projects in this category. Try another filter.</p>';
   };
   renderProjects();
   $$("[data-filter]").forEach(button => button.addEventListener("click", () => {
@@ -210,7 +210,7 @@
     const paperUrl = safeUrl(publication.url);
     const pdfUrl = safeUrl(publication.pdf, true);
     return `<article class="publication"><div class="publication-summary"><div><p class="publication-year">${escape(publication.year)}</p><h3>${escape(publication.title)}</h3><p class="publication-meta publication-authors">${escape(publication.authors).replaceAll("P. Wanchoo", "<strong>P. Wanchoo</strong>")}</p>${publication.venue ? `<p class="publication-meta">${escape(publication.venue)}</p>` : ""}${publication.note ? `<p class="publication-note">${escape(publication.note)}</p>` : ""}</div><div class="publication-actions">${paperUrl ? externalLink(paperUrl, "Read paper", "paper-link") : ""}${pdfUrl ? externalLink(pdfUrl, "PDF", "paper-link") : ""}</div></div>${publication.abstract ? `<details><summary>Read abstract</summary><p>${escape(publication.abstract)}</p></details>` : ""}</article>`;
-  }).join("") : '<div class="publication-empty"><p>Research notes and selected publications.<br />A little more to share soon.</p><span class="coming-soon">Coming soon</span></div>';
+  }).join("") : '<div class="publication-empty"><p>No publications in this category.</p></div>';
   };
   renderPublications();
   $$('[data-paper-filter]').forEach(button => button.addEventListener("click", () => {
@@ -225,14 +225,14 @@
   if (scholarUrl) $("#scholar-link").href = scholarUrl;
   else $("#scholar-link").hidden = true;
 
-  $("#timeline").innerHTML = content.experience.length ? content.experience.map(experience => `<article class="timeline-item"><div class="timeline-period">${experience.current ? '<span class="status-dot"></span>' : ""}${escape(experience.period)}</div><div><h3>${escape(experience.role)}</h3><p class="timeline-organization">${escape(experience.organization)}</p><p class="timeline-description">${escape(experience.description)}</p></div></article>`).join("") : `<div class="timeline-empty"><div><h3>The story is still unfolding.</h3><p>Work, learning, and the experiences in between.<br />More of the journey will be shared here soon.</p></div>${icon("sparkle")}</div>`;
+  $("#timeline").innerHTML = content.experience.length ? content.experience.map(experience => `<article class="timeline-item"><div class="timeline-period">${experience.current ? '<span class="status-dot"></span>' : ""}${escape(experience.period)}</div><div><h3>${escape(experience.role)}</h3><p class="timeline-organization">${escape(experience.organization)}</p><p class="timeline-description">${escape(experience.description)}</p></div></article>`).join("") : `<div class="timeline-empty"><p>Experience details have not been added yet.</p></div>`;
 
   const academicItem = (kicker, title, subtitle, description = "") => `<article class="academic-item">${kicker ? `<span class="academic-kicker">${escape(kicker)}</span>` : ""}<div><h4>${escape(title)}</h4>${subtitle ? `<p class="academic-subtitle">${escape(subtitle)}</p>` : ""}${description ? `<p>${escape(description)}</p>` : ""}</div></article>`;
   const academicGroups = [
     ["Education", (content.education || []).map(item => academicItem(item.period, item.degree, item.institution, item.detail)).join("")],
     ["Awards & recognition", (content.awards || []).map(item => academicItem(item.year, item.text, "")).join("")],
     ["Experimental & computational capabilities", (content.capabilities || []).map(item => academicItem("", item.title, "", item.text)).join("")],
-    ["Mentorship & outreach", `<div class="mentorship-note"><h4>Mentoring the next generation</h4><p>${escape(content.mentorship)}</p><h4>Learning beyond the classroom</h4><p>${escape(content.outreach)}</p></div>`],
+    ["Mentorship & outreach", `<div class="mentorship-note"><h4>Student mentoring</h4><p>${escape(content.mentorship)}</p><h4>Outreach &amp; teaching experience</h4><p>${escape(content.outreach)}</p></div>`],
     ["Selected talks & presentations", (content.talks || []).map(item => academicItem(item.year, item.title, item.detail)).join("")],
     ["Service & community", `<ul class="service-list">${(content.service || []).map(item => `<li>${escape(item)}</li>`).join("")}</ul>`]
   ];
@@ -279,7 +279,7 @@
   });
   $$('[data-contact]').forEach(button => button.addEventListener("click", () => {
     const emails = [["University", content.email], ["Personal", content.personalEmail]].filter(([, address]) => typeof address === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address));
-    openDialog(`<p class="dialog-eyebrow">A CONVERSATION IS A GOOD START.</p><h2 id="dialog-title">Good things start<br />with a hello.</h2><p>Interested in experimental mechanics, autonomous laboratories, or a research collaboration? I’d love to hear what you have in mind.</p>${emails.length ? `<div class="contact-addresses">${emails.map(([label, address]) => `<div><span class="contact-address-label">${escape(label)}</span><a class="contact-email" href="mailto:${escape(address)}">${escape(address)}</a></div>`).join("")}</div>` : '<div class="contact-detail"><p>Contact details are coming soon. Thanks for stopping by.</p></div>'}${socials.length ? `<div class="dialog-actions">${socials.map(([label, url]) => externalLink(url, label, "button button-outline")).join("")}</div>` : ""}<p class="dialog-affiliation">${escape(content.affiliation)}<br />${escape(content.location)}</p>`);
+    openDialog(`<p class="dialog-eyebrow">CONTACT</p><h2 id="dialog-title">Get in touch</h2><p>For questions about my research or potential collaborations, you can reach me by email.</p>${emails.length ? `<div class="contact-addresses">${emails.map(([label, address]) => `<div><span class="contact-address-label">${escape(label)}</span><a class="contact-email" href="mailto:${escape(address)}">${escape(address)}</a></div>`).join("")}</div>` : '<div class="contact-detail"><p>No email address is listed yet.</p></div>'}${socials.length ? `<div class="dialog-actions">${socials.map(([label, url]) => externalLink(url, label, "button button-outline")).join("")}</div>` : ""}<p class="dialog-affiliation">${escape(content.affiliation)}<br />${escape(content.location)}</p>`);
   }));
 
   const menu = $(".menu-toggle");
