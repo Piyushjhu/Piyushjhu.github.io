@@ -9,7 +9,7 @@ The source and workflow protections are implemented in the personal-site reposit
 3. Copy GitHub's generated TXT hostname and value into Spaceship's DNS settings. Use the exact generated value; it cannot be inferred from the Google verification file.
 4. Verify the domain in GitHub and retain the TXT record. Leave the four existing A records, `www` CNAME, and email records in place.
 
-Account-level GitHub verification status cannot be established from the repository's custom-domain setting alone. The current custom domain and HTTPS enforcement are confirmed configured. GitHub account 2FA was confirmed enabled through the authenticated API on October 26, 2026.
+GitHub domain verification was completed on October 26, 2026. The authenticated Pages API confirms `protected_domain_state: verified`, and the generated TXT record is visible through both authoritative Spaceship DNS and a public resolver. Keep this TXT record after verification. The custom domain, approved HTTPS certificate, HTTPS enforcement, and GitHub account 2FA are confirmed configured.
 
 ## Spaceship account and domain
 
