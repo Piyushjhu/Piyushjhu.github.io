@@ -44,7 +44,7 @@ const run = async () => {
     q("#news-toggle").click();
     check("expanded news feed", all(".news-entry").length === 15);
     q("[data-contact]").click();
-    check("both contact addresses", q("#dialog-content").textContent.includes("pwanchoo@jhu.edu") && q("#dialog-content").textContent.includes("piyushwanchoo@gmail.com"));
+    check("university contact address only", q("#dialog-content").textContent.includes("pwanchoo@jhu.edu") && q("#dialog-content").querySelectorAll('a[href^="mailto:"]').length === 1);
     q(".dialog-close").click();
     check("external tabs use noopener", all('a[target="_blank"]').every(link => link.rel.includes("noopener")));
     frame.width = "390";

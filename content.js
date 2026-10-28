@@ -16,7 +16,6 @@ window.SITE_CONTENT = {
   portrait: "./logo.jpg",
   interests: ["Experimental mechanics", "Autonomous laboratories", "Data-driven materials"],
   email: "pwanchoo@jhu.edu",
-  personalEmail: "piyushwanchoo@gmail.com",
   github: "https://github.com/Piyushjhu",
   scholar: "https://scholar.google.com/citations?user=L0GoOBAAAAAJ&hl=en&oi=ao",
   linkedin: "https://www.linkedin.com/in/piyush-wanchoo/",
