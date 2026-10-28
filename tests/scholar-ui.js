@@ -25,7 +25,7 @@ function element(tag, attrs) {
   };
 }
 
-function render({snapshot = true, mutate} = {}) {
+function render({snapshot = true, mutate, now = "2026-10-27T16:00:00Z"} = {}) {
   // Only the static elements queried by app.js need DOM methods here.
   const elements = [...html.matchAll(/<([a-z][a-z0-9-]*)\b([^>]*)>/gi)].map(([, tag, source]) => {
     const attrs = Object.fromEntries([...source.matchAll(/([:\w-]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g)].map(([, name, double, single, bare]) => [name, double ?? single ?? bare ?? ""]));
@@ -45,7 +45,11 @@ function render({snapshot = true, mutate} = {}) {
     addEventListener() {}, body: element("body", {})
   };
   const window = {location: {href: "https://piyushwanchoo.com/", hash: ""}, addEventListener() {}, matchMedia: () => ({matches: false, addEventListener() {}})};
-  const context = vm.createContext({document, window, URL, Intl, Date});
+  class FixedDate extends Date {
+    constructor(...args) { super(...(args.length ? args : [now])); }
+    static now() { return new Date(now).getTime(); }
+  }
+  const context = vm.createContext({document, window, URL, Intl, Date: FixedDate});
   vm.runInContext(read("content.js"), context);
   if (snapshot) vm.runInContext(read("scholar-data.js"), context);
   if (mutate) mutate(window);
@@ -71,6 +75,67 @@ const fallback = render({snapshot: false});
 assert.equal(fallback.query('[data-paper-filter="scholar"]').hidden, true);
 assert.equal(fallback.query('[data-paper-filter="selected"]').getAttribute("aria-pressed"), "true");
 assert.ok(fallback.query("#metrics").innerHTML.includes("September 2026"));
+assert.equal(fallback.query('[data-news-filter="papers"]').hidden, true);
+assert.ok(fallback.query("#news-stories").innerHTML.includes('data-news-id="ses-2026"'));
+
+const news = page => page.query("#news-stories").innerHTML;
+const entry = (page, id) => news(page).match(new RegExp(`<article class="news-entry" data-news-id="${id}">[\\s\\S]*?</article>`))?.[0] || "";
+const countNews = page => (news(page).match(/class="news-entry"/g) || []).length;
+assert.equal(countNews(page), 6);
+assert.ok(news(page).includes(snapshot.publications[0].title));
+assert.ok(entry(page, "ses-2026").includes('datetime="2026-10-14"'));
+assert.ok(entry(page, "ses-2026").includes("Past event"));
+assert.ok(entry(page, "ses-2026").includes("I presented"));
+assert.ok(!entry(page, "ses-2026").includes("Accepted"));
+page.query('[data-news-filter="papers"]').click();
+const expectedPapers = snapshot.publications.filter(paper => Number(paper.year) >= page.window.SITE_CONTENT.newsPublicationStartYear).length;
+assert.equal(countNews(page), Math.min(expectedPapers, 6));
+assert.ok(news(page).includes("Preprint"));
+assert.ok(!news(page).includes('<time class="news-date"')); // Scholar supplies years, not publication days.
+assert.ok(!news(page).includes('data-news-id="ses-2026"'));
+page.query('[data-news-filter="events"]').click();
+page.query("#news-toggle").click();
+assert.equal(countNews(page), page.window.SITE_CONTENT.news.length);
+assert.ok(!news(page).includes('data-news-id="paper-'));
+page.query('[data-news-filter="upcoming"]').click();
+assert.ok(entry(page, "mrs-2026").includes("will give"));
+assert.ok(!news(page).includes('data-news-id="ses-2026"'));
+page.query('[data-news-filter="past"]').click();
+assert.ok(entry(page, "ses-2026").includes("Past event"));
+assert.ok(!news(page).includes('data-news-id="paper-'));
+page.query('[data-news-filter="all"]').click();
+page.query("#news-toggle").click();
+assert.equal(countNews(page), page.window.SITE_CONTENT.news.length + expectedPapers);
+assert.equal(page.query('[data-news-filter="all"]').getAttribute("aria-pressed"), "true");
+
+const ongoing = render({now: "2026-11-30T16:00:00Z"});
+ongoing.query('[data-news-filter="events"]').click();
+ongoing.query("#news-toggle").click();
+assert.ok(entry(ongoing, "mrs-2026").includes("In progress"));
+assert.ok(!entry(ongoing, "mrs-2026").includes("will give"));
+const after = render({now: "2026-12-05T16:00:00Z"});
+after.query('[data-news-filter="events"]').click();
+after.query("#news-toggle").click();
+assert.ok(entry(after, "mrs-2026").includes("Past event"));
+assert.ok(entry(after, "mrs-2026").includes("contributions covered"));
+assert.ok(!entry(after, "mrs-2026").includes("will give"));
+assert.ok(!entry(after, "mrs-2026").includes("Accepted oral presentation"));
+const newYorkDate = render({now: "2026-12-05T02:00:00Z"}); // Still December 4 in New York.
+newYorkDate.query('[data-news-filter="events"]').click();
+newYorkDate.query("#news-toggle").click();
+assert.ok(entry(newYorkDate, "mrs-2026").includes("In progress"));
+const future = render({now: "2028-01-01T16:00:00Z"});
+future.query('[data-news-filter="events"]').click();
+future.query("#news-toggle").click();
+assert.ok(entry(future, "tms-2027").includes("Coauthored talks at TMS 2027"));
+assert.ok(!entry(future, "tms-2027").includes("will present"));
+
+const added = render({mutate: window => {
+  const paper = {...window.SCHOLAR_DATA.publications[0], id: "L0GoOBAAAAAJ:new-paper", title: "A newly listed paper"};
+  window.SCHOLAR_DATA.publications.unshift(paper);
+}});
+assert.ok(news(added).includes("A newly listed paper"));
+assert.equal((news(added).match(/data-news-id="paper-L0GoOBAAAAAJ:new-paper"/g) || []).length, 1);
 
 const hostile = render({mutate: window => {
   window.SCHOLAR_DATA.publications[0].title = '<img src=x onerror="alert(1)">';
@@ -80,6 +145,9 @@ const hostile = render({mutate: window => {
 assert.ok(hostile.query("#publications").innerHTML.includes("&lt;img src=x onerror=&quot;alert(1)&quot;&gt;"));
 assert.ok(!hostile.query("#publications").innerHTML.includes("javascript:"));
 assert.ok(hostile.query("#publication-source-note").textContent.includes("Sep 1, 2026"));
+assert.ok(news(hostile).includes("&lt;img src=x onerror=&quot;alert(1)&quot;&gt;"));
+assert.ok(!news(hostile).includes("javascript:"));
+assert.ok(hostile.query("#news-source-note").textContent.includes("Sep 1, 2026"));
 const foreign = render({mutate: window => { window.SCHOLAR_DATA.profileId = "another-profile"; }});
 assert.equal(foreign.query('[data-paper-filter="scholar"]').hidden, true);
-console.log("Scholar UI checks passed: current metrics, new papers, all filters, missing data, source identity, escaping, and cached update dates.");
+console.log("Scholar and news UI checks passed: metrics, new paper updates, filters, October 14 talk, event date transitions, New York dates, missing data, source identity, escaping, and cached update dates.");

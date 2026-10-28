@@ -42,7 +42,8 @@ const run = async () => {
     check("HELIX gallery lightbox", q("#detail-dialog").open && q(".gallery-lightbox img").src.endsWith("helix-facility.jpg"));
     q(".dialog-close").click();
     q("#news-toggle").click();
-    check("expanded news feed", all(".news-entry").length === 15);
+    const paperUpdates = (w.SCHOLAR_DATA?.publications || []).filter(paper => Number(paper.year) >= w.SITE_CONTENT.newsPublicationStartYear).length;
+    check("expanded news feed includes Scholar papers", all(".news-entry").length === w.SITE_CONTENT.news.length + paperUpdates);
     q("[data-contact]").click();
     check("university contact address only", q("#dialog-content").textContent.includes("pwanchoo@jhu.edu") && q("#dialog-content").querySelectorAll('a[href^="mailto:"]').length === 1);
     q(".dialog-close").click();

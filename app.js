@@ -123,35 +123,54 @@
   const linkedinUrl = safeUrl(content.linkedin);
   if (linkedinUrl) $("#news-linkedin-link").href = linkedinUrl;
   else $("#news-linkedin-link").hidden = true;
-  const newsDate = new Date();
-  const newsToday = `${newsDate.getFullYear()}-${String(newsDate.getMonth() + 1).padStart(2, "0")}-${String(newsDate.getDate()).padStart(2, "0")}`;
+  const newsToday = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "America/New_York" }).format(new Date());
+  const paperNews = scholarPapers.filter(paper => Number(paper.year) >= (content.newsPublicationStartYear || 2025)).map(paper => ({
+    id: `paper-${paper.id}`, kind: "paper", date: paper.year, dateLabel: paper.year,
+    preprint: /\barxiv\b|\bssrn\b|\bpreprint\b/i.test(paper.venue),
+    category: "Google Scholar", title: paper.title, event: paper.venue,
+    summary: paper.authors, links: [{label: "View on Scholar", url: paper.url}]
+  }));
   const newsTiming = story => {
+    if (story.kind === "paper") return story.preprint ? "preprint" : "publication";
     const date = typeof story.date === "string" ? story.date : "";
     if (/^\d{4}$/.test(date)) return date > newsToday.slice(0, 4) ? "upcoming" : date < newsToday.slice(0, 4) ? "past" : "announced";
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return "announced";
     if (date > newsToday) return "upcoming";
     return (story.endDate || date) < newsToday ? "past" : "ongoing";
   };
-  const newsStatusLabels = { upcoming: "Upcoming", past: "Past event", announced: "Announced", ongoing: "In progress" };
+  const newsStatusLabels = { upcoming: "Upcoming", past: "Past event", announced: "Announced", ongoing: "In progress", publication: "Publication", preprint: "Preprint" };
+  const newsStories = [...(content.news || []), ...paperNews].sort((a, b) => {
+    const upcomingA = newsTiming(a) === "upcoming";
+    const upcomingB = newsTiming(b) === "upcoming";
+    // Recent activity comes first; future events remain available under Upcoming.
+    if (upcomingA !== upcomingB) return upcomingA ? 1 : -1;
+    // Year-only records keep their displayed precision and Scholar's order within a year.
+    const sortDate = story => /^\d{4}$/.test(story.date || "") ? `${story.date}-12-31` : story.date || "";
+    return upcomingA ? sortDate(a).localeCompare(sortDate(b)) : sortDate(b).localeCompare(sortDate(a));
+  });
+  $("[data-news-filter=\"papers\"]").hidden = !paperNews.length;
+  if (scholar) $("#news-source-note").textContent = `Papers from Google Scholar · Updated ${scholarUpdated}`;
   let newsFilter = "all";
   let newsExpanded = false;
   const renderNews = () => {
-    const stories = (content.news || []).filter(story => newsFilter === "all" || newsTiming(story) === newsFilter);
+    const stories = newsStories.filter(story => newsFilter === "all" || (newsFilter === "papers" ? story.kind === "paper" : newsFilter === "events" ? story.kind !== "paper" : newsTiming(story) === newsFilter));
     const visible = newsExpanded ? stories : stories.slice(0, 6);
     const openDetails = new Set($$("#news-stories details[open]").map(detail => detail.dataset.newsId));
     $("#news-stories").innerHTML = visible.length ? visible.map(story => {
       const timing = newsTiming(story);
+      const title = timing === "past" && story.titlePast ? story.titlePast : story.title;
+      const summary = timing === "past" && story.summaryPast ? story.summaryPast : timing === "ongoing" && story.summaryOngoing ? story.summaryOngoing : story.summary;
       const year = (story.date || "").slice(0, 4);
       const dateLabel = typeof story.dateLabel === "string" && story.dateLabel !== year ? story.dateLabel.replace(/,? \d{4}$/, "") : "";
       const dateText = `<span class="news-year">${escape(year)}</span>${dateLabel ? `<span class="news-date-label">${escape(dateLabel)}</span>` : ""}`;
       const date = /^\d{4}-\d{2}-\d{2}$/.test(story.date || "") ? `<time class="news-date" datetime="${escape(story.date)}">${dateText}</time>` : `<div class="news-date">${dateText}</div>`;
       const presentations = story.presentations || [];
       const detailsText = (story.detailsText || []).map(paragraph => `<p class="news-story-text">${escape(paragraph)}</p>`).join("");
-      const presentationDetails = presentations.length ? `<ul>${presentations.map(presentation => `<li><h4>${escape(presentation.title)}</h4><p class="news-presenter">Presenting author${(presentation.presenter || "").includes(";") ? "s" : ""}: ${escape(presentation.presenter)}</p><p class="news-format">${escape(presentation.format)}</p></li>`).join("")}</ul>` : "";
+      const presentationDetails = presentations.length ? `<ul>${presentations.map(presentation => `<li><h4>${escape(presentation.title)}</h4><p class="news-presenter">Presenting author${(presentation.presenter || "").includes(";") ? "s" : ""}: ${escape(presentation.presenter)}</p><p class="news-format">${escape(timing === "past" && presentation.formatPast ? presentation.formatPast : presentation.format)}</p></li>`).join("")}</ul>` : "";
       const detailsLabel = story.detailsTitle || `View ${presentations.length > 1 ? `${presentations.length} presentations` : "presentation"}`;
       const links = (story.links || []).filter(link => safeUrl(link.url)).map(link => externalLink(link.url, link.label)).join("");
-      return `<li><article class="news-entry" data-news-id="${escape(story.id)}">${date}<div class="news-body"><p class="news-meta"><span class="news-status news-status-${timing}">${newsStatusLabels[timing]}</span><span>${escape(story.category)}</span></p><h3>${escape(story.title)}</h3><p class="news-venue">${escape(story.event)}${story.location ? `<span>${escape(story.location)}</span>` : ""}</p><p class="news-summary">${escape(story.summary)}</p>${presentationDetails || detailsText ? `<details class="news-details" data-news-id="${escape(story.id)}"${openDetails.has(story.id) ? " open" : ""}><summary>${escape(detailsLabel)} ${icon("arrow-down")}</summary>${presentationDetails}${detailsText}</details>` : ""}${story.note ? `<p class="news-note">${escape(story.note)}</p>` : ""}${links || story.gallery ? `<div class="news-links">${links}${story.gallery ? `<a class="text-link" href="#gallery">See the gallery ${icon("arrow-down")}</a>` : ""}</div>` : ""}</div></article></li>`;
-    }).join("") : '<li class="news-empty">No updates in this category yet. Explore all updates for more presentations.</li>';
+      return `<li><article class="news-entry" data-news-id="${escape(story.id)}">${date}<div class="news-body"><p class="news-meta"><span class="news-status news-status-${timing}">${newsStatusLabels[timing]}</span><span>${escape(story.category)}</span></p><h3>${escape(title)}</h3><p class="news-venue">${escape(story.event)}${story.location ? `<span>${escape(story.location)}</span>` : ""}</p><p class="news-summary">${escape(summary)}</p>${presentationDetails || detailsText ? `<details class="news-details" data-news-id="${escape(story.id)}"${openDetails.has(story.id) ? " open" : ""}><summary>${escape(detailsLabel)} ${icon("arrow-down")}</summary>${presentationDetails}${detailsText}</details>` : ""}${story.note ? `<p class="news-note">${escape(story.note)}</p>` : ""}${links || story.gallery ? `<div class="news-links">${links}${story.gallery ? `<a class="text-link" href="#gallery">See the gallery ${icon("arrow-down")}</a>` : ""}</div>` : ""}</div></article></li>`;
+    }).join("") : '<li class="news-empty">No updates in this category yet. Explore all updates for more papers and events.</li>';
     $("#news-count").textContent = `${visible.length} of ${stories.length} update${stories.length === 1 ? "" : "s"}`;
     const toggle = $("#news-toggle");
     toggle.hidden = stories.length <= 6;

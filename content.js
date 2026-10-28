@@ -145,6 +145,7 @@ window.SITE_CONTENT = {
   // Conference presentations from my CV, plus workshop and organizing updates.
   // Dates are event dates. Year-only dates preserve the precision of the CV.
   // Presenting authors follow the CV's asterisks; coauthorship is not a speaking role.
+  newsPublicationStartYear: 2025,
   news: [
     {
       id: "sem-symposium-2027", date: "2027-06-07", endDate: "2027-06-10", dateLabel: "Jun 7–10, 2027",
@@ -162,11 +163,14 @@ window.SITE_CONTENT = {
     {
       id: "tms-2027", date: "2027", dateLabel: "2027",
       category: "Coauthored presentations", title: "Two coauthored talks accepted at TMS 2027",
+      titlePast: "Coauthored talks at TMS 2027",
       event: "TMS Annual Meeting & Exhibition", location: "",
       summary: "A. Shargh and C. Stiles will present coauthored work on active learning for spall experiments and autonomous experimentation in AIMD-L.",
+      summaryOngoing: "Our coauthored contributions cover active learning for spall experiments and autonomous experimentation in AIMD-L, with A. Shargh and C. Stiles as presenting authors.",
+      summaryPast: "Our coauthored contributions covered active learning for spall experiments and autonomous experimentation in AIMD-L, with A. Shargh and C. Stiles as presenting authors.",
       presentations: [
-        { title: "Uncertainty-Guided Active Learning for Autonomous Spall Strength Experimentation", presenter: "A. Shargh", format: "Accepted oral presentation" },
-        { title: "From Automated Materials Experiments to Trusted Autonomous Discovery in AIMD-L", presenter: "C. Stiles", format: "Accepted oral presentation" }
+        { title: "Uncertainty-Guided Active Learning for Autonomous Spall Strength Experimentation", presenter: "A. Shargh", format: "Accepted oral presentation", formatPast: "Oral presentation" },
+        { title: "From Automated Materials Experiments to Trusted Autonomous Discovery in AIMD-L", presenter: "C. Stiles", format: "Accepted oral presentation", formatPast: "Oral presentation" }
       ]
     },
     {
@@ -174,19 +178,21 @@ window.SITE_CONTENT = {
       category: "Coauthored presentations", title: "AIMD-L presentations at MRS Fall 2026",
       event: "MRS Fall Meeting", location: "Boston, MA",
       summary: "T.C. Hufnagel will give an invited presentation on integrated characterization workflows. C.D. Stiles will present an accepted talk on autonomous experimentation in AIMD-L. I’m a coauthor on both contributions.",
+      summaryOngoing: "Our coauthored contributions cover integrated characterization workflows and autonomous experimentation in AIMD-L. T.C. Hufnagel and C.D. Stiles are the presenting authors.",
+      summaryPast: "Our coauthored contributions covered integrated characterization workflows and autonomous experimentation in AIMD-L, with T.C. Hufnagel and C.D. Stiles as presenting authors.",
       presentations: [
         { title: "Integrated Workflows for Automated High-Throughput Characterization of Structure and Properties of Structural Materials", presenter: "T.C. Hufnagel", format: "Invited presentation · Symposium CH05" },
-        { title: "Driving AIMD-L from Automated Experimentation to Trusted Autonomy to Enhance Materials Discovery", presenter: "C.D. Stiles", format: "Accepted oral presentation · Symposium MT01" }
+        { title: "Driving AIMD-L from Automated Experimentation to Trusted Autonomy to Enhance Materials Discovery", presenter: "C.D. Stiles", format: "Accepted oral presentation · Symposium MT01", formatPast: "Oral presentation · Symposium MT01" }
       ]
     },
     {
-      id: "ses-2026", date: "2026", dateLabel: "2026",
-      category: "Accepted presentations", title: "Alloy shock response at SES 2026",
+      id: "ses-2026", date: "2026-10-14", dateLabel: "Oct 14, 2026",
+      category: "Conference presentations", title: "Alloy shock response at SES 2026",
       event: "SES Annual Technical Meeting", location: "",
-      summary: "My accepted talk focuses on high-throughput laser-driven flyer impact experiments in binary alloys. A second coauthored contribution examines shock response in the Al–Mg alloy system.",
+      summary: "I presented high-throughput laser-driven flyer impact experiments for measuring shock response in binary alloys on October 14. A second coauthored contribution examined shock response in the Al–Mg alloy system.",
       presentations: [
-        { title: "High Throughput laser driven flyer impact system for evaluating shock response of binary alloys", presenter: "Piyush Wanchoo", format: "Accepted oral presentation · Track 7: New Frontiers in Mechanics" },
-        { title: "A high-throughput exploration of shock response in Al-Mg binary alloy", presenter: "K.T. Ramesh", format: "Accepted oral presentation · Track 4: Advanced Materials" }
+        { title: "High Throughput laser driven flyer impact system for evaluating shock response of binary alloys", presenter: "Piyush Wanchoo", format: "Oral presentation · Track 7: New Frontiers in Mechanics" },
+        { title: "A high-throughput exploration of shock response in Al-Mg binary alloy", presenter: "K.T. Ramesh", format: "Oral presentation · Track 4: Advanced Materials" }
       ]
     },
     {
