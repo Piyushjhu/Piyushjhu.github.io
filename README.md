@@ -18,7 +18,7 @@ Open **http://localhost:8000**. You can also open `index.html` directly, but a l
 
 ## Personalize
 
-Edit **content.js**. This file controls your name, bio, interests, portrait, projects, papers, career history, education, teaching approach and courses, mentorship, gallery, awards, capabilities, talks, service, email, résumé, and profile links. Profile and teaching prose draw on your supplied research and teaching statements. The site contains seven research/software projects, including Dynamic Ashby Atlas with website and repository links, 14 journal articles (including the accepted article), and five preprints/manuscripts with their status shown. Bibliographic details and metrics use your September 2026 CV; they do not update automatically. Media sources are listed in `assets/CREDITS.md`. The HELIX photo and Cu–Ti animation were supplied by Piyush.
+Edit **content.js**. This file controls your name, bio, interests, portrait, projects, selected papers, career history, education, teaching approach and courses, mentorship, gallery, awards, capabilities, talks, service, email, résumé, and profile links. Profile and teaching prose draw on your supplied research and teaching statements. The site contains seven research/software projects, including Dynamic Ashby Atlas with website and repository links, 14 curated journal articles (including the accepted article), and five preprints/manuscripts with their status shown. Those curated bibliographic details use your September 2026 CV. Google Scholar metrics and its publication list refresh automatically as described below. Media sources are listed in `assets/CREDITS.md`. The HELIX photo and Cu–Ti animation were supplied by Piyush.
 
 - `researchDescription` and `researchVision` set the research goal and the Measure → Explain → Choose the next test workflow. `researchStudies` contains three active research stories and two past research stories. Each entry has a unique `id`, `status: "active"` or `"past"`, `label`, `title`, `summary`, `institution`, `tags`, optional `details` (each with `title` and `text`), and optional `links` (each with `label` and `url`). Optional `image`, `imageAlt`, and `caption` add a photo; `video`, `poster`, `mediaLabel`, and `caption` add a video. Keep media under `assets/research/`. Videos use native controls, do not autoplay, and pause when their research tab is hidden. Research tabs support arrow keys, Home, and End. Direct links such as `#publications`, `#past-research`, and `#research-spall-strength` reveal the corresponding panel.
 - Your GitHub, Google Scholar, LinkedIn, university email, and Gmail are connected. `email` and `personalEmail` appear with separate labels in the contact dialog.
@@ -29,6 +29,25 @@ Edit **content.js**. This file controls your name, bio, interests, portrait, pro
 - Put your images under `assets/` and use relative paths such as `"./assets/my-project.webp"`. Supply descriptive `imageAlt` text. Aim for landscape images around 1200px wide. For a sharper portrait, replace the 250px original with a photo at least 800px wide and update `portrait`.
 - Update or add `projects` entries. Use `category: "code"` or `"experiments"` for filtering and add a repository or paper `url`. `detail` is the longer text shown when a card is opened; `linkLabel` customizes its action. For multiple actions, use `links: [{ label: "Explore the atlas", url: "https://piyushwanchoo.com/Dynamic-Ashby-Atlas/" }, { label: "View on GitHub", url: "https://github.com/Piyushjhu/Dynamic-Ashby-Atlas" }]` instead of `url` and `linkLabel`. `art` can be `"code"`, `"data"`, `"wave"`, `"signal"`, `"bubble"`, or `"orb"` when no image is provided. Decorative data illustrations are marked as illustrations, not measurements.
 - The main headlines and section headings are in `index.html`. Design tokens and responsive styling are in `styles.css`.
+
+## Automatic Google Scholar updates
+
+The Pages workflow refreshes your public profile (`L0GoOBAAAAAJ`) daily at 10:17 UTC, and on pushes to `main` or manual runs. It updates total citations, h-index, i10-index, publication count, and the Google Scholar publication list. That list opens by default in Publications; selected papers, journal articles, and in-progress manuscripts remain separate views. Scholar records can include preprints, conference contributions, and other works, so its count is labeled **Publications · Google Scholar**, not journal articles. The citation card and publication section show the last successful refresh date in New York time.
+
+`scripts/update_scholar.py` makes one request for the public profile, with up to 100 records. It validates the author, all-time metrics, publication IDs, links, and completeness before atomically replacing `scholar-data.js`. It never fetches individual citation pages or search results. A blocked request, changed markup, or incomplete list leaves the saved data and its update date intact. The site loads only the local, versioned snapshot; visitors make no requests to Scholar, and the browser policy stays unchanged. No external package, paid service, or API key is required.
+
+The workflow's Scholar job has `contents: write` only to save `scholar-data.js` through the GitHub Contents API. It uses the built-in job token, checks the previous file SHA to avoid overwriting a concurrent edit, and passes the resulting commit to the read-only build job. It does not persist Git credentials. Successful daily refreshes also record repository activity; a failed refresh produces a visible Actions warning and deploys the previous snapshot. GitHub can delay scheduled runs or disable inactive schedules; inspect **Actions → Deploy personal website to GitHub Pages** and use **Run workflow** when needed. See [GitHub scheduled workflow behavior](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+
+To refresh locally:
+
+```sh
+python3 scripts/update_scholar.py
+python3 scripts/build.py
+python3 scripts/check_site.py
+python3 -m unittest discover -s tests
+```
+
+Commit `scholar-data.js` with other site edits when publishing a local refresh. Do not hand-edit its generated assignment. If the profile eventually contains more than 100 records, the importer will refuse to publish a partial count; the complete previous snapshot remains available until the importer is extended.
 
 ## Search visibility
 
@@ -116,7 +135,7 @@ python3 scripts/check_site.py
 python3 -m unittest discover -s tests
 ```
 
-These checks reject weakened policies, executable inline scripts, nonlocal page subresources, missing files, common credential patterns, and accidentally staged internal paths. They do not replace reviewing every file placed in `assets/`, which is public. The workflow runs validation for pull requests with read-only permissions; only pushes to `main` or manual dispatches can deploy. Official Actions are pinned to verified full commit IDs, checkout does not persist credentials, and Dependabot proposes weekly Actions updates as pull requests.
+These checks reject weakened policies, executable inline scripts, nonlocal page subresources, missing files, common credential patterns, and accidentally staged internal paths. They do not replace reviewing every file placed in `assets/`, which is public. The workflow runs validation for pull requests with read-only permissions; pushes to `main`, scheduled refreshes, and manual dispatches can deploy. Only the separate Scholar snapshot job receives repository-write permission, and its built-in token is never included in public files. Official Actions are pinned to verified full commit IDs, checkout does not persist credentials, and Dependabot proposes weekly Actions updates as pull requests.
 
 HTML meta policies cannot supply HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Permissions-Policy`, or CSP `frame-ancestors`. These response-header protections require a header-capable serving layer. Do not claim they are enabled by this HTML policy, or add an ineffective `_headers` file to GitHub Pages. Domain ownership verification belongs in **GitHub profile Settings → Pages**, separately from the repository's custom-domain setting and Google Search Console. Keep the generated GitHub verification TXT record in Spaceship DNS after verification.
 

@@ -1,4 +1,5 @@
-/* Edit your professional content here. Metrics are dated September 2026.
+/* Edit your professional content here. CV details are dated September 2026.
+   Scholar metrics and publications are refreshed in scholar-data.js.
    Optional empty links are hidden. All career details were supplied by Piyush. */
 window.SITE_CONTENT = {
   name: "Piyush Wanchoo",
@@ -373,8 +374,8 @@ window.SITE_CONTENT = {
   metrics: [
     { value: "HELIX", label: "Automated impact facility" },
     { value: "1,000×", label: "Throughput vs. plate impact, up to" },
-    { value: "14", label: "Journal articles · 7 first-authored" },
-    { value: "272", label: "Citations · September 2026" }
+    { source: "scholar-publications", value: "14", label: "Journal articles · 7 first-authored" },
+    { source: "scholar-citations", value: "272", label: "Citations · September 2026" }
   ],
   experience: [
     { period: "SEP 2023 — PRESENT", role: "Postdoctoral Fellow", organization: "Hopkins Extreme Materials Institute · Johns Hopkins University", description: "Working with K.T. Ramesh on autonomous, high-throughput experimental mechanics. Designed and built the HELIX laser-driven impact facility, established spall failure statistics through 173 copper experiments, and co-developed AIMD-L for accelerated materials discovery.", current: true },

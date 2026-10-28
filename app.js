@@ -16,6 +16,16 @@
     } catch { return ""; }
   };
   const externalLink = (url, text, className = "text-link") => `<a class="${className}" href="${escape(url)}" target="_blank" rel="noopener noreferrer">${escape(text)} ${icon("arrow-up-right")}</a>`;
+  const snapshot = window.SCHOLAR_DATA;
+  const profileId = safeUrl(content.scholar) ? new URL(content.scholar).searchParams.get("user") : "";
+  const scholar = snapshot?.schemaVersion === 1 && snapshot.profileId === profileId ? snapshot : null;
+  const scholarUpdated = scholar ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "America/New_York" }).format(new Date(scholar.updatedAt)) : "";
+  const scholarPapers = (scholar?.publications || []).map(paper => ({
+    ...paper,
+    source: "scholar",
+    year: paper.year || "Year not listed",
+    note: `${paper.citations.toLocaleString("en-US")} citation${paper.citations === 1 ? "" : "s"} · Google Scholar`
+  }));
 
   $$('[data-name]').forEach(element => { element.textContent = content.name; });
   $(".wordmark").setAttribute("aria-label", `${content.name}, home`);
@@ -83,7 +93,13 @@
   if (portraitUrl) $("[data-portrait]").src = portraitUrl;
   $("[data-portrait]").alt = content.name;
   $("#year").textContent = new Date().getFullYear();
-  $("#metrics").innerHTML = (content.metrics || []).map(metric => `<div class="metric"><span class="metric-value">${escape(metric.value)}</span><span class="metric-label">${escape(metric.label)}</span></div>`).join("");
+  const metrics = (content.metrics || []).map(metric => {
+    if (scholar && metric.source === "scholar-publications") return { value: scholarPapers.length.toLocaleString("en-US"), label: "Publications · Google Scholar" };
+    if (scholar && metric.source === "scholar-citations") return { value: scholar.metrics.citations.toLocaleString("en-US"), label: `Citations · Updated ${scholarUpdated}` };
+    return metric;
+  });
+  $("#metrics").innerHTML = metrics.map(metric => `<div class="metric"><span class="metric-value">${escape(metric.value)}</span><span class="metric-label">${escape(metric.label)}</span></div>`).join("");
+  if (scholar) $("#scholar-metrics").innerHTML = `h-index ${escape(scholar.metrics.hIndex)} · i10-index ${escape(scholar.metrics.i10Index)} <span> / Updated ${escape(scholarUpdated)}</span>`;
 
   const githubUrl = safeUrl(content.github);
   if (githubUrl) {
@@ -203,24 +219,31 @@
 
   const publications = content.publications || [];
   const allPapersButton = $('[data-paper-filter="all"]');
-  if (allPapersButton) allPapersButton.textContent = `All ${publications.length} articles`;
+  if (allPapersButton) allPapersButton.textContent = `Journal articles (${publications.length})`;
+  const scholarPapersButton = $('[data-paper-filter="scholar"]');
+  if (scholarPapersButton && scholar) {
+    scholarPapersButton.hidden = false;
+    scholarPapersButton.textContent = `Google Scholar (${scholarPapers.length})`;
+  }
   const renderPublications = (filter = "selected") => {
-    const papers = filter === "progress" ? (content.manuscripts || []) : filter === "all" ? publications : publications.filter(paper => paper.featured);
+    const papers = filter === "scholar" ? scholarPapers : filter === "progress" ? (content.manuscripts || []) : filter === "all" ? publications : publications.filter(paper => paper.featured);
+    $("#publication-source-note").textContent = filter === "scholar" && scholar ? `Google Scholar · Updated ${scholarUpdated} · Includes journal papers, preprints, and other works` : scholar ? `Journal and manuscript details: September 2026 CV · Scholar metrics updated ${scholarUpdated}` : "Publication details and metrics: September 2026 CV";
     $("#publications").innerHTML = papers.length ? papers.map(publication => {
     const paperUrl = safeUrl(publication.url);
     const pdfUrl = safeUrl(publication.pdf, true);
-    return `<article class="publication"><div class="publication-summary"><div><p class="publication-year">${escape(publication.year)}</p><h3>${escape(publication.title)}</h3><p class="publication-meta publication-authors">${escape(publication.authors).replaceAll("P. Wanchoo", "<strong>P. Wanchoo</strong>")}</p>${publication.venue ? `<p class="publication-meta">${escape(publication.venue)}</p>` : ""}${publication.note ? `<p class="publication-note">${escape(publication.note)}</p>` : ""}</div><div class="publication-actions">${paperUrl ? externalLink(paperUrl, "Read paper", "paper-link") : ""}${pdfUrl ? externalLink(pdfUrl, "PDF", "paper-link") : ""}</div></div>${publication.abstract ? `<details><summary>Read abstract</summary><p>${escape(publication.abstract)}</p></details>` : ""}</article>`;
+    return `<article class="publication"><div class="publication-summary"><div><p class="publication-year">${escape(publication.year)}</p><h3>${escape(publication.title)}</h3><p class="publication-meta publication-authors">${escape(publication.authors).replaceAll("P. Wanchoo", "<strong>P. Wanchoo</strong>")}</p>${publication.venue ? `<p class="publication-meta">${escape(publication.venue)}</p>` : ""}${publication.note ? `<p class="publication-note">${escape(publication.note)}</p>` : ""}</div><div class="publication-actions">${paperUrl ? externalLink(paperUrl, publication.source === "scholar" ? "View on Scholar" : "Read paper", "paper-link") : ""}${pdfUrl ? externalLink(pdfUrl, "PDF", "paper-link") : ""}</div></div>${publication.abstract ? `<details><summary>Read abstract</summary><p>${escape(publication.abstract)}</p></details>` : ""}</article>`;
   }).join("") : '<div class="publication-empty"><p>No publications in this category.</p></div>';
   };
-  renderPublications();
-  $$('[data-paper-filter]').forEach(button => button.addEventListener("click", () => {
-    $$('[data-paper-filter]').forEach(filter => {
-      const active = button === filter;
-      filter.classList.toggle("active", active);
-      filter.setAttribute("aria-pressed", String(active));
+  const activatePaperFilter = name => {
+    $$('[data-paper-filter]').forEach(button => {
+      const active = button.dataset.paperFilter === name;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
     });
-    renderPublications(button.dataset.paperFilter);
-  }));
+    renderPublications(name);
+  };
+  $$('[data-paper-filter]').forEach(button => button.addEventListener("click", () => activatePaperFilter(button.dataset.paperFilter)));
+  activatePaperFilter(scholar ? "scholar" : "selected");
   const scholarUrl = safeUrl(content.scholar);
   if (scholarUrl) $("#scholar-link").href = scholarUrl;
   else $("#scholar-link").hidden = true;

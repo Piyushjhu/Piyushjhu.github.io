@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '17 10 * * *'
 
 permissions:
   contents: read
@@ -15,11 +17,37 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  scholar:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      revision: ${{ steps.sync.outputs.revision }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Test Scholar parsing and failure handling
+        run: python3 -m unittest discover -s tests -p test_scholar.py
+      - name: Refresh and save the public Scholar snapshot
+        id: sync
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update_scholar.py --publish
+      - name: Keep the previous snapshot if Scholar is unavailable
+        if: steps.sync.outcome == 'failure'
+        run: echo "::warning::Scholar refresh failed. The site will keep its last saved data and update date."
+
   build:
+    needs: scholar
+    if: ${{ !cancelled() && (needs.scholar.result == 'success' || needs.scholar.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
+          ref: ${{ needs.scholar.outputs.revision || github.sha }}
           persist-credentials: false
       - name: Stage the static site
         run: python3 scripts/build.py
@@ -27,6 +55,8 @@ jobs:
         run: python3 scripts/check_site.py
       - name: Check security regression canaries
         run: python3 -m unittest discover -s tests
+      - name: Check Scholar metrics and publication rendering
+        run: node tests/scholar-ui.js
       - name: Configure GitHub Pages
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5

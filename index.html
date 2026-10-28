@@ -56,6 +56,7 @@
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
     <script src="./content.js" defer></script>
+    <script src="./scholar-data.js" defer></script>
     <script src="./app.js" defer></script>
     <script src="./sculpture.js" defer></script>
   </head>
@@ -114,9 +115,9 @@
         <div class="research-panel shell" id="research-panel-active" role="tabpanel" aria-labelledby="research-tab-active" tabindex="0"><div class="research-panel-heading"><p class="eyebrow">CURRENT RESEARCH</p><p>Impact experiments, alloy strength, and active learning.</p></div><div class="research-studies" id="active-research"></div></div>
         <div class="research-panel shell" id="research-panel-past" role="tabpanel" aria-labelledby="research-tab-past" tabindex="0" hidden><div class="research-panel-heading"><p class="eyebrow">DOCTORAL RESEARCH</p><p>Composites and polymeric foams under blast and shock loading.</p></div><div class="research-studies" id="past-research"></div></div>
         <div class="research-panel" id="research-panel-publications" role="tabpanel" aria-labelledby="research-tab-publications" tabindex="0" hidden>
-          <div class="publication-toolbar shell"><div class="filter-tabs publication-tabs" role="group" aria-label="Filter publications"><button class="filter active" type="button" data-paper-filter="selected" aria-pressed="true">Selected papers</button><button class="filter" type="button" data-paper-filter="all" aria-pressed="false">All 14 articles</button><button class="filter" type="button" data-paper-filter="progress" aria-pressed="false">Preprints & in progress</button></div><span class="scholar-metrics">h-index 9 · i10-index 9 <span> / SEP 2026</span></span></div>
+          <div class="publication-toolbar shell"><div class="filter-tabs publication-tabs" role="group" aria-label="Filter publications"><button class="filter active" type="button" data-paper-filter="selected" aria-pressed="true">Selected papers</button><button class="filter" type="button" data-paper-filter="all" aria-pressed="false">Journal articles (14)</button><button class="filter" type="button" data-paper-filter="scholar" aria-pressed="false" hidden>Google Scholar</button><button class="filter" type="button" data-paper-filter="progress" aria-pressed="false">Preprints & in progress</button></div><span class="scholar-metrics" id="scholar-metrics">h-index 9 · i10-index 9 <span> / SEP 2026</span></span></div>
           <div class="publications shell" id="publications" aria-live="polite"></div>
-          <div class="publications-bottom shell"><a class="text-link light-link" href="https://scholar.google.com/citations?user=L0GoOBAAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener noreferrer" id="scholar-link">View on Google Scholar <svg class="icon" aria-hidden="true"><use href="#arrow-up-right" /></svg></a><span>Publication details and metrics: September 2026 CV</span></div>
+          <div class="publications-bottom shell"><a class="text-link light-link" href="https://scholar.google.com/citations?user=L0GoOBAAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener noreferrer" id="scholar-link">View on Google Scholar <svg class="icon" aria-hidden="true"><use href="#arrow-up-right" /></svg></a><span id="publication-source-note">Publication details and metrics: September 2026 CV</span></div>
         </div>
       </section>
 
