@@ -325,7 +325,11 @@ h1{font-size:clamp(48px,6.6vw,90px);letter-spacing:-5.4px}
 .course-role,.teaching-principle>span,.publication-year,.academic-number,.news-meta,
 .news-status,.photo-note,.dialog-eyebrow,.gallery-enlarge,.study-credit,
 .research-step-number,.study-marker>span,.scholar-metrics>span{font-size:var(--text-label)}
-.hero-eyebrow{letter-spacing:1.1px;max-width:100%}
+.hero-eyebrow{letter-spacing:1.1px;max-width:100%;flex-wrap:wrap;justify-content:center;gap:8px 12px}
+.hero-name{font-size:1rem;font-weight:650;letter-spacing:.02em;color:var(--ink)}
+.hero-affiliation{font-weight:500;letter-spacing:.06em}
+.wordmark-name{font-size:.9375rem}
+#hero-title{font-size:clamp(2rem,5.5vw,4.75rem);letter-spacing:-.045em;line-height:1.1}
 .project-label{min-height:0}
 .project-body>p:not(.project-label),.about-bio p{max-width:none}
 .academic-item h4,.mentorship-note h4,.news-details h4,.study-details h4{font-size:1.0625rem}
@@ -355,6 +359,7 @@ h1{font-size:clamp(48px,6.6vw,90px);letter-spacing:-5.4px}
 .research-panel-heading>p:last-child{font-size:var(--text-small);line-height:1.7}
 
 @media(max-width:760px){
+  .wordmark-name{font-size:.8125rem}
   .metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
   .metric:nth-child(3){padding-left:0;border-left:0}
   .filter-tabs{flex-wrap:wrap;justify-content:flex-start;max-width:100%;border-radius:18px}
@@ -366,6 +371,12 @@ h1{font-size:clamp(48px,6.6vw,90px);letter-spacing:-5.4px}
   .hero-actions{flex-wrap:wrap;gap:18px 24px}
 }
 @media(max-width:480px){
+  .nav{gap:10px}
+  .wordmark{gap:8px}
+  .wordmark-name{padding-left:8px}
+  .nav-contact{padding-inline:10px;gap:6px}
+  .hero-name{font-size:.9375rem}
+  .hero-affiliation{flex-basis:100%}
   .intro-strip{align-items:flex-start;flex-direction:column;gap:12px}
   .intro-signature{max-width:none;text-align:left;white-space:normal}
   .hero-description{font-size:var(--text-body);max-width:100%}

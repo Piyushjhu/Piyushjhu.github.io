@@ -5,8 +5,8 @@ window.SITE_CONTENT = {
   firstName: "Piyush",
   initials: "PW",
   title: "Piyush Wanchoo | Experimental Mechanics & Materials Research",
-  description: "Piyush Wanchoo is a Johns Hopkins researcher studying impact, fracture, autonomous experiments, and data-driven materials design.",
-  heroDescription: "I’m a postdoctoral fellow at Johns Hopkins. I study how materials deform and fail under rapid loading, and build automated experiments to measure that response.",
+  description: "Piyush Wanchoo studies materials under extreme conditions through experimental mechanics, high-throughput experiments, and data-driven discovery at Johns Hopkins.",
+  heroDescription: "My research combines experimental mechanics and data-driven discovery to understand materials under extreme conditions. I’m a postdoctoral fellow at Johns Hopkins.",
   bio: [
     "I’m Piyush, a postdoctoral fellow at the Hopkins Extreme Materials Institute at Johns Hopkins University, working with K.T. Ramesh. My research is in experimental mechanics, with a focus on impact, shock, and material failure.",
     "Much of my work involves building the equipment and analysis tools for these experiments. I designed and built HELIX, an automated laser-driven impact facility, and co-developed AIMD-L, a laboratory for high-throughput materials characterization. I use these systems to study how composition, microstructure, and loading conditions affect material strength.",
