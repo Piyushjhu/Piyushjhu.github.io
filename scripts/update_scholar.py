@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh one public Scholar profile without browser-side requests or API keys."""
+"""Refresh one Scholar profile, using SerpApi when its private key is configured."""
 import argparse
 import base64
 from dataclasses import dataclass, field
@@ -151,6 +151,44 @@ def parse_profile(html, updated_at=None):
     return result
 
 
+def parse_serpapi(payload, updated_at=None):
+    if payload.get("error") or payload.get("search_metadata", {}).get("status") != "Success":
+        raise ValueError("The Scholar API did not return a successful profile.")
+    if payload.get("search_parameters", {}).get("author_id") != PROFILE_ID or payload.get("author", {}).get("name") != PROFILE_NAME:
+        raise ValueError("The Scholar API returned another author.")
+    if payload.get("serpapi_pagination", {}).get("next"):
+        raise ValueError("The Scholar API publication list is incomplete; keeping the previous full snapshot.")
+    metrics = {}
+    for row in payload.get("cited_by", {}).get("table", []):
+        for field_name, output in (("citations", "citations"), ("h_index", "hIndex"), ("i10_index", "i10Index")):
+            if field_name in row:
+                metrics[output] = integer(str(row[field_name].get("all", "")))
+    publications = []
+    for paper in payload.get("articles", []):
+        citation_id = paper.get("citation_id", "")
+        publications.append({
+            "id": citation_id,
+            "title": paper.get("title", ""),
+            "authors": paper.get("authors", ""),
+            "venue": paper.get("publication", ""),
+            "year": str(paper.get("year") or ""),
+            "citations": integer(str(paper.get("cited_by", {}).get("value") or 0)),
+            "url": "https://scholar.google.com/citations?" + urlencode({"view_op": "view_citation", "hl": "en", "user": PROFILE_ID, "citation_for_view": citation_id}),
+        })
+    result = {
+        "schemaVersion": 1,
+        "profileId": PROFILE_ID,
+        "sourceUrl": PROFILE_URL,
+        "name": PROFILE_NAME,
+        "updatedAt": updated_at or datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "metrics": metrics,
+        "publications": publications,
+    }
+    # Discard provider metadata, request parameters, and response URLs entirely.
+    validate_snapshot(result)
+    return result
+
+
 def validate_snapshot(data):
     if not isinstance(data, dict) or data.get("schemaVersion") != 1 or data.get("profileId") != PROFILE_ID or data.get("sourceUrl") != PROFILE_URL or data.get("name") != PROFILE_NAME:
         raise ValueError("Invalid Scholar snapshot identity or schema.")
@@ -216,11 +254,17 @@ def request_bytes(url, token=None, payload=None, as_text=False):
 
 
 def refresh(output=SNAPSHOT, html=None):
-    if html is None:
+    api_key = os.environ.get("SERPAPI_API_KEY", "").strip()
+    if html is not None:
+        data = parse_profile(html)
+    elif api_key:
+        url = "https://serpapi.com/search.json?" + urlencode({"engine": "google_scholar_author", "author_id": PROFILE_ID, "hl": "en", "num": 100, "sort": "pubdate", "api_key": api_key})
+        data = parse_serpapi(json.loads(request_bytes(url)))
+    else:
         # One permitted public-profile request. No search crawling or pagination.
         url = PROFILE_URL + "&pagesize=100&sortby=pubdate"
         html = request_bytes(url, as_text=True)
-    data = parse_profile(html)
+        data = parse_profile(html)
     output = Path(output)
     temporary = output.with_suffix(".tmp")
     temporary.write_text(serialize_snapshot(data), encoding="utf-8")
@@ -256,7 +300,7 @@ def main():
     parser.add_argument("--input-html", type=Path, help="Parse an already downloaded public profile (for local verification).")
     parser.add_argument("--publish", action="store_true", help="Commit the snapshot in GitHub Actions using its scoped token.")
     args = parser.parse_args()
-    phase = "reading Google Scholar"
+    phase = "reading Google Scholar via SerpApi" if os.environ.get("SERPAPI_API_KEY") else "reading Google Scholar"
     try:
         data = refresh(html=args.input_html.read_text(encoding="utf-8") if args.input_html else None)
         if args.publish:
@@ -267,6 +311,8 @@ def main():
         # Do not log fetched bodies, authorization headers, or provider exceptions.
         if isinstance(error, HTTPError):
             detail = f"HTTP {error.code} from {urlsplit(error.url).hostname}"
+            if error.code == 403 and urlsplit(error.url).hostname == "scholar.google.com" and not os.environ.get("SERPAPI_API_KEY"):
+                detail += ". Add SERPAPI_API_KEY in repository Actions secrets to enable unattended refreshes."
         else:
             detail = str(error) if isinstance(error, ValueError) else type(error).__name__
         message = f"Scholar refresh failed while {phase}; keep the last published snapshot. {detail}"

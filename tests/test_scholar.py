@@ -30,8 +30,45 @@ FIXTURE = '''<!doctype html><html><head><meta charset="utf-8"></head><body>
 <td class="gsc_a_c"><a class="gsc_a_ac"></a></td><td class="gsc_a_y"><span>2026</span></td>
 </tr></tbody></table><button id="gsc_bpf_more" disabled>Show more</button></body></html>'''
 
+API_FIXTURE = {
+    "search_metadata": {"status": "Success", "json_endpoint": "https://serpapi.com/private?api_key=must-not-be-published"},
+    "search_parameters": {"author_id": scholar.PROFILE_ID, "api_key": "must-not-be-published"},
+    "author": {"name": scholar.PROFILE_NAME},
+    "cited_by": {"table": [{"citations": {"all": 1234, "since_2021": 1000}}, {"h_index": {"all": 1}}, {"i10_index": {"all": 1}}]},
+    "articles": [{"citation_id": scholar.PROFILE_ID + ":example", "title": "A new paper", "authors": "P Wanchoo, A Researcher", "publication": "Mechanics Journal", "year": "2026", "cited_by": {"value": 17}}]
+}
+
 
 class ScholarImport(unittest.TestCase):
+    def setUp(self):
+        self.environment = patch.dict(os.environ, {"SERPAPI_API_KEY": ""})
+        self.environment.start()
+        self.addCleanup(self.environment.stop)
+
+    def test_api_import_discards_request_metadata_and_keys(self):
+        data = scholar.parse_serpapi(API_FIXTURE)
+        self.assertEqual(data["metrics"]["citations"], 1234)
+        self.assertEqual(data["publications"][0]["citations"], 17)
+        self.assertEqual(data["publications"][0]["title"], "A new paper")
+        self.assertNotIn("must-not-be-published", scholar.serialize_snapshot(data))
+        self.assertNotIn("serpapi.com", scholar.serialize_snapshot(data))
+
+    def test_api_rejects_errors_wrong_authors_and_partial_results(self):
+        for field, value in (("error", "API error containing must-not-be-published"), ("author", {"name": "Another researcher"}), ("serpapi_pagination", {"next": "https://serpapi.com/search.json?api_key=must-not-be-published"}), ("search_metadata", {"status": "Processing"})):
+            payload = deepcopy(API_FIXTURE)
+            payload[field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError) as error:
+                scholar.parse_serpapi(payload)
+            self.assertNotIn("must-not-be-published", str(error.exception))
+
+    def test_configured_api_key_uses_only_the_provider_request(self):
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {"SERPAPI_API_KEY": "test-provider-key"}), patch.object(scholar, "request_bytes", return_value=json.dumps(API_FIXTURE).encode()) as request:
+            data = scholar.refresh(output=Path(directory) / "scholar-data.js")
+            self.assertEqual(request.call_count, 1)
+            self.assertTrue(request.call_args.args[0].startswith("https://serpapi.com/search.json?"))
+            self.assertIn("num=100", request.call_args.args[0])
+            self.assertEqual(data["publications"][0]["title"], "A new paper")
+
     def test_all_time_metrics_and_exact_publication_text(self):
         data = scholar.parse_profile(FIXTURE)
         self.assertEqual(data["metrics"], {"citations": 1234, "hIndex": 1, "i10Index": 1})
