@@ -19,8 +19,7 @@ const run = async () => {
     check("identity structured data remains valid", JSON.parse(q('script[type="application/ld+json"]').textContent)["@graph"].length === 3);
     check("gallery aspect ratio survives strict CSS policy", w.getComputedStyle(q("[data-gallery]")).aspectRatio.replace(/\s/g, "") === "1680/1036");
     check("chart styles survive strict CSS policy", parseFloat(w.getComputedStyle(q(".chart-bars i")).height) > 0);
-    const canvas = q("#sculpture");
-    check("sculpture renders or uses its local fallback", canvas.width > 0 && (canvas.getContext("webgl") || w.getComputedStyle(canvas).backgroundImage.includes("sculpture.svg")));
+    check("impact-to-discovery sequence renders", all(".discovery-stage").length === 3 && q(".discovery-trace") && all(".discovery-map-new circle").length === 6);
     q('[data-filter="code"]').click();
     check("software filter", all(".project-card").length === 5);
     q('[data-filter="experiments"]').click();

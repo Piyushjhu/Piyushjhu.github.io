@@ -1,6 +1,6 @@
 # Piyush’s personal website
 
-A lightweight, Apple-inspired personal website with original interactive 3D artwork, project filters and detail dialogs, active and past research, publications, a news feed, a work timeline, a personal overview, teaching, and a photo gallery. Plain HTML, CSS, and JavaScript. No package installation, build framework, paid service, or API key required. All assets are local.
+A lightweight, Apple-inspired personal website with an animated impact-to-discovery sequence, project filters and detail dialogs, active and past research, publications, a news feed, a work timeline, a personal overview, teaching, and a photo gallery. Plain HTML, CSS, and JavaScript. No package installation, build framework, paid service, or API key required. All assets are local.
 
 **Website:** https://piyushwanchoo.com/
 
@@ -147,8 +147,8 @@ The prepared edge configuration and account setup steps are in [deployment/READM
 
 ## Design and accessibility
 
-The interface uses system fonts, a frosted navigation bar, responsive layouts, keyboard focus styles, semantic sections, a skip link, native dialogs, and a mobile menu. Motion respects the visitor’s reduced-motion setting; the sculpture pauses outside the viewport and in inactive tabs. Browsers without WebGL receive a local SVG alternative. External links open in a new tab with `noopener noreferrer`.
+The interface uses system fonts, a frosted navigation bar, responsive layouts, keyboard focus styles, semantic sections, a skip link, native dialogs, and a mobile menu. The opening SVG sequence illustrates flyer impact, a time-resolved response, and repeated measurements contributing to a material map. Its physics and data are labeled schematic. It has a pause/resume control, suspends offscreen and in inactive tabs, and shows a complete static composition when JavaScript is unavailable or reduced motion is requested. Each animated cycle adds a point; the illustrated dataset loops after six cycles. No WebGL, external animation library, or browser network request is required. External links open in a new tab with `noopener noreferrer`.
 
-Validation performed: JavaScript and CSS syntax, DOM-based functional checks for research tabs and keyboard navigation, media behavior, direct links, gallery dialogs, and existing project/publication filters, news, teaching, and contact details. Media files are inspected and the Pages build output is checked against source files. Live visual/browser testing was unavailable because this session has no browser connector and computer-control permission was not granted.
+Validation performed: JavaScript and CSS syntax, DOM-based functional checks for research tabs and keyboard navigation, media behavior, direct links, gallery dialogs, and existing project/publication filters, news, teaching, and contact details. Media files are inspected and the Pages build output is checked against source files. The hero was additionally checked in an isolated headless Chrome browser at phone, tablet, and desktop widths, including pause/resume, reduced motion, and the JavaScript-disabled fallback.
 
 The social preview SVG is a source asset. For social sharing, export it to a 1200 × 630 PNG and add `og:image` metadata in `index.html` with its **absolute public URL**. The canonical URL and `og:url` are set to `https://piyushwanchoo.com/`. Also update the initial `<title>` and descriptions in `index.html` if changing the name, since link-preview crawlers may not run JavaScript.

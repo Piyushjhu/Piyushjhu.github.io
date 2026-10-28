@@ -58,7 +58,7 @@
     <script src="./content.js" defer></script>
     <script src="./scholar-data.js" defer></script>
     <script src="./app.js" defer></script>
-    <script src="./sculpture.js" defer></script>
+    <script src="./hero-discovery.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -87,13 +87,48 @@
           <p class="hero-description" data-hero-description>My research combines experimental mechanics and data-driven discovery to understand materials under extreme conditions. I’m a postdoctoral fellow at Johns Hopkins.</p>
           <div class="hero-actions"><a class="button" href="#work">View my work <svg class="icon" aria-hidden="true"><use href="#arrow-down" /></svg></a><a class="text-link" href="#about">About me <svg class="icon" aria-hidden="true"><use href="#arrow-up-right" /></svg></a></div>
         </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div class="sculpture-glow"></div>
-          <canvas id="sculpture" width="1400" height="550"></canvas>
-          <div class="sculpture-shadow"></div>
-          <div class="visual-note"><span class="mini-cross">+</span> EXPERIMENTAL MECHANICS · MATERIALS RESEARCH</div>
-          <div class="visual-index">SCROLL TO EXPLORE <svg class="icon"><use href="#arrow-down" /></svg></div>
-        </div>
+        <figure class="hero-discovery shell" id="hero-discovery" aria-labelledby="discovery-caption">
+          <div class="discovery-flow">
+            <div class="discovery-stage">
+              <svg viewBox="0 0 300 190" role="img" aria-labelledby="impact-visual-title">
+                <title id="impact-visual-title">A flyer strikes a material specimen and launches a wave.</title>
+                <defs><linearGradient id="specimen-face" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e7d7cd"/><stop offset="1" stop-color="#c5b4cd"/></linearGradient><linearGradient id="flyer-face"><stop stop-color="#ae8d79"/><stop offset="1" stop-color="#d2b7a7"/></linearGradient></defs>
+                <path class="discovery-baseline" d="M28 166H270"/>
+                <g class="discovery-flyer"><path d="M47 50L60 39H74L61 50Z" fill="#d9c1b2"/><path d="M61 50L74 39V139L61 150Z" fill="#967f76"/><rect x="47" y="50" width="14" height="100" fill="url(#flyer-face)"/></g>
+                <path d="M140 40L157 26H247L230 40Z" fill="#e6dbe7"/><path d="M230 40L247 26V136L230 150Z" fill="#ae9db9"/>
+                <rect x="140" y="40" width="90" height="110" fill="url(#specimen-face)"/>
+                <path class="discovery-grains" d="M140 87L171 75L194 102L230 84M171 75L179 40M194 102L184 150M140 125L158 119L184 150M194 102L218 128L230 125"/>
+                <rect class="discovery-wave" x="142" y="41" width="8" height="108"/>
+                <path class="discovery-direction" d="M90 97H115M109 91L115 97L109 103"/>
+              </svg>
+              <div class="discovery-stage-copy"><h2><span>01</span> Impact</h2><p>Load a material at high strain rate.</p></div>
+            </div>
+            <span class="discovery-connector" aria-hidden="true"><svg viewBox="0 0 40 20"><path d="M2 10H36M29 3L36 10L29 17"/></svg></span>
+            <div class="discovery-stage">
+              <svg viewBox="0 0 300 190" role="img" aria-labelledby="measure-visual-title">
+                <title id="measure-visual-title">An illustrative time-resolved response is recorded after impact.</title>
+                <path class="discovery-grid" d="M35 51H276M35 90H276M35 129H276"/>
+                <path class="discovery-axis" d="M35 28V154H276"/>
+                <path class="discovery-trace-guide" d="M36 143H72L80 141L86 144L94 142L101 61L110 43L123 48L138 66L157 70L170 109L183 123L196 99L208 88L219 97L232 87L250 91L275 85"/>
+                <path class="discovery-trace" id="discovery-trace" pathLength="1" d="M36 143H72L80 141L86 144L94 142L101 61L110 43L123 48L138 66L157 70L170 109L183 123L196 99L208 88L219 97L232 87L250 91L275 85"/>
+                <text class="discovery-axis-label" x="276" y="180" text-anchor="end">Time</text><text class="discovery-axis-label" x="35" y="18">Response</text>
+              </svg>
+              <div class="discovery-stage-copy"><h2><span>02</span> Measure</h2><p>Resolve its response in time.</p></div>
+            </div>
+            <span class="discovery-connector" aria-hidden="true"><svg viewBox="0 0 40 20"><path d="M2 10H36M29 3L36 10L29 17"/></svg></span>
+            <div class="discovery-stage">
+              <svg viewBox="0 0 300 190" role="img" aria-labelledby="discover-visual-title">
+                <title id="discover-visual-title">Repeated experiments add illustrative points to a map of material behavior.</title>
+                <path class="discovery-grid" d="M35 51H276M35 90H276M35 129H276"/><path class="discovery-axis" d="M35 28V154H276"/>
+                <g class="discovery-map-base"><circle cx="52" cy="132" r="3.5"/><circle cx="71" cy="118" r="3.5"/><circle cx="76" cy="137" r="3.5"/><circle cx="91" cy="110" r="3.5"/><circle cx="111" cy="124" r="3.5"/><circle cx="125" cy="96" r="3.5"/><circle cx="141" cy="113" r="3.5"/><circle cx="153" cy="88" r="3.5"/><circle cx="174" cy="104" r="3.5"/><circle cx="181" cy="75" r="3.5"/><circle cx="203" cy="92" r="3.5"/><circle cx="219" cy="65" r="3.5"/><circle cx="244" cy="78" r="3.5"/><circle cx="260" cy="50" r="3.5"/></g>
+                <g class="discovery-map-new"><circle cx="146" cy="91" r="5"/><circle cx="193" cy="68" r="5"/><circle cx="101" cy="106" r="5"/><circle cx="231" cy="49" r="5"/><circle cx="166" cy="74" r="5"/><circle cx="253" cy="63" r="5"/></g>
+                <text class="discovery-axis-label" x="276" y="180" text-anchor="end">Material descriptors</text><text class="discovery-axis-label" x="35" y="18">Dynamic response</text>
+              </svg>
+              <div class="discovery-stage-copy"><h2><span>03</span> Discover</h2><p>Map behavior across materials and conditions.</p></div>
+            </div>
+          </div>
+          <figcaption class="discovery-caption" id="discovery-caption"><span>Impact → measurement → discovery <span class="discovery-disclosure">· Schematic physics and illustrative data</span></span><button type="button" class="discovery-motion-toggle" id="discovery-motion-toggle" aria-pressed="false" hidden>Pause animation</button></figcaption>
+        </figure>
       </section>
 
       <div class="intro-strip shell"><p>Postdoctoral Fellow <span>· Hopkins Extreme Materials Institute</span></p><span class="intro-signature">Baltimore, Maryland <svg class="icon" aria-hidden="true"><use href="#sparkle" /></svg></span></div>
