@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import sys
 from urllib.parse import parse_qs, urlencode, urljoin, urlsplit
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -255,15 +256,23 @@ def main():
     parser.add_argument("--input-html", type=Path, help="Parse an already downloaded public profile (for local verification).")
     parser.add_argument("--publish", action="store_true", help="Commit the snapshot in GitHub Actions using its scoped token.")
     args = parser.parse_args()
+    phase = "reading Google Scholar"
     try:
         data = refresh(html=args.input_html.read_text(encoding="utf-8") if args.input_html else None)
         if args.publish:
+            phase = "saving the snapshot to GitHub"
             publish_snapshot()
         print(f"Scholar refreshed: {len(data['publications'])} publications, {data['metrics']['citations']} citations, h-index {data['metrics']['hIndex']}, i10-index {data['metrics']['i10Index']}.")
     except Exception as error:
         # Do not log fetched bodies, authorization headers, or provider exceptions.
-        detail = str(error) if isinstance(error, ValueError) else type(error).__name__
-        print("Scholar refresh failed; keep the last published snapshot. " + detail, file=sys.stderr)
+        if isinstance(error, HTTPError):
+            detail = f"HTTP {error.code} from {urlsplit(error.url).hostname}"
+        else:
+            detail = str(error) if isinstance(error, ValueError) else type(error).__name__
+        message = f"Scholar refresh failed while {phase}; keep the last published snapshot. {detail}"
+        print(message, file=sys.stderr)
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            print("::warning::" + message)
         return 1
     return 0
 

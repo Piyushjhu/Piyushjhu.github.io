@@ -3,6 +3,7 @@ import base64
 from copy import deepcopy
 from email.message import Message
 import json
+import io
 import os
 from pathlib import Path
 import sys
@@ -153,6 +154,24 @@ class ScholarImport(unittest.TestCase):
 
     def test_checked_in_snapshot_is_valid(self):
         self.assertEqual(scholar.load_snapshot(scholar.SNAPSHOT)["profileId"], scholar.PROFILE_ID)
+
+    def test_public_failure_annotation_identifies_service_without_secrets(self):
+        for publish in (False, True):
+            phase_host = "api.github.com" if publish else "scholar.google.com"
+            argv = ["update_scholar.py", "--publish"] if publish else ["update_scholar.py"]
+            output = io.StringIO()
+            target = "publish_snapshot" if publish else "refresh"
+            with HTTPError("https://" + phase_host + "/?token=must-not-appear", 403, "Forbidden", {}, None) as error:
+                with patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}), patch.object(sys, "argv", argv), patch.object(sys, "stdout", output), patch.object(sys, "stderr", io.StringIO()):
+                    if publish:
+                        with patch.object(scholar, "refresh", return_value=scholar.parse_profile(FIXTURE)), patch.object(scholar, target, side_effect=error):
+                            self.assertEqual(scholar.main(), 1)
+                    else:
+                        with patch.object(scholar, target, side_effect=error):
+                            self.assertEqual(scholar.main(), 1)
+            self.assertIn("::warning::Scholar refresh failed while", output.getvalue())
+            self.assertIn("HTTP 403 from " + phase_host, output.getvalue())
+            self.assertNotIn("must-not-appear", output.getvalue())
 
 
 if __name__ == "__main__":
