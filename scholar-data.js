@@ -3,9 +3,9 @@ window.SCHOLAR_DATA = {
   "profileId": "L0GoOBAAAAAJ",
   "sourceUrl": "https://scholar.google.com/citations?user=L0GoOBAAAAAJ&hl=en",
   "name": "Piyush Wanchoo",
-  "updatedAt": "2026-11-06T17:28:46+00:00",
+  "updatedAt": "2026-11-07T16:25:10+00:00",
   "metrics": {
-    "citations": 295,
+    "citations": 296,
     "hIndex": 9,
     "i10Index": 9
   },
@@ -214,7 +214,7 @@ window.SCHOLAR_DATA = {
       "authors": "P Wanchoo, H Matos, CE Rousseau, A Shukla",
       "venue": "Composite Structures 263, 113530, 2021",
       "year": "2021",
-      "citations": 84,
+      "citations": 85,
       "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=L0GoOBAAAAAJ&citation_for_view=L0GoOBAAAAAJ%3A9yKSN-GCB0IC"
     },
     {
