@@ -3,9 +3,9 @@ window.SCHOLAR_DATA = {
   "profileId": "L0GoOBAAAAAJ",
   "sourceUrl": "https://scholar.google.com/citations?user=L0GoOBAAAAAJ&hl=en",
   "name": "Piyush Wanchoo",
-  "updatedAt": "2026-11-09T20:43:28+00:00",
+  "updatedAt": "2026-11-10T17:48:39+00:00",
   "metrics": {
-    "citations": 296,
+    "citations": 298,
     "hIndex": 9,
     "i10Index": 9
   },
@@ -97,7 +97,7 @@ window.SCHOLAR_DATA = {
       "authors": "P Wanchoo, A Pandey, M Leger, J LeBlanc, A Shukla",
       "venue": "Journal of the Mechanics and Physics of Solids 187, 105646, 2024",
       "year": "2024",
-      "citations": 21,
+      "citations": 22,
       "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=L0GoOBAAAAAJ&citation_for_view=L0GoOBAAAAAJ%3AY0pCki6q_DkC"
     },
     {
@@ -214,7 +214,7 @@ window.SCHOLAR_DATA = {
       "authors": "P Wanchoo, H Matos, CE Rousseau, A Shukla",
       "venue": "Composite Structures 263, 113530, 2021",
       "year": "2021",
-      "citations": 85,
+      "citations": 86,
       "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=L0GoOBAAAAAJ&citation_for_view=L0GoOBAAAAAJ%3A9yKSN-GCB0IC"
     },
     {
