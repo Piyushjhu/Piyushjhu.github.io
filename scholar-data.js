@@ -3,7 +3,7 @@ window.SCHOLAR_DATA = {
   "profileId": "L0GoOBAAAAAJ",
   "sourceUrl": "https://scholar.google.com/citations?user=L0GoOBAAAAAJ&hl=en",
   "name": "Piyush Wanchoo",
-  "updatedAt": "2026-11-12T18:18:59+00:00",
+  "updatedAt": "2026-11-13T17:43:58+00:00",
   "metrics": {
     "citations": 298,
     "hIndex": 9,
