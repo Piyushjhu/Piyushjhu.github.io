@@ -54,12 +54,12 @@
     const id = `paper-${paper.id}`;
     const paperUrl = safeUrl(paper.url);
     const links = (paper.links || []).filter(link => safeUrl(link.url));
-    return `<article class="research-paper" id="${escape(id)}" tabindex="-1" aria-labelledby="${escape(id)}-title"><header class="research-paper-header"><div><p class="research-paper-meta">${escape(paper.year)} · ${escape(paper.venue)}</p><h4 id="${escape(id)}-title"><a href="#${escape(id)}">${escape(paper.title)}</a></h4></div>${paper.highlight ? `<p class="paper-highlight"><strong>${escape(paper.highlight.value)}</strong><span>${escape(paper.highlight.label)}</span></p>` : ""}</header><p class="paper-description">${escape(paper.summary)}</p>${researchMedia(paper, id)}<div class="paper-findings"><div class="paper-results"><h5>Key results</h5><ul>${(paper.results || []).map(result => `<li>${escape(result)}</li>`).join("")}</ul></div><aside class="paper-importance"><h5>Why it matters</h5><p>${escape(paper.importance)}</p></aside></div>${paper.methods ? `<details class="study-details paper-methods"><summary>How we studied it ${icon("arrow-down")}</summary><p>${escape(paper.methods)}</p></details>` : ""}<footer class="paper-reference"><div><p class="paper-reference-title"><cite>${escape(paper.publicationTitle)}</cite></p><p class="paper-authors">${escape(paper.authors)}</p></div><div class="study-links">${paperUrl ? externalLink(paperUrl, "Read paper") : ""}${links.map(link => externalLink(link.url, link.label)).join("")}</div></footer></article>`;
+    return `<article class="research-paper" id="${escape(id)}" tabindex="-1" aria-labelledby="${escape(id)}-title"><header class="research-paper-header"><div>${paper.publicationType ? `<p class="paper-type${paper.publicationType === "Preprint" ? " paper-type-preprint" : ""}">${escape(paper.publicationType)}</p>` : ""}<p class="research-paper-meta">${escape(paper.year)} · ${escape(paper.venue)}</p><h4 id="${escape(id)}-title"><a href="#${escape(id)}">${escape(paper.title)}</a></h4></div>${paper.highlight ? `<p class="paper-highlight"><strong>${escape(paper.highlight.value)}</strong><span>${escape(paper.highlight.label)}</span></p>` : ""}</header><p class="paper-description">${escape(paper.summary)}</p>${paper.note ? `<p class="paper-note">${escape(paper.note)}</p>` : ""}${researchMedia(paper, id)}<div class="paper-findings"><div class="paper-results"><h5>Key results</h5><ul>${(paper.results || []).map(result => `<li>${escape(result)}</li>`).join("")}</ul></div><aside class="paper-importance"><h5>Why it matters</h5><p>${escape(paper.importance)}</p></aside></div>${paper.methods ? `<details class="study-details paper-methods"><summary>How we studied it ${icon("arrow-down")}</summary><p>${escape(paper.methods)}</p></details>` : ""}<footer class="paper-reference"><div><p class="paper-reference-title"><cite>${escape(paper.publicationTitle)}</cite></p><p class="paper-authors">${escape(paper.authors)}</p></div><div class="study-links">${paperUrl ? externalLink(paperUrl, paper.linkLabel || "Read paper") : ""}${links.map(link => externalLink(link.url, link.label)).join("")}</div></footer></article>`;
   };
   const renderResearchStudies = status => researchStudies.filter(study => study.status === status).map((study, index) => {
     const studyId = `research-${study.id}`;
-    if (study.papers?.length) return `<section class="phd-theme" id="${escape(studyId)}" tabindex="-1" aria-labelledby="${escape(studyId)}-title"><div class="phd-theme-heading"><p class="study-label">0${index + 1} / ${escape(study.label)}</p><h3 id="${escape(studyId)}-title">${escape(study.title)}</h3><p class="study-summary">${escape(study.summary)}</p></div><div class="research-papers">${study.papers.map(renderResearchPaper).join("")}</div></section>`;
     const media = researchMedia(study, studyId);
+    if (study.papers?.length) return `<section class="research-theme" id="${escape(studyId)}" tabindex="-1" aria-labelledby="${escape(studyId)}-title"><div class="research-theme-overview${media ? " has-media" : ""}"><div class="research-theme-heading"><p class="study-label">0${index + 1} / ${escape(study.label)}</p><h3 id="${escape(studyId)}-title">${escape(study.title)}</h3><p class="study-summary">${escape(study.summary)}</p>${status === "active" ? `<div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research context ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}` : ""}</div>${media}</div><div class="research-papers">${study.papers.map(renderResearchPaper).join("")}</div></section>`;
     const links = (study.links || []).filter(link => safeUrl(link.url)).map(link => externalLink(link.url, link.label)).join("");
     return `<article class="research-study${media ? " has-media" : ""}" id="${escape(studyId)}">${media || `<div class="study-marker" aria-hidden="true"><span>${status === "active" ? "EXPLORING" : "FOUNDATIONS"}</span><strong>0${index + 1}</strong></div>`}<div class="study-copy"><p class="study-label">${escape(study.label)}</p><h3>${escape(study.title)}</h3><p class="study-institution">${escape(study.institution)}</p><p class="study-summary">${escape(study.summary)}</p><div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research details ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}${links ? `<div class="study-links">${links}</div>` : ""}</div></article>`;
   }).join("");
@@ -256,18 +256,25 @@
   }));
 
   const publications = content.publications || [];
+  const conferencePublications = content.conferencePublications || [];
   const explainedPapers = researchStudies.flatMap(study => study.papers || []);
   const paperTitleKey = title => String(title || "").toLowerCase().replace(/[^a-z0-9]/g, "");
   const allPapersButton = $('[data-paper-filter="all"]');
   if (allPapersButton) allPapersButton.textContent = `Journal articles (${publications.length})`;
+  const conferencePapersButton = $('[data-paper-filter="conference"]');
+  if (conferencePapersButton) {
+    conferencePapersButton.hidden = !conferencePublications.length;
+    conferencePapersButton.textContent = `Conference papers (${conferencePublications.length})`;
+  }
   const scholarPapersButton = $('[data-paper-filter="scholar"]');
   if (scholarPapersButton && scholar) {
     scholarPapersButton.hidden = false;
     scholarPapersButton.textContent = `Google Scholar (${scholarPapers.length})`;
   }
   const renderPublications = (filter = "selected") => {
-    const papers = filter === "scholar" ? scholarPapers : filter === "progress" ? (content.manuscripts || []) : filter === "all" ? publications : publications.filter(paper => paper.featured);
-    $("#publication-source-note").textContent = filter === "scholar" && scholar ? `Google Scholar · Updated ${scholarUpdated} · Includes journal papers, preprints, and other works` : scholar ? `Journal and manuscript details: September 2026 CV · Scholar metrics updated ${scholarUpdated}` : "Publication details and metrics: September 2026 CV";
+    const papers = filter === "scholar" ? scholarPapers : filter === "progress" ? (content.manuscripts || []) : filter === "conference" ? conferencePublications : filter === "all" ? publications : publications.filter(paper => paper.featured);
+    const bibliographySource = "Curated bibliography: September 2026 CV and verified postdoctoral publication updates";
+    $("#publication-source-note").textContent = filter === "scholar" && scholar ? `Google Scholar · Updated ${scholarUpdated} · Includes journal papers, preprints, and other works` : scholar ? `${bibliographySource} · Scholar metrics updated ${scholarUpdated}` : bibliographySource;
     $("#publications").innerHTML = papers.length ? papers.map(publication => {
     const paperUrl = safeUrl(publication.url);
     const pdfUrl = safeUrl(publication.pdf, true);

@@ -47,6 +47,30 @@ window.SITE_CONTENT = {
         { title: "The question", text: "How much of the variation in spall strength comes from the material, and how much comes from the experiment? I study the effects of composition, microstructure, and loading history, using repeated measurements to distinguish trends from experimental variability." },
         { title: "Current work", text: "After studying the statistics of spall in copper, I’m now examining Cu–Ti, Al–Mg, and Ti–V alloys. I’m interested in how composition and loading rate change their dynamic strength, and which physical mechanisms explain those changes." }
       ],
+      papers: [
+        {
+          id: "copper-spall-statistics",
+          title: "What repeated impact tests reveal about copper failure",
+          publicationTitle: "High-throughput dynamic experiments: The statistics of spall failure at ultra-high strain rates",
+          authors: "P. Wanchoo, R. Berlia, T.P. Weihs, K.T. Ramesh",
+          venue: "Journal of the Mechanics and Physics of Solids · 210, 106523",
+          year: "2026",
+          publicationType: "Journal article",
+          url: "https://doi.org/10.1016/j.jmps.2026.106523",
+          summary: "Spall is internal fracture caused by tensile waves after impact. To understand how copper resists this failure, we combined automated laser-driven microflyer experiments with automated analysis of surface-velocity measurements. Repeated tests on two well-characterized copper microstructures let us examine how grain structure, loading rate, and prior shock stress influence strength and its variability.",
+          highlight: {
+            value: "173",
+            label: "Spall experiments across two high-purity copper microstructures: 98 on submicron-grained copper and 75 on microcrystalline copper."
+          },
+          results: [
+            "Spall strength increased strongly with tensile strain rate. Within comparable shock-stress groups, faster tensile loading produced higher measured spall strength.",
+            "Copper with an area-weighted mean grain size of 300 nm generally showed higher spall strength than the annealed material with a mean grain size of 8.21 µm under the tested laser-driven impact conditions.",
+            "Prior shock stress had a weaker, microstructure-dependent influence. The microcrystalline dataset showed softening at high shock stresses, while the submicron-grained material did not show the same clear trend."
+          ],
+          importance: "Dynamic failure cannot be characterized by a single strength value. A statistically rich dataset helps compare microstructures under relevant loading conditions, test models of void-driven fracture, and identify where additional measurements could reduce uncertainty when designing materials for extreme loading.",
+          methods: "Laser-launched microflyers impacted high-purity copper specimens. Photonic Doppler velocimetry measured rear-surface motion, and an automated analysis pipeline extracted spall strength, tensile strain rate, and shock stress. Electron backscatter diffraction characterized grain-size distributions; statistical binning and Gaussian-process regression examined coupled loading effects."
+        }
+      ],
       links: [{ label: "Read the copper spall study", url: "https://doi.org/10.1016/j.jmps.2026.106523" }]
     },
     {
@@ -60,6 +84,76 @@ window.SITE_CONTENT = {
       details: [
         { title: "The facility", text: "HELIX combines automated experiments with rapid data analysis. This makes it practical to collect repeated measurements and compare strength and failure across compositions, microstructures, and loading conditions." },
         { title: "Part of AIMD-L", text: "HELIX provides dynamic measurements within AIMD-L, alongside material synthesis, characterization, and machine-learning workflows. The goal is to use results from each stage to guide the materials and experiments we try next." }
+      ],
+      papers: [
+        {
+          id: "helix-automation",
+          title: "Making repeated impact experiments faster and more consistent",
+          publicationTitle: "A Closed-Loop Automation Framework for High-Throughput Laser-Driven Micro-flyer Impact Experiments",
+          authors: "A. Bhattacharjee, K. Muly, P. Wanchoo, S. A. Sreedhar, L. Rackers, J. Rentas-Velez, P. Addepalli, K. T. Ramesh, A. Krieger",
+          venue: "Integrating Materials and Manufacturing Innovation",
+          year: "2026",
+          url: "https://doi.org/10.1007/s40192-026-00482-1",
+          publicationType: "Journal article",
+          summary: "Repeated impact tests require precise positioning, controlled laser power, and reliable velocity measurements. We developed an integrated automation framework for laser-driven micro-flyer experiments that uses camera and diagnostic feedback to coordinate these steps, regulate flyer velocity, and record experimental parameters and results.",
+          results: [
+            "Twenty-five impact tests took approximately four minutes, about eight times faster than the manual operation used for comparison.",
+            "Detection succeeded for 100.0% of aluminum, 97.3% of copper, and 100.0% of titanium flyers, although the model trained only on aluminum and copper images.",
+            "Positioning root-mean-square errors were 31.4 μm in x and 35.2 μm in y. Feedback also supported shoot/skip decisions and diagnostic signal optimization during operation."
+          ],
+          importance: "Reliable repeated experiments make it practical to collect richer datasets on dynamic material behavior. Integrating positioning, feedback, and logging helps reduce repetitive work and preserve the information needed to compare results and trace experimental conditions.",
+          methods: "An EfficientNet-based vision model guided positioning. A unified control interface coordinated laser power, triggering, photonic Doppler velocimetry, and feedback, with validation across multiple flyer materials.",
+          note: "Published October 23, 2026.",
+          highlight: {
+            value: "8×",
+            label: "Approximate experimental throughput improvement compared with manual operation in this study."
+          }
+        },
+        {
+          id: "flyer-positioning",
+          title: "Finding and aligning tiny flyers automatically",
+          publicationTitle: "Closed Loop Vision Guided Control of Flyer Position for High-Throughput Laser Shock Experiments",
+          authors: "H. Wang, J. M. Diamond, A. Bhattacharjee, P. Wanchoo, A. Mirzaei, L. Li, T. J. Nkansah-Mahaney, K. Ramesh, A. Krieger",
+          venue: "ASME IMECE 2024 · Volume 5: Dynamics, Vibration, and Control · V005T07A065",
+          year: "2024",
+          url: "https://doi.org/10.1115/IMECE2024-145264",
+          publicationType: "Conference paper",
+          summary: "Positioning tiny flyers by hand can slow laser-impact testing and introduce variability. We combined a camera-based neural-network detector with two motorized stages in a closed-loop “see-move-shoot” routine that finds a flyer, centers it, triggers the laser, checks the impact, and advances to the next sample.",
+          results: [
+            "An EfficientNetB0 detector trained on 16,000 labeled images achieved a detection root-mean-square error of 0.038 mm under challenging exposure, low-light, and blurry-image conditions.",
+            "The automated see-move-shoot cycle took 7.46 seconds per shot, compared with 19.2 seconds for an expert and 30.6 seconds for a novice.",
+            "For that tested cycle, automation was approximately 2.5 times faster than the expert and four times faster than the novice. These comparisons describe the cycle rather than total daily facility throughput."
+          ],
+          importance: "Automated alignment addresses a repetitive bottleneck in high-throughput impact testing. Pairing vision with motion control can make positioning more consistent, while the timed comparison shows how this component contributes to a broader automated experimental workflow.",
+          methods: "Two automated linear stages positioned flyers using camera feedback. The study trained a convolutional neural network under varied lighting and compared automated operation with novice and expert users.",
+          note: "IMECE 2024 proceedings; published online January 23, 2025."
+        },
+        {
+          id: "aimdl-laboratory",
+          title: "Connecting materials measurements in an automated laboratory",
+          publicationTitle: "AIMD-L: An automated laboratory for high-throughput characterization of structural materials for extreme environments",
+          authors: "T.C. Hufnagel, P. Addepalli, A. Bhattacharjee, R. Berlia, J. El-Awady, D. Elbert, L. Graham-Brady, A. Krieger, H. Neralla, T.J. Nkansah-Mahaney, M.M. Omar, H.S. Park, K.T. Ramesh, M. Shaeffer, E. Walker, P. Wanchoo, T.P. Weihs",
+          venue: "arXiv:2603.06835v1",
+          year: "2026",
+          publicationType: "Preprint",
+          url: "https://arxiv.org/abs/2603.06835v1",
+          summary: "Understanding structural materials requires measurements that connect composition and microstructure to mechanical behavior. AIMD-L combines robotic sample transport, complementary instruments, and automated data processing in one laboratory. The preprint describes how this infrastructure collects and connects measurements of bulk metals and ceramics, providing data that people and AI tools can use to guide further experiments.",
+          results: [
+            "Robotic handling links HELIX impact testing, MAXIMA X-ray diffraction and fluorescence, and SPHINX nanoindentation. A shared data layer automates data transfer and processing, making results available through a common portal.",
+            "HELIX and MAXIMA report data-collection rates two to three orders of magnitude faster than conventional counterparts. For HELIX, the comparison is thousands of impact tests per day versus a handful using conventional gun-driven experiments.",
+            "In the Cu–Ti demonstration, elastic modulus, shock elastic limit, and copper lattice parameter peaked near 3 atomic percent Ti, while hardness continued to increase across the tested composition range. Different measurements therefore revealed distinct property trends."
+          ],
+          importance: "Combining measurements on a shared set of materials makes it easier to connect chemistry, structure, and performance. The Cu–Ti example shows why several probes are needed. This infrastructure supports rapid screening and future model-guided experiments while preserving the context behind each measurement.",
+          methods: "A central run manager coordinates instruments and robotic sample transfers. Event-driven workflows stream, reduce, and index measurements and metadata. A compositionally graded Cu–Ti sample demonstrates the combined measurements. The current configuration characterizes materials; fully automated optimization that also changes microstructure remains a future development.",
+          links: [
+            {
+              label: "Read the preprint PDF",
+              url: "https://arxiv.org/pdf/2603.06835v1"
+            }
+          ],
+          linkLabel: "Read preprint",
+          note: "Preprint posted March 6, 2026; not peer reviewed."
+        }
       ],
       links: [{ label: "Read the AIMD-L preprint", url: "https://arxiv.org/abs/2603.06835" }]
     },
@@ -424,7 +518,7 @@ window.SITE_CONTENT = {
     }
   ],
   publications: [
-    { title: "Closed-loop automation of a high-throughput laser-driven impact system for accelerated shock physics discovery", authors: "A. Bhattacharjee, K. Muly, P. Wanchoo, S.A. Sreedhar, L. Rackers, J. Rentas-Velez, P. Addepalli, K.T. Ramesh, A. Krieger", venue: "Integrating Materials and Manufacturing Innovation", year: "Accepted", featured: true },
+    { title: "A Closed-Loop Automation Framework for High-Throughput Laser-Driven Micro-flyer Impact Experiments", authors: "A. Bhattacharjee, K. Muly, P. Wanchoo, S. A. Sreedhar, L. Rackers, J. Rentas-Velez, P. Addepalli, K. T. Ramesh, A. Krieger", venue: "Integrating Materials and Manufacturing Innovation", year: "2026", url: "https://doi.org/10.1007/s40192-026-00482-1", note: "Published October 23, 2026", featured: true },
     { title: "High-throughput dynamic experiments: the statistics of spall failure at ultra-high strain rates", authors: "P. Wanchoo, R. Berlia, T.P. Weihs, K.T. Ramesh", venue: "Journal of the Mechanics and Physics of Solids · 210, 106523", year: "2026", url: "https://doi.org/10.1016/j.jmps.2026.106523", featured: true },
     { title: "Near-field underwater explosion and its interaction with a sandwich composite plate", authors: "A. Pandey, P. Wanchoo, H. Matos, J. LeBlanc, A. Shukla", venue: "International Journal of Impact Engineering · 196, 105155", year: "2025", url: "https://doi.org/10.1016/j.ijimpeng.2024.105155" },
     { title: "Shear constitutive behavior of closed-cell PVC foams at varied loading rates", authors: "A. Pandey, P. Wanchoo, A. Shukla", venue: "Journal of Dynamic Behavior of Materials · 11(4), 534–545", year: "2025", url: "https://doi.org/10.1007/s40870-025-00477-7" },
@@ -438,6 +532,9 @@ window.SITE_CONTENT = {
     { title: "A large deformation model for quasi-static to high strain rate response of a rate-stiffening soft polymer", authors: "A. Konale, Z. Ahmed, P. Wanchoo, V. Srivastava", venue: "International Journal of Plasticity · 168, 103701", year: "2023", url: "https://doi.org/10.1016/j.ijplas.2023.103701" },
     { title: "Hydrostatic high strain rate loading response of closed-cell polymeric foams as a function of mass density", authors: "P. Wanchoo, S. Kishore, A. Shukla", venue: "Composites Part B: Engineering · 247, 110318", year: "2022", url: "https://doi.org/10.1016/j.compositesb.2022.110318" },
     { title: "Investigations on air and underwater blast mitigation in polymeric composite structures: a review", authors: "P. Wanchoo, H. Matos, C.E. Rousseau, A. Shukla", venue: "Composite Structures · 263, 113530", year: "2021", url: "https://doi.org/10.1016/j.compstruct.2020.113530" }
+  ],
+  conferencePublications: [
+    { title: "Closed Loop Vision Guided Control of Flyer Position for High-Throughput Laser Shock Experiments", authors: "H. Wang, J. M. Diamond, A. Bhattacharjee, P. Wanchoo, A. Mirzaei, L. Li, T. J. Nkansah-Mahaney, K. Ramesh, A. Krieger", venue: "ASME IMECE 2024 · Volume 5: Dynamics, Vibration, and Control · V005T07A065", year: "2024", url: "https://doi.org/10.1115/IMECE2024-145264", note: "IMECE 2024 proceedings; published online January 23, 2025." }
   ],
   manuscripts: [
     { title: "AIMD-L: an automated laboratory for high-throughput characterization of structural materials for extreme environments", authors: "T.C. Hufnagel, P. Addepalli, A. Bhattacharjee, R. Berlia, J. El-Awady, D. Elbert, L. Graham-Brady, A. Krieger, H. Neralla, T.J. Nkansah-Mahaney, M.M. Omar, H.S. Park, K.T. Ramesh, M. Shaeffer, E. Walker, P. Wanchoo, T.P. Weihs", venue: "arXiv:2603.06835", year: "2026 · Preprint", url: "https://arxiv.org/abs/2603.06835", pdf: "https://arxiv.org/pdf/2603.06835" },
