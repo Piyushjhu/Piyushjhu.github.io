@@ -150,4 +150,79 @@ assert.ok(!news(hostile).includes("javascript:"));
 assert.ok(hostile.query("#news-source-note").textContent.includes("Sep 1, 2026"));
 const foreign = render({mutate: window => { window.SCHOLAR_DATA.profileId = "another-profile"; }});
 assert.equal(foreign.query('[data-paper-filter="scholar"]').hidden, true);
-console.log("Scholar and news UI checks passed: metrics, new paper updates, filters, October 14 talk, event date transitions, New York dates, missing data, source identity, escaping, and cached update dates.");
+
+// Paper explanations keep the findings visible while allowing methods and media to be optional.
+const paperArticles = page => [...page.query("#past-research").innerHTML.matchAll(/<article class="research-paper"[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]);
+const paperById = (page, id) => paperArticles(page).find(article => article.includes(`id="paper-${id}"`)) || "";
+const explained = page.window.SITE_CONTENT.researchStudies.flatMap(study => study.papers || []);
+assert.equal(explained.length, 4);
+assert.equal(paperArticles(page).length, 4);
+for (const paper of explained) {
+  const article = paperById(page, paper.id);
+  const visibleReading = article.replace(/<details\b[\s\S]*?<\/details>/g, "");
+  assert.ok(visibleReading.includes('class="paper-description"'));
+  assert.match(visibleReading, /<h5>Key results<\/h5><ul><li>.+<\/li><\/ul>/);
+  assert.match(visibleReading, /<h5>Why it matters<\/h5><p>.+<\/p>/);
+  assert.ok(article.includes(`aria-labelledby="paper-${paper.id}-title"`));
+  assert.ok(article.includes(`href="${paper.url}"`));
+  assert.ok(!article.includes("<figure") && !article.includes("<video") && !article.includes("<img"));
+}
+page.query('[data-research-tab="past"]').click();
+assert.equal(page.query("#research-panel-past").hidden, false);
+assert.equal(page.query("#research-panel-active").hidden, true);
+page.query('[data-paper-filter="all"]').click();
+for (const paper of explained) assert.ok(page.query("#publications").innerHTML.includes(`href="#paper-${paper.id}"`));
+page.query('[data-paper-filter="progress"]').click();
+assert.ok(!page.query("#publications").innerHTML.includes("Results &amp; significance"));
+
+const withoutMethods = render({mutate: window => {
+  delete window.SITE_CONTENT.researchStudies.find(study => study.papers?.length).papers[0].methods;
+}});
+assert.ok(!paperById(withoutMethods, explained[0].id).includes('class="study-details paper-methods"'));
+assert.ok(paperById(withoutMethods, explained[1].id).includes('class="study-details paper-methods"'));
+const scholarPunctuation = render({mutate: window => {
+  const paper = window.SITE_CONTENT.researchStudies.find(study => study.papers?.length).papers[0];
+  window.SCHOLAR_DATA.publications[0].title = paper.publicationTitle.toUpperCase().replaceAll("-", " ") + ".";
+}});
+const scholarFirst = scholarPunctuation.query("#publications").innerHTML.match(/<article class="publication">[\s\S]*?<\/article>/)[0];
+assert.ok(scholarFirst.includes(`href="#paper-${explained[0].id}"`));
+
+const hostilePaper = render({mutate: window => {
+  const paper = window.SITE_CONTENT.researchStudies.find(study => study.papers?.length).papers[0];
+  paper.title = '<img src=x onerror="title()">';
+  paper.summary = '<script>summary()</script>';
+  paper.results = ['<svg onload="result()">'];
+  paper.importance = '</aside><img src=x onerror="importance()">';
+  paper.url = "javascript:paper()";
+  paper.links = [{label: "Unsafe link", url: "javascript:extra()"}];
+  paper.image = "javascript:image()";
+}});
+const hostileArticle = paperById(hostilePaper, explained[0].id);
+for (const expected of [
+  '&lt;img src=x onerror=&quot;title()&quot;&gt;',
+  '&lt;script&gt;summary()&lt;/script&gt;',
+  '&lt;svg onload=&quot;result()&quot;&gt;',
+  '&lt;/aside&gt;&lt;img src=x onerror=&quot;importance()&quot;&gt;'
+]) assert.ok(hostileArticle.includes(expected));
+assert.ok(!hostileArticle.includes("javascript:") && !hostileArticle.includes("Unsafe link"));
+assert.ok(!hostileArticle.includes("<img") && !hostileArticle.includes("<script") && !hostileArticle.includes("<figure"));
+
+const withMedia = render({mutate: window => {
+  const papers = window.SITE_CONTENT.researchStudies.flatMap(study => study.papers || []);
+  Object.assign(papers[0], {video: "./assets/research/example.mp4", caption: "Pressure & deformation", mediaLabel: "Underwater experiment"});
+  Object.assign(papers[1], {image: "./assets/research/example.jpg", imageAlt: "Crack & strain field", caption: "Measured strain field"});
+  Object.assign(papers[2], {video: "./assets/research/example.mp4"});
+}});
+const videoPaper = paperById(withMedia, explained[0].id);
+assert.match(videoPaper, /<video controls playsinline preload="none"/);
+assert.ok(!videoPaper.includes("autoplay"));
+assert.ok(videoPaper.includes(`aria-describedby="paper-${explained[0].id}-caption"`));
+assert.ok(videoPaper.includes(`<figcaption id="paper-${explained[0].id}-caption">Pressure &amp; deformation</figcaption>`));
+assert.ok(videoPaper.includes('aria-label="Underwater experiment"'));
+const imagePaper = paperById(withMedia, explained[1].id);
+assert.ok(imagePaper.includes('alt="Crack &amp; strain field"'));
+assert.ok(imagePaper.includes(`<figcaption id="paper-${explained[1].id}-caption">Measured strain field</figcaption>`));
+const uncaptionedPaper = paperById(withMedia, explained[2].id);
+assert.ok(uncaptionedPaper.includes("<video"));
+assert.ok(!uncaptionedPaper.includes("aria-describedby") && !uncaptionedPaper.includes("<figcaption"));
+console.log("Scholar, news, and research UI checks passed: publication filters and explanation links, visible Ph.D. findings, optional methods and accessible media, hostile content escaping, news timing, source identity, and cached update dates.");

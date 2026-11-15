@@ -41,15 +41,27 @@
   $("#research-vision-description").textContent = researchVision.description || "";
   $("#research-steps").innerHTML = (researchVision.steps || []).map((step, index) => `<li><span class="research-step-number">0${index + 1}</span><h4>${escape(step.title)}</h4><p>${escape(step.text)}</p></li>`).join("");
   const researchStudies = content.researchStudies || [];
+  const researchMedia = (item, id) => {
+    const videoUrl = safeUrl(item.video, true);
+    const imageUrl = safeUrl(item.image, true);
+    const posterUrl = safeUrl(item.poster, true);
+    const captionId = `${id}-caption`;
+    const describedBy = item.caption ? ` aria-describedby="${escape(captionId)}"` : "";
+    const media = videoUrl ? `<video controls playsinline preload="none"${posterUrl ? ` poster="${escape(posterUrl)}"` : ""} width="1920" height="1080" aria-label="${escape(item.mediaLabel || item.title)}"${describedBy}><source src="${escape(videoUrl)}" type="video/mp4" /><p>Your browser does not support this video. <a href="${escape(videoUrl)}">Download the video</a>.</p></video>` : imageUrl ? `<img src="${escape(imageUrl)}" alt="${escape(item.imageAlt || item.title)}" width="${escape(item.imageWidth || 1680)}" height="${escape(item.imageHeight || 1036)}" loading="lazy" />` : "";
+    return media ? `<figure class="study-media">${media}${item.caption ? `<figcaption id="${escape(captionId)}">${escape(item.caption)}${item.imageCredit ? `<span class="study-credit">${escape(item.imageCredit)}</span>` : ""}</figcaption>` : ""}</figure>` : "";
+  };
+  const renderResearchPaper = paper => {
+    const id = `paper-${paper.id}`;
+    const paperUrl = safeUrl(paper.url);
+    const links = (paper.links || []).filter(link => safeUrl(link.url));
+    return `<article class="research-paper" id="${escape(id)}" tabindex="-1" aria-labelledby="${escape(id)}-title"><header class="research-paper-header"><div><p class="research-paper-meta">${escape(paper.year)} · ${escape(paper.venue)}</p><h4 id="${escape(id)}-title"><a href="#${escape(id)}">${escape(paper.title)}</a></h4></div>${paper.highlight ? `<p class="paper-highlight"><strong>${escape(paper.highlight.value)}</strong><span>${escape(paper.highlight.label)}</span></p>` : ""}</header><p class="paper-description">${escape(paper.summary)}</p>${researchMedia(paper, id)}<div class="paper-findings"><div class="paper-results"><h5>Key results</h5><ul>${(paper.results || []).map(result => `<li>${escape(result)}</li>`).join("")}</ul></div><aside class="paper-importance"><h5>Why it matters</h5><p>${escape(paper.importance)}</p></aside></div>${paper.methods ? `<details class="study-details paper-methods"><summary>How we studied it ${icon("arrow-down")}</summary><p>${escape(paper.methods)}</p></details>` : ""}<footer class="paper-reference"><div><p class="paper-reference-title"><cite>${escape(paper.publicationTitle)}</cite></p><p class="paper-authors">${escape(paper.authors)}</p></div><div class="study-links">${paperUrl ? externalLink(paperUrl, "Read paper") : ""}${links.map(link => externalLink(link.url, link.label)).join("")}</div></footer></article>`;
+  };
   const renderResearchStudies = status => researchStudies.filter(study => study.status === status).map((study, index) => {
-    const videoUrl = safeUrl(study.video, true);
-    const imageUrl = safeUrl(study.image, true);
-    const posterUrl = safeUrl(study.poster, true);
     const studyId = `research-${study.id}`;
-    const captionId = `${studyId}-caption`;
-    const media = videoUrl ? `<video controls playsinline preload="none"${posterUrl ? ` poster="${escape(posterUrl)}"` : ""} width="1920" height="1080" aria-label="${escape(study.mediaLabel || study.title)}" aria-describedby="${escape(captionId)}"><source src="${escape(videoUrl)}" type="video/mp4" /><p>Your browser does not support this video. <a href="${escape(videoUrl)}">Download the animation</a>.</p></video>` : imageUrl ? `<img src="${escape(imageUrl)}" alt="${escape(study.imageAlt || study.title)}" width="1680" height="1036" loading="lazy" />` : "";
+    if (study.papers?.length) return `<section class="phd-theme" id="${escape(studyId)}" tabindex="-1" aria-labelledby="${escape(studyId)}-title"><div class="phd-theme-heading"><p class="study-label">0${index + 1} / ${escape(study.label)}</p><h3 id="${escape(studyId)}-title">${escape(study.title)}</h3><p class="study-summary">${escape(study.summary)}</p></div><div class="research-papers">${study.papers.map(renderResearchPaper).join("")}</div></section>`;
+    const media = researchMedia(study, studyId);
     const links = (study.links || []).filter(link => safeUrl(link.url)).map(link => externalLink(link.url, link.label)).join("");
-    return `<article class="research-study${media ? " has-media" : ""}" id="${escape(studyId)}">${media ? `<figure class="study-media">${media}<figcaption id="${escape(captionId)}">${escape(study.caption)}${study.imageCredit ? `<span class="study-credit">${escape(study.imageCredit)}</span>` : ""}</figcaption></figure>` : `<div class="study-marker" aria-hidden="true"><span>${status === "active" ? "EXPLORING" : "FOUNDATIONS"}</span><strong>0${index + 1}</strong></div>`}<div class="study-copy"><p class="study-label">${escape(study.label)}</p><h3>${escape(study.title)}</h3><p class="study-institution">${escape(study.institution)}</p><p class="study-summary">${escape(study.summary)}</p><div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research details ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}${links ? `<div class="study-links">${links}</div>` : ""}</div></article>`;
+    return `<article class="research-study${media ? " has-media" : ""}" id="${escape(studyId)}">${media || `<div class="study-marker" aria-hidden="true"><span>${status === "active" ? "EXPLORING" : "FOUNDATIONS"}</span><strong>0${index + 1}</strong></div>`}<div class="study-copy"><p class="study-label">${escape(study.label)}</p><h3>${escape(study.title)}</h3><p class="study-institution">${escape(study.institution)}</p><p class="study-summary">${escape(study.summary)}</p><div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research details ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}${links ? `<div class="study-links">${links}</div>` : ""}</div></article>`;
   }).join("");
   $("#active-research").innerHTML = renderResearchStudies("active");
   $("#past-research").innerHTML = renderResearchStudies("past");
@@ -77,15 +89,22 @@
       activateResearchTab(researchTabs[next].dataset.researchTab, true);
     });
   });
-  const revealResearchAnchor = () => {
-    const hash = window.location.hash.slice(1);
+  const revealResearchAnchor = (hash = window.location.hash.slice(1), moveFocus = false) => {
     const anchor = document.getElementById(hash);
     const panel = anchor?.closest('[role="tabpanel"]');
     if (!panel || !panel.id.startsWith("research-panel-")) return;
     activateResearchTab(panel.id.slice("research-panel-".length));
-    window.requestAnimationFrame(() => anchor.scrollIntoView({block: "start"}));
+    window.requestAnimationFrame(() => {
+      anchor.scrollIntoView({block: "start"});
+      if (moveFocus) anchor.focus({preventScroll: true});
+    });
   };
-  window.addEventListener("hashchange", revealResearchAnchor);
+  $("#research").addEventListener("click", event => {
+    const link = event.target.closest('a[href^="#"]');
+    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    revealResearchAnchor(link.getAttribute("href").slice(1), true);
+  });
+  window.addEventListener("hashchange", () => revealResearchAnchor(window.location.hash.slice(1), true));
   revealResearchAnchor();
   $("#about-bio").innerHTML = content.bio.map(paragraph => `<p>${escape(paragraph)}</p>`).join("");
   $("#interests").innerHTML = content.interests.map(interest => `<span>${escape(interest)}</span>`).join("");
@@ -237,6 +256,8 @@
   }));
 
   const publications = content.publications || [];
+  const explainedPapers = researchStudies.flatMap(study => study.papers || []);
+  const paperTitleKey = title => String(title || "").toLowerCase().replace(/[^a-z0-9]/g, "");
   const allPapersButton = $('[data-paper-filter="all"]');
   if (allPapersButton) allPapersButton.textContent = `Journal articles (${publications.length})`;
   const scholarPapersButton = $('[data-paper-filter="scholar"]');
@@ -250,7 +271,8 @@
     $("#publications").innerHTML = papers.length ? papers.map(publication => {
     const paperUrl = safeUrl(publication.url);
     const pdfUrl = safeUrl(publication.pdf, true);
-    return `<article class="publication"><div class="publication-summary"><div><p class="publication-year">${escape(publication.year)}</p><h3>${escape(publication.title)}</h3><p class="publication-meta publication-authors">${escape(publication.authors).replaceAll("P. Wanchoo", "<strong>P. Wanchoo</strong>")}</p>${publication.venue ? `<p class="publication-meta">${escape(publication.venue)}</p>` : ""}${publication.note ? `<p class="publication-note">${escape(publication.note)}</p>` : ""}</div><div class="publication-actions">${paperUrl ? externalLink(paperUrl, publication.source === "scholar" ? "View on Scholar" : "Read paper", "paper-link") : ""}${pdfUrl ? externalLink(pdfUrl, "PDF", "paper-link") : ""}</div></div>${publication.abstract ? `<details><summary>Read abstract</summary><p>${escape(publication.abstract)}</p></details>` : ""}</article>`;
+    const explanation = explainedPapers.find(paper => paper.url === paperUrl || paperTitleKey(paper.publicationTitle) === paperTitleKey(publication.title));
+    return `<article class="publication"><div class="publication-summary"><div><p class="publication-year">${escape(publication.year)}</p><h3>${escape(publication.title)}</h3><p class="publication-meta publication-authors">${escape(publication.authors).replaceAll("P. Wanchoo", "<strong>P. Wanchoo</strong>")}</p>${publication.venue ? `<p class="publication-meta">${escape(publication.venue)}</p>` : ""}${publication.note ? `<p class="publication-note">${escape(publication.note)}</p>` : ""}</div><div class="publication-actions">${explanation ? `<a class="paper-link" href="#paper-${escape(explanation.id)}">Results &amp; significance ${icon("arrow-up-right")}</a>` : ""}${paperUrl ? externalLink(paperUrl, publication.source === "scholar" ? "View on Scholar" : "Read paper", "paper-link") : ""}${pdfUrl ? externalLink(pdfUrl, "PDF", "paper-link") : ""}</div></div>${publication.abstract ? `<details><summary>Read abstract</summary><p>${escape(publication.abstract)}</p></details>` : ""}</article>`;
   }).join("") : '<div class="publication-empty"><p>No publications in this category.</p></div>';
   };
   const activatePaperFilter = name => {

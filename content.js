@@ -83,6 +83,42 @@ window.SITE_CONTENT = {
         { title: "The approach", text: "Working with Arun Shukla, I designed and built experimental facilities and combined high-speed imaging, full-field measurements, and pressure instrumentation to characterize structural response under rapid loading." },
         { title: "Materials studied", text: "I examined how material architecture and protective layers affect damage and energy transfer in rubber-modified composite laminates and PVC foam-cladded composite plates." }
       ],
+      papers: [
+        {
+          id: "underwater-energy",
+          title: "Why bubble collapse matters in underwater blast",
+          publicationTitle: "Energy quantification framework for underwater explosive loading into PVC foam cladded composite plates",
+          authors: "P. Wanchoo, A. Pandey, M. Leger, J. LeBlanc, A. Shukla",
+          venue: "Journal of the Mechanics and Physics of Solids · 187, 105646",
+          year: "2024", url: "https://doi.org/10.1016/j.jmps.2024.105646",
+          summary: "An underwater explosion can load a structure through both an initial shock and the later collapse of the explosion bubble. We developed an energy framework and experiments to follow this sequence in clamped carbon-fiber composite plates, then tested whether sacrificial PVC foam on the explosive-facing surface could reduce deformation and damage.",
+          highlight: { value: "50%", label: "Less center-point deflection during bubble collapse vs. an uncladded plate, in these tests." },
+          results: [
+            "The largest energy transfer and most severe observed damage occurred during bubble collapse. The energy analysis identified the accompanying water flow as a major contributor to this later loading.",
+            "Foam cladding reduced center-point deflection by about 22% during the initial shock and 50% during bubble-collapse loading, compared with the uncladded plate.",
+            "Cladding density changed the energy response: H80 foam reduced plate kinetic energy, while the denser H130 and H200 claddings increased it. Deflection alone therefore did not capture every design tradeoff."
+          ],
+          importance: "Marine protection must account for the full underwater loading sequence, including bubble collapse. This framework helps compare protective layers by tracing how the explosion transfers energy into a structure, while the experiments show why cladding density should be assessed alongside deformation and damage.",
+          methods: "Pressure sensors and high-speed cameras tracked the blast, bubble, and plate motion. Stereo digital image correlation measured surface deformation and strain. The analytical model accounted for a spherical incident wave and separated radiated and after-flow energy; its strain-energy estimates assume no substantial structural damage."
+        },
+        {
+          id: "rubber-composites",
+          title: "Changing the resin to control blast damage",
+          publicationTitle: "Blast failure and energy analysis of rubber-modified carbon-fiber vinyl-ester composite laminates",
+          authors: "P. Wanchoo, B. Chaudhary, H.-W.-X. Li, H. Matos, A. Shukla",
+          venue: "Mechanics of Materials · 183, 104685",
+          year: "2023", url: "https://doi.org/10.1016/j.mechmat.2023.104685",
+          summary: "The resin surrounding reinforcing fibers can change a composite's response to blast. We fabricated carbon-fiber laminates with conventional and rubber-modified vinyl-ester resins, characterized their properties, and compared their response to controlled air shock. Full-field measurements let us examine vibration, deformation energy, and crack development under loads below and above the onset of damage.",
+          results: [
+            "Under low-intensity shock, rubber-modified panels showed a roughly 50% higher damping factor and greater energy dissipation than panels with conventional resin.",
+            "Under damaging shock loads, modified panels deformed more slowly and showed greater crack arrest and shorter through-panel cracks.",
+            "Rubber modification reduced resin stiffness and strength. The damping and damage benefits therefore came with a material-property tradeoff."
+          ],
+          importance: "A composite's matrix can influence how blast-induced motion dies out and how cracks spread. These results give designers a way to assess resin modification alongside fiber architecture, balancing stiffness and strength against damping and resistance to damage growth.",
+          methods: "A shock tube applied repeatable air-shock loads to clamped panels. High-speed stereo imaging and 3D digital image correlation measured deformation and strain, supporting estimates of kinetic and strain energy. Resin characterization and structural vibration tests connected the panel response to material behavior.",
+          links: [{ label: "Read the corrigendum", url: "https://doi.org/10.1016/j.mechmat.2023.104784" }]
+        }
+      ],
       links: [{ label: "Energy transfer under underwater loading", url: "https://doi.org/10.1016/j.jmps.2024.105646" }, { label: "Composite laminate failure", url: "https://doi.org/10.1016/j.mechmat.2023.104685" }]
     },
     {
@@ -92,7 +128,41 @@ window.SITE_CONTENT = {
       institution: "Ph.D. research · University of Rhode Island", tags: ["Polymeric foams", "Stress waves", "Dynamic response"],
       details: [
         { title: "The question", text: "How do foam density and loading conditions affect deformation, stress-wave propagation, and the force transmitted through a protective layer?" },
-        { title: "The approach", text: "I used air shock and water-filled shock tubes, with three-dimensional digital image correlation to measure deformation in the foams." }
+        { title: "The approach", text: "I combined controlled air shock and rapid underwater pressure loading with high-speed imaging and digital image correlation to measure deformation in the foams." }
+      ],
+      papers: [
+        {
+          id: "foam-stress-waves",
+          title: "When a foam cushion can amplify transmitted force",
+          publicationTitle: "Stress wave propagation and force transmission in polymeric closed cell foams subjected to air shock loading",
+          authors: "P. Wanchoo, A. Pandey, A. Shukla",
+          venue: "Extreme Mechanics Letters · 63, 102061",
+          year: "2023", url: "https://doi.org/10.1016/j.eml.2023.102061",
+          summary: "Foam is commonly used to cushion structures, yet a stress wave passing through it can temporarily amplify the transmitted force. We tested unconfined PVC foam blocks under air shock, tracking waves and deformation alongside input and output forces to understand when the foam amplifies loading and when plastic crushing reduces force transmission.",
+          results: [
+            "During initial wave propagation in the elastic regime, transmitted peak force exceeded input by about 20% for H45 foam and 40% for H100 foam, across three trials per grade.",
+            "Under stronger loading that produced plastic deformation, transmitted force fell below input after the initial wave passage. A compaction front still produced a sharp rise in the transmitted signal.",
+            "Elastic waves traveled faster in denser foam. Predictions that accounted for the material's rate-dependent stiffness agreed with the measured wave speeds."
+          ],
+          importance: "Foam protection depends on how the material deforms during the loading pulse. Tracking elastic response, crushing, and densification helps explain force transmission. These measurements can guide selection of a protective layer by matching foam density and deformation behavior to the expected loading conditions.",
+          methods: "High-speed imaging at up to one million frames per second and digital image correlation tracked elastic, plastic, and compaction waves. Pressure and force sensors measured the applied and transmitted loads, while material tests at different strain rates supported wave-speed predictions."
+        },
+        {
+          id: "foam-hydrostatic",
+          title: "Measuring how foams respond to rapid pressure",
+          publicationTitle: "Hydrostatic high strain rate loading response of closed-cell polymeric foams as a function of mass density",
+          authors: "P. Wanchoo, S. Kishore, A. Shukla",
+          venue: "Composites Part B: Engineering · 247, 110318",
+          year: "2022", url: "https://doi.org/10.1016/j.compositesb.2022.110318",
+          summary: "Underwater loading can compress foam from all directions, a condition that ordinary compression tests do not reproduce. We established a rapid hydrostatic characterization procedure for five grades of closed-cell PVC foam. Measuring pressure and volume change together revealed how material density and loading rate affect stiffness and the pressure at which cells begin to collapse.",
+          results: [
+            "All five grades became stiffer under rapid hydrostatic loading: measured bulk moduli were about 2.1 to 2.7 times their quasi-static values.",
+            "Collapse pressure rose from 1.50 to 3.60 MPa for H130 foam, compared with 0.50 to 0.55 MPa for H45 foam. The denser foam showed a much stronger rate effect.",
+            "Full-field measurements captured localized cell collapse and its progression into bulk deformation, linking the measured pressure-volume response to changes within the foam."
+          ],
+          importance: "Material models for underwater protection need properties measured under relevant pressure and loading rates. These results show why slow tests alone can misrepresent foam stiffness and collapse, and provide measurements for comparing densities when designing marine sandwich cores and other foam-based structures.",
+          methods: "A water-filled dynamic loading setup applied rapid pressure while ultra-high-speed stereo imaging and 3D digital image correlation measured volumetric strain. The five grades covered nominal densities of 45–130 kg/m³, with average measured volumetric strain rates ranging from about 340 to 1,260 s⁻¹."
+        }
       ],
       links: [{ label: "Stress waves and force transmission", url: "https://doi.org/10.1016/j.eml.2023.102061" }, { label: "Hydrostatic high-rate response", url: "https://doi.org/10.1016/j.compositesb.2022.110318" }]
     }
@@ -362,7 +432,7 @@ window.SITE_CONTENT = {
     { title: "Advances in naval composite and sandwich structures for blast and implosion mitigations", authors: "P. Wanchoo, S. Kishore, A. Pandey, A. Shukla", venue: "Journal of Sandwich Structures & Materials · 26(2), 152–174", year: "2024", url: "https://doi.org/10.1177/10996362221139562" },
     { title: "Shock response of sandwich panels with additively manufactured polymer gyroid lattice cores", authors: "B. Oladipo, S. Doner, G.A. Lyngdoh, J.T. Villada, P. Wanchoo, H. Matos, A. Shukla, S. Das", venue: "Materials Today Communications · 41, 110664", year: "2024", url: "https://doi.org/10.1016/j.mtcomm.2024.110664" },
     { title: "Curved polymeric sandwich composites subjected to air shock: an experimental investigation", authors: "A. Pandey, P. Wanchoo, H. Matos, A. Shukla", venue: "Experimental Mechanics · 64(6), 945–961", year: "2024", url: "https://doi.org/10.1007/s11340-024-01069-7" },
-    { title: "Blast failure and energy analysis of rubber-modified carbon-fiber vinyl-ester composite laminates", authors: "P. Wanchoo, B. Chaudhary, H. Matos, A. Shukla", venue: "Mechanics of Materials · 183, 104685", year: "2023", url: "https://doi.org/10.1016/j.mechmat.2023.104685", note: "Selected as journal cover · Corrigendum: 185, 104784", featured: true },
+    { title: "Blast failure and energy analysis of rubber-modified carbon-fiber vinyl-ester composite laminates", authors: "P. Wanchoo, B. Chaudhary, H.-W.-X. Li, H. Matos, A. Shukla", venue: "Mechanics of Materials · 183, 104685", year: "2023", url: "https://doi.org/10.1016/j.mechmat.2023.104685", note: "Selected as journal cover · Corrigendum: 185, 104784", featured: true },
     { title: "Stress wave propagation and force transmission in polymeric closed-cell foams subjected to air shock loading", authors: "P. Wanchoo, A. Pandey, A. Shukla", venue: "Extreme Mechanics Letters · 63, 102061", year: "2023", url: "https://doi.org/10.1016/j.eml.2023.102061", featured: true },
     { title: "Smooth mode decomposition: theory and its applications in full-field output-only modal analysis", authors: "H.-W.-X. Li, P. Wanchoo, A. Shukla, D. Chelidze", venue: "Mechanical Systems and Signal Processing · 200, 110541", year: "2023", url: "https://doi.org/10.1016/j.ymssp.2023.110541" },
     { title: "A large deformation model for quasi-static to high strain rate response of a rate-stiffening soft polymer", authors: "A. Konale, Z. Ahmed, P. Wanchoo, V. Srivastava", venue: "International Journal of Plasticity · 168, 103701", year: "2023", url: "https://doi.org/10.1016/j.ijplas.2023.103701" },
