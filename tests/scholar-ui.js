@@ -11,12 +11,13 @@ const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({"&"
 function element(tag, attrs) {
   const classes = new Set((attrs.class || "").split(/\s+/));
   return {
-    tag, attrs, innerHTML: "", textContent: "", hidden: "hidden" in attrs,
+    tag, attrs, innerHTML: "", textContent: "", value: attrs.value || "", hidden: "hidden" in attrs,
     dataset: Object.fromEntries(Object.entries(attrs).filter(([key]) => key.startsWith("data-")).map(([key, value]) => [key.slice(5).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()), value])),
     listeners: {},
     classList: { add: name => classes.add(name), remove: name => classes.delete(name), toggle: (name, active) => active ? classes.add(name) : classes.delete(name), contains: name => classes.has(name) },
     getAttribute(name) { return this.attrs[name] ?? null; },
     setAttribute(name, value) { this.attrs[name] = String(value); },
+    removeAttribute(name) { delete this.attrs[name]; },
     addEventListener(name, callback) { (this.listeners[name] ||= []).push(callback); },
     dispatch(name, event = {}) { for (const listener of this.listeners[name] || []) listener({target: this, ...event}); },
     click(target = this) { this.dispatch("click", {target}); },
@@ -64,17 +65,102 @@ function render({snapshot = true, mutate, now = "2026-10-27T16:00:00Z"} = {}) {
 
 const page = render();
 const snapshot = page.window.SCHOLAR_DATA;
+const countPublications = target => (target.query("#publication-results").innerHTML.match(/class="publication"/g) || []).length;
+const setPublicationControl = (target, selector, value) => {
+  const control = target.query(selector);
+  control.value = value;
+  control.dispatch(selector === "#publication-search" ? "input" : "change");
+};
 assert.ok(page.query("#metrics").innerHTML.includes(`>${snapshot.metrics.citations.toLocaleString("en-US")}<`));
 assert.ok(page.query("#metrics").innerHTML.includes("Publications · Google Scholar"));
 assert.ok(page.query("#scholar-metrics").innerHTML.includes(`h-index ${snapshot.metrics.hIndex}`));
-assert.equal(page.query('[data-paper-filter="scholar"]').getAttribute("aria-pressed"), "true");
-assert.equal((page.query("#publications").innerHTML.match(/class="publication"/g) || []).length, snapshot.publications.length);
-assert.ok(page.query("#publications").innerHTML.includes("View on Scholar"));
+assert.equal(page.query('[data-paper-filter="selected"]').getAttribute("aria-pressed"), "true");
+assert.equal(countPublications(page), page.window.SITE_CONTENT.publications.filter(paper => paper.featured).length);
+assert.ok(page.query("#publication-source-note").textContent.includes("Curated bibliography"));
+assert.ok(page.query("#publication-count").textContent.includes(`${countPublications(page)} of ${countPublications(page)} papers shown`));
 for (const [filter, expected] of [["all", page.window.SITE_CONTENT.publications.length], ["conference", page.window.SITE_CONTENT.conferencePublications.length], ["progress", page.window.SITE_CONTENT.manuscripts.length], ["selected", page.window.SITE_CONTENT.publications.filter(paper => paper.featured).length], ["scholar", snapshot.publications.length]]) {
   page.query(`[data-paper-filter="${filter}"]`).click();
-  assert.equal((page.query("#publications").innerHTML.match(/class="publication"/g) || []).length, expected);
+  assert.equal(countPublications(page), expected);
   assert.equal(page.query(`[data-paper-filter="${filter}"]`).getAttribute("aria-pressed"), "true");
 }
+assert.ok(page.query("#publication-results").innerHTML.includes("View on Scholar"));
+
+// Visitors can narrow any source list by keyword, year, and research topic.
+const finder = render();
+const bibliography = finder.window.SITE_CONTENT.publications;
+finder.query('[data-paper-filter="all"]').click();
+for (const [query, field] of [["rubber-modified", "title"], ["A. Bhattacharjee", "authors"], ["Mechanics of Materials", "venue"]]) {
+  setPublicationControl(finder, "#publication-search", `  ${query.toUpperCase()}  `);
+  const expected = bibliography.filter(paper => String(paper[field]).toLowerCase().includes(query.toLowerCase()));
+  assert.ok(expected.length > 0 && expected.length < bibliography.length, `Search fixture must narrow the ${field} results`);
+  assert.equal(countPublications(finder), expected.length, `Search must match ${field}, ignoring case and outer whitespace`);
+  for (const paper of expected) assert.ok(finder.query("#publication-results").innerHTML.includes(escapeHtml(paper.title)));
+}
+finder.query("#publication-reset").click();
+setPublicationControl(finder, "#publication-search", "copper");
+assert.equal(countPublications(finder), 1, "Common research terms also match plain-language paper explanations");
+assert.ok(finder.query("#publication-results").innerHTML.includes('href="#paper-copper-spall-statistics"'));
+finder.query("#publication-reset").click();
+setPublicationControl(finder, "#publication-year", "2024");
+assert.equal(countPublications(finder), bibliography.filter(paper => paper.year === "2024").length);
+assert.ok(finder.query("#publication-year").innerHTML.includes('<option value="2026">2026</option>'));
+assert.ok(finder.query("#publication-year").innerHTML.includes('<option value="2023">2023</option>'));
+const topic = finder.window.SITE_CONTENT.researchStudies.find(study => study.id === "blast-composites");
+setPublicationControl(finder, "#publication-topic", topic.id);
+const topicPublications = bibliography.filter(paper => paper.year === "2024" && topic.papers.some(studyPaper => studyPaper.url === paper.url));
+assert.ok(topicPublications.length > 0);
+assert.equal(countPublications(finder), topicPublications.length, "Year and topic restrictions combine");
+for (const paper of topicPublications) assert.ok(finder.query("#publication-results").innerHTML.includes(escapeHtml(paper.title)));
+setPublicationControl(finder, "#publication-search", "no matching research paper 987654");
+assert.equal(countPublications(finder), 0);
+assert.ok(finder.query("#publication-results").innerHTML.includes("No papers match these filters"));
+assert.equal(finder.query("#publication-count").textContent, `0 of ${bibliography.length} papers shown`);
+finder.query('[data-paper-filter="scholar"]').click();
+assert.equal(countPublications(finder), 0, "Changing source preserves the active refinements");
+finder.query("#publication-reset").click();
+for (const selector of ["#publication-search", "#publication-year", "#publication-topic"]) assert.equal(finder.query(selector).value, "");
+assert.equal(finder.query('[data-paper-filter="scholar"]').getAttribute("aria-pressed"), "true", "Clearing refinements retains the source list");
+assert.equal(countPublications(finder), finder.window.SCHOLAR_DATA.publications.length);
+assert.equal(finder.query("#publication-search").focused, true);
+setPublicationControl(finder, "#publication-topic", "other");
+assert.ok(countPublications(finder) > 0 && countPublications(finder) < finder.window.SCHOLAR_DATA.publications.length, "Other work remains discoverable outside the detailed research topics");
+finder.query("#publication-reset").click();
+setPublicationControl(finder, "#publication-search", '<img src=x onerror="search()">');
+assert.equal(countPublications(finder), 0);
+assert.ok(!finder.query("#publication-results").innerHTML.includes("<img"), "Search text cannot become markup");
+
+// Publication dates remain separate from manuscript status labels.
+const yearFinder = render();
+yearFinder.query('[data-paper-filter="progress"]').click();
+const manuscriptYears = yearFinder.query("#publication-year").innerHTML;
+assert.ok(!manuscriptYears.includes("Under review") && !manuscriptYears.includes("In preparation") && !manuscriptYears.includes("2026 · Preprint"), "Year choices must contain dates rather than publication statuses");
+setPublicationControl(yearFinder, "#publication-year", "2026");
+assert.equal(countPublications(yearFinder), 1, "The dated preprint appears under its publication year");
+assert.ok(yearFinder.query("#publication-results").innerHTML.includes('href="#paper-aimdl-laboratory"'));
+assert.ok(yearFinder.query("#publication-results").innerHTML.includes("2026 · Preprint"), "A preprint keeps its visible status label");
+const undatedYear = manuscriptYears.match(/<option value="([^"]*)">Year not listed<\/option>/)?.[1];
+assert.ok(undatedYear, "An explicit option finds manuscripts without a listed year");
+setPublicationControl(yearFinder, "#publication-year", undatedYear);
+assert.equal(countPublications(yearFinder), 4, "The undated choice includes all four manuscripts without dates");
+assert.ok(yearFinder.query("#publication-results").innerHTML.includes("Under review") && yearFinder.query("#publication-results").innerHTML.includes("In preparation"));
+assert.ok(!yearFinder.query("#publication-results").innerHTML.includes('href="#paper-aimdl-laboratory"'));
+yearFinder.query("#publication-reset").click();
+assert.equal(countPublications(yearFinder), yearFinder.window.SITE_CONTENT.manuscripts.length);
+
+const hostileFinder = render({mutate: window => {
+  Object.assign(window.SITE_CONTENT.publications.find(paper => paper.featured), {
+    title: '<img src=x onerror="bibliography()">',
+    authors: '<svg onload="author()">',
+    venue: '<script>venueinjection()</script>',
+    year: 'not a year"><script>year()</script>'
+  });
+}});
+setPublicationControl(hostileFinder, "#publication-search", "venueinjection");
+assert.equal(countPublications(hostileFinder), 1);
+for (const expected of ['&lt;img src=x onerror=&quot;bibliography()&quot;&gt;', '&lt;svg onload=&quot;author()&quot;&gt;', '&lt;script&gt;venueinjection()&lt;/script&gt;']) assert.ok(hostileFinder.query("#publication-results").innerHTML.includes(expected));
+assert.ok(hostileFinder.query("#publication-results").innerHTML.includes('not a year&quot;&gt;&lt;script&gt;year()&lt;/script&gt;'));
+assert.ok(!hostileFinder.query("#publication-year").innerHTML.includes("year()"), "An invalid year cannot become a filter option");
+assert.ok(!hostileFinder.query("#publication-results").innerHTML.includes("<script") && !hostileFinder.query("#publication-year").innerHTML.includes("<script"));
 
 const fallback = render({snapshot: false});
 assert.equal(fallback.query('[data-paper-filter="scholar"]').hidden, true);
@@ -147,8 +233,9 @@ const hostile = render({mutate: window => {
   window.SCHOLAR_DATA.publications[0].url = "javascript:alert(1)";
   window.SCHOLAR_DATA.updatedAt = "2026-09-01T10:00:00+00:00";
 }});
-assert.ok(hostile.query("#publications").innerHTML.includes("&lt;img src=x onerror=&quot;alert(1)&quot;&gt;"));
-assert.ok(!hostile.query("#publications").innerHTML.includes("javascript:"));
+hostile.query('[data-paper-filter="scholar"]').click();
+assert.ok(hostile.query("#publication-results").innerHTML.includes("&lt;img src=x onerror=&quot;alert(1)&quot;&gt;"));
+assert.ok(!hostile.query("#publication-results").innerHTML.includes("javascript:"));
 assert.ok(hostile.query("#publication-source-note").textContent.includes("Sep 1, 2026"));
 assert.ok(news(hostile).includes("&lt;img src=x onerror=&quot;alert(1)&quot;&gt;"));
 assert.ok(!news(hostile).includes("javascript:"));
@@ -156,9 +243,26 @@ assert.ok(hostile.query("#news-source-note").textContent.includes("Sep 1, 2026")
 const foreign = render({mutate: window => { window.SCHOLAR_DATA.profileId = "another-profile"; }});
 assert.equal(foreign.query('[data-paper-filter="scholar"]').hidden, true);
 
-// Paper explanations keep the findings visible while allowing methods and media to be optional.
+// An overview and concise study cards lead into complete, initially collapsed stories.
+assert.ok(html.indexOf('id="research"') < html.indexOf('id="work"'), "Research precedes tools and facilities");
+assert.ok(html.indexOf('id="research-overview-title"') < html.indexOf('id="research-tabs"'));
+assert.ok(page.query('[data-nav="research"]'));
+assert.equal(page.query('[data-nav="research"]').getAttribute("href"), "#research");
+assert.equal(page.query('[data-nav="publications"]').getAttribute("href"), "#publications");
+assert.ok(html.includes('id="work-title">Tools &amp; facilities</h2>'));
+const overview = page.window.SITE_CONTENT.researchOverview;
+assert.ok(overview.directions.length >= 3);
+assert.equal(page.query("#research-overview-title").textContent, overview.heading);
+assert.equal(page.query("#research-overview-intro").textContent, overview.introduction);
+for (const direction of overview.directions) {
+  const reading = page.query("#research-directions").innerHTML;
+  assert.ok(reading.includes(escapeHtml(direction.title)));
+  assert.ok(reading.includes(escapeHtml(direction.finding)));
+  assert.ok(reading.includes(`href="${direction.href}"`));
+}
 const paperArticles = (page, panel) => [...(panel ? page.query(panel).innerHTML : page.query("#active-research").innerHTML + page.query("#past-research").innerHTML).matchAll(/<article class="research-paper"[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]);
 const paperById = (page, id) => paperArticles(page).find(article => article.includes(`id="paper-${id}"`)) || "";
+const compactPaper = article => article.split('<details class="paper-story"')[0];
 const explained = page.window.SITE_CONTENT.researchStudies.filter(study => study.status === "past").flatMap(study => study.papers || []);
 assert.equal(paperArticles(page, "#past-research").length, explained.length);
 for (const id of ["sandwich-undex-interaction", "curved-sandwich-air-shock", "foam-shear-loading-rate", "gyroid-core-shock", "smooth-mode-decomposition", "rate-stiffening-soft-polymer"]) {
@@ -169,21 +273,40 @@ for (const id of ["blast-composites", "porous-materials", "models-and-measuremen
 }
 for (const paper of explained) {
   const article = paperById(page, paper.id);
-  const visibleReading = article.replace(/<details\b[\s\S]*?<\/details>/g, "");
-  assert.ok(visibleReading.includes('class="paper-description"'));
-  assert.ok(visibleReading.includes(`<h5>${escapeHtml(paper.resultsHeading || "Key results")}</h5><ul><li>`));
-  assert.match(visibleReading, /<div class="paper-results"><h5>.+<\/h5><ul><li>.+<\/li><\/ul>/);
-  assert.match(visibleReading, /<h5>Why it matters<\/h5><p>.+<\/p>/);
+  const preview = compactPaper(article);
+  assert.ok(paper.teaser && paper.takeaway, `Missing introductory copy for ${paper.id}`);
+  assert.ok(preview.includes(`<p class="paper-teaser">${escapeHtml(paper.teaser)}</p>`));
+  assert.ok(preview.includes(escapeHtml(paper.takeaway)));
+  assert.ok(!preview.includes('class="paper-description"') && !preview.includes('class="paper-figures"'));
+  assert.ok(article.includes(`<details class="paper-story" id="paper-${paper.id}-details">`), "Full story starts closed");
+  assert.ok(article.includes('class="paper-description"'));
+  assert.ok(article.includes(`<h5>${escapeHtml(paper.resultsHeading || "Key results")}</h5><ul><li>`));
+  assert.match(article, /<div class="paper-results"><h5>.+<\/h5><ul><li>.+<\/li><\/ul>/);
+  assert.match(article, /<h5>Why it matters<\/h5><p>.+<\/p>/);
   assert.ok(article.includes(`aria-labelledby="paper-${paper.id}-title"`));
   assert.ok(article.includes(`href="${paper.url}"`));
+  assert.ok(article.includes('>Back to topic ') && article.includes('href="#research">Research overview '));
 }
 page.query('[data-research-tab="past"]').click();
 assert.equal(page.query("#research-panel-past").hidden, false);
 assert.equal(page.query("#research-panel-active").hidden, true);
+assert.equal(page.query('[data-nav="research"]').getAttribute("aria-current"), "location");
+let preventedTabArrow = false;
+page.query('[data-research-tab="past"]').dispatch("keydown", {key: "ArrowRight", preventDefault() { preventedTabArrow = true; }});
+assert.equal(preventedTabArrow, true);
+assert.equal(page.query("#research-panel-publications").hidden, false);
+assert.equal(page.query("#research-topic-label").hidden, true);
+assert.equal(page.query('[data-nav="publications"]').getAttribute("aria-current"), "location");
+assert.equal(page.query('[data-research-tab="publications"]').focused, true);
+page.query('[data-research-tab="publications"]').dispatch("keydown", {key: "Home", preventDefault() {}});
+assert.equal(page.query("#research-panel-active").hidden, false);
+assert.equal(page.query("#research-topic-label").hidden, false);
+assert.equal(page.query('[data-research-tab="active"]').getAttribute("aria-selected"), "true");
+assert.equal(page.query('[data-nav="publications"]').getAttribute("aria-current"), null);
 page.query('[data-paper-filter="all"]').click();
-for (const paper of explained) assert.ok(page.query("#publications").innerHTML.includes(`href="#paper-${paper.id}"`));
+for (const paper of explained) assert.ok(page.query("#publication-results").innerHTML.includes(`href="#paper-${paper.id}"`));
 page.query('[data-paper-filter="progress"]').click();
-assert.ok(page.query("#publications").innerHTML.includes('href="#paper-aimdl-laboratory"'));
+assert.ok(page.query("#publication-results").innerHTML.includes('href="#paper-aimdl-laboratory"'));
 
 // Published postdoctoral work and the preprint keep their distinct source types.
 const postdoc = page.window.SITE_CONTENT.researchStudies.filter(study => study.status === "active").flatMap(study => study.papers || []);
@@ -193,9 +316,11 @@ for (const [id, type] of [["copper-spall-statistics", "Journal article"], ["heli
   const paper = postdoc.find(paper => paper.id === id);
   assert.equal(paper?.publicationType, type);
   const article = paperById(page, id);
-  const visibleReading = article.replace(/<details\b[\s\S]*?<\/details>/g, "");
-  assert.ok(visibleReading.includes(`>${type}</p>`));
-  assert.ok(visibleReading.includes("Key results") && visibleReading.includes("Why it matters"));
+  const preview = compactPaper(article);
+  assert.ok(preview.includes(`>${type}</p>`));
+  assert.ok(preview.includes(escapeHtml(paper.teaser)) && preview.includes(escapeHtml(paper.takeaway)));
+  assert.ok(article.includes(`<details class="paper-story" id="paper-${paper.id}-details">`));
+  assert.ok(article.includes("Key results") && article.includes("Why it matters"));
   assert.ok(article.includes(`href="${paper.url}"`));
 }
 const activeReading = page.query("#active-research").innerHTML;
@@ -205,12 +330,12 @@ assert.ok(activeReading.includes('aria-describedby="research-spall-strength-capt
 assert.ok(paperById(page, "aimdl-laboratory").includes(">Read preprint "));
 page.query('[data-paper-filter="conference"]').click();
 assert.equal(page.query('[data-paper-filter="conference"]').textContent, `Conference papers (${page.window.SITE_CONTENT.conferencePublications.length})`);
-assert.ok(page.query("#publications").innerHTML.includes('href="#paper-flyer-positioning"'));
-assert.ok(!page.query("#publications").innerHTML.includes('href="#paper-copper-spall-statistics"'));
+assert.ok(page.query("#publication-results").innerHTML.includes('href="#paper-flyer-positioning"'));
+assert.ok(!page.query("#publication-results").innerHTML.includes('href="#paper-copper-spall-statistics"'));
 page.query('[data-paper-filter="all"]').click();
 assert.equal(page.query('[data-paper-filter="all"]').textContent, `Journal articles (${page.window.SITE_CONTENT.publications.length})`);
-assert.ok(!page.query("#publications").innerHTML.includes('href="#paper-flyer-positioning"'));
-for (const id of ["copper-spall-statistics", "helix-automation"]) assert.ok(page.query("#publications").innerHTML.includes(`href="#paper-${id}"`));
+assert.ok(!page.query("#publication-results").innerHTML.includes('href="#paper-flyer-positioning"'));
+for (const id of ["copper-spall-statistics", "helix-automation"]) assert.ok(page.query("#publication-results").innerHTML.includes(`href="#paper-${id}"`));
 const publishedAutomation = page.window.SITE_CONTENT.publications.find(paper => paper.url === "https://doi.org/10.1007/s40192-026-00482-1");
 assert.equal(publishedAutomation?.year, "2026");
 assert.equal(publishedAutomation?.title, postdoc.find(paper => paper.id === "helix-automation").publicationTitle);
@@ -225,12 +350,16 @@ const scholarPunctuation = render({mutate: window => {
   const paper = window.SITE_CONTENT.researchStudies.find(study => study.status === "past" && study.papers?.length).papers[0];
   window.SCHOLAR_DATA.publications[0].title = paper.publicationTitle.toUpperCase().replaceAll("-", " ") + ".";
 }});
-const scholarFirst = scholarPunctuation.query("#publications").innerHTML.match(/<article class="publication">[\s\S]*?<\/article>/)[0];
+scholarPunctuation.query('[data-paper-filter="scholar"]').click();
+const scholarFirst = scholarPunctuation.query("#publication-results").innerHTML.match(/<article class="publication">[\s\S]*?<\/article>/)[0];
 assert.ok(scholarFirst.includes(`href="#paper-${explained[0].id}"`));
 
 const hostilePaper = render({mutate: window => {
   const paper = window.SITE_CONTENT.researchStudies.find(study => study.status === "past" && study.papers?.length).papers[0];
   paper.title = '<img src=x onerror="title()">';
+  paper.teaser = '<script>teaser()</script>';
+  paper.takeaway = '<svg onload="takeaway()">';
+  paper.contribution = '<script>contribution()</script>';
   paper.summary = '<script>summary()</script>';
   paper.results = ['<svg onload="result()">'];
   paper.resultsHeading = '<svg onload="heading()">';
@@ -245,6 +374,9 @@ const hostilePaper = render({mutate: window => {
 const hostileArticle = paperById(hostilePaper, explained[0].id);
 for (const expected of [
   '&lt;img src=x onerror=&quot;title()&quot;&gt;',
+  '&lt;script&gt;teaser()&lt;/script&gt;',
+  '&lt;svg onload=&quot;takeaway()&quot;&gt;',
+  '&lt;script&gt;contribution()&lt;/script&gt;',
   '&lt;script&gt;summary()&lt;/script&gt;',
   '&lt;svg onload=&quot;result()&quot;&gt;',
   '&lt;svg onload=&quot;heading()&quot;&gt;',
@@ -285,6 +417,8 @@ for (const id of ["underwater-energy", "rubber-composites", "foam-stress-waves",
 }
 for (const paper of allExplained) {
   const article = paperById(page, paper.id);
+  for (const reading of [paper.summary, paper.importance, paper.publicationTitle, paper.authors, ...(paper.results || [])]) assert.ok(article.includes(escapeHtml(reading)), `Study content retained for ${paper.id}`);
+  if (paper.methods) assert.ok(article.includes(escapeHtml(paper.methods)), `Methods retained for ${paper.id}`);
   const cards = figureCards(article);
   assert.equal(cards.length, (paper.figures || []).length, `Figure count for ${paper.id}`);
   if (cards.length) assert.ok(article.includes('class="paper-figures" role="group" aria-label="Figures from this paper"'));
@@ -293,9 +427,9 @@ for (const paper of allExplained) {
     const card = cards[index];
     assert.ok(card.includes(`data-paper-figure="${paper.id}-${index}"`));
     assert.ok(card.includes('aria-haspopup="dialog"'));
-    assert.ok(card.includes(`src="${escapeHtml(figure.image)}"`));
+    assert.ok(card.includes(`src="${escapeHtml(figure.preview || figure.image)}"`));
     assert.ok(card.includes(`alt="${escapeHtml(figure.alt)}"`));
-    assert.ok(card.includes(`width="${figure.width}" height="${figure.height}" loading="lazy"`));
+    assert.ok(card.includes(`width="${figure.previewWidth || figure.width}" height="${figure.previewHeight || figure.height}" loading="lazy" decoding="async"`));
     assert.ok(card.includes(`<strong>${escapeHtml(figure.label)}</strong><p>${escapeHtml(figure.caption)}</p>`));
     assert.ok(card.includes(`class="figure-source" href="${escapeHtml(figure.sourceUrl || paper.url)}"`));
     assert.ok(card.includes(escapeHtml(figure.credit)));
@@ -305,6 +439,7 @@ for (const paper of allExplained) {
     }
     assert.ok(card.includes('target="_blank" rel="noopener noreferrer"'));
     if (figure.image.startsWith("./")) assert.ok(fs.existsSync(path.resolve(root, figure.image)), `Missing figure image: ${figure.image}`);
+    if (figure.preview?.startsWith("./")) assert.ok(fs.existsSync(path.resolve(root, figure.preview)), `Missing figure preview: ${figure.preview}`);
   }
 }
 
@@ -347,7 +482,7 @@ const hostileFigures = render({mutate: window => {
   paper.figures = [
     {image: "javascript:figure()", label: "Rejected JavaScript image"},
     {image: "data:image/svg+xml,<svg onload=alert(1)>", label: "Rejected data image"},
-    {image: "./assets/research/safe.png", label: "Unsafe source omitted", caption: "Safe image", alt: "Safe alternative", credit: "Unsafe source", sourceUrl: "javascript:source()", licenseUrl: "javascript:license()"},
+    {image: "./assets/research/safe.png", preview: "javascript:preview()", label: "Unsafe source omitted", caption: "Safe image", alt: "Safe alternative", credit: "Unsafe source", sourceUrl: "javascript:source()", licenseUrl: "javascript:license()"},
     {image: 'https://example.org/image.png?label="x"&n=1', alt: '<img onerror="alt()">', label: '<svg onload="label()">', caption: '<script>caption()</script>', credit: '<img onerror="credit()">', width: '1" onload="dimension()', height: 200, sourceUrl: "https://example.org/source?x=1&y=2", licenseUrl: "https://example.org/license?x=1&y=2", licenseLabel: '<script>license()</script>'},
     {image: "./assets/research/fallback.png", alt: "Source fallback", label: "Paper source", caption: "No separate source URL", credit: "Fallback credit", width: 300, height: 200}
   ];
@@ -359,6 +494,7 @@ assert.ok(!hostileFigureArticle.includes("javascript:") && !hostileFigureArticle
 assert.ok(!hostileFigureArticle.includes("Rejected JavaScript image") && !hostileFigureArticle.includes("Rejected data image"));
 assert.ok(!safeFigureCards[0].includes('class="figure-source"'));
 assert.ok(!safeFigureCards[0].includes("figure-license"));
+assert.ok(safeFigureCards[0].includes('src="./assets/research/safe.png"'), "Unsafe previews fall back to the original safe image");
 assert.ok(safeFigureCards[1].includes('src="https://example.org/image.png?label=&quot;x&quot;&amp;n=1"'));
 assert.ok(safeFigureCards[1].includes('alt="&lt;img onerror=&quot;alt()&quot;&gt;"'));
 assert.ok(safeFigureCards[1].includes('&lt;svg onload=&quot;label()&quot;&gt;'));
@@ -374,4 +510,4 @@ const hostileEnlarged = hostileFigures.query("#dialog-content").innerHTML;
 assert.equal(hostileFigures.query("#detail-dialog").open, true);
 for (const expected of ['&lt;svg onload=&quot;label()&quot;&gt;', '&lt;script&gt;caption()&lt;/script&gt;', '&lt;img onerror=&quot;credit()&quot;&gt;', 'alt="&lt;img onerror=&quot;alt()&quot;&gt;"', 'href="https://example.org/license?x=1&amp;y=2"', '&lt;script&gt;license()&lt;/script&gt;']) assert.ok(hostileEnlarged.includes(expected));
 assert.ok(!hostileEnlarged.includes("javascript:") && !hostileEnlarged.includes("<script") && !hostileEnlarged.includes("<img onerror"));
-console.log("Scholar, news, and research UI checks passed: publication filters and explanation links, coauthored findings and themes, source types, original figures and enlargement, retained media, URL safety and escaping, news timing, source identity, and cached update dates.");
+console.log("Scholar, news, and research UI checks passed: curated defaults, keyword/year/topic filtering and reset, research overview and keyboard tabs, compact studies with complete stories, explanation links, source types, figure previews and original enlargement, retained media, URL safety and escaping, news timing, source identity, and cached update dates.");

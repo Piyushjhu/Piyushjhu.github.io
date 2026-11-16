@@ -7,7 +7,7 @@ window.SITE_CONTENT = {
   initials: "PW",
   title: "Piyush Wanchoo | Experimental Mechanics & Materials Research",
   description: "Piyush Wanchoo studies materials under extreme conditions through experimental mechanics, high-throughput experiments, and data-driven discovery at Johns Hopkins.",
-  heroDescription: "My research combines experimental mechanics and data-driven discovery to understand materials under extreme conditions. I’m a postdoctoral fellow at Johns Hopkins.",
+  heroDescription: "I study how materials deform and fail under impact and shock, and build automated experiments to measure their response. I’m a postdoctoral fellow at Johns Hopkins.",
   bio: [
     "I’m Piyush, a postdoctoral fellow at the Hopkins Extreme Materials Institute at Johns Hopkins University, working with K.T. Ramesh. My research is in experimental mechanics, with a focus on impact, shock, and material failure.",
     "Much of my work involves building the equipment and analysis tools for these experiments. I designed and built HELIX, an automated laser-driven impact facility, and co-developed AIMD-L, a laboratory for high-throughput materials characterization. I use these systems to study how composition, microstructure, and loading conditions affect material strength.",
@@ -23,6 +23,39 @@ window.SITE_CONTENT = {
   location: "Baltimore, Maryland",
   affiliation: "Hopkins Extreme Materials Institute · Johns Hopkins University",
   researchDescription: "I study how metals, composites, and foams respond to impact and shock. My current work combines automated experiments and statistical models to measure dynamic strength, explain failure, and choose which materials and loading conditions to test next.",
+  researchOverview: {
+    heading: "Research in three directions",
+    introduction: "I study how materials respond to sudden loads, from fracture inside metals to damage in protective structures. Explore a direction for the main findings, methods, and papers.",
+    directions: [
+      {
+        id: "dynamic-failure",
+        label: "METALS UNDER IMPACT",
+        title: "How do metals fail under rapid loading?",
+        summary: "Repeated impact tests help separate the effects of grain structure, loading rate, and prior shock stress, so strength measurements reveal trends as well as the spread between experiments.",
+        finding: "Across 173 copper impact tests, tensile loading rate strongly affected spall strength; prior shock stress had a weaker, microstructure-dependent effect.",
+        href: "#research-spall-strength",
+        linkLabel: "Explore metal failure"
+      },
+      {
+        id: "automated-experiments",
+        label: "AUTOMATED EXPERIMENTS & MATERIALS DISCOVERY",
+        title: "How can we measure materials faster?",
+        summary: "Automated positioning, feedback, and connected instruments make repeated experiments practical. These platforms collect measurements across materials and loading conditions to support comparisons and guide future tests.",
+        finding: "The HELIX automation study completed 25 impact tests in approximately four minutes, about eight times faster than its manual comparison.",
+        href: "#research-helix",
+        linkLabel: "Explore automated experiments"
+      },
+      {
+        id: "protective-structures",
+        label: "PROTECTIVE COMPOSITES & FOAMS",
+        title: "What makes a structure resist blast?",
+        summary: "Blast experiments track how composite panels and polymer foams deform, transmit force, and accumulate damage. The aim is to connect material and structural choices with the actual loading.",
+        finding: "In underwater-blast experiments, foam cladding reduced central panel deflection by about 50% during bubble collapse compared with an uncladded plate.",
+        href: "#research-blast-composites",
+        linkLabel: "Explore protective structures"
+      }
+    ]
+  },
   researchVision: {
     title: "Materials design and qualification",
     description: "My goal is to shorten the design and qualification process for materials in aerospace and defense. That requires data across many compositions, microstructures, and loading conditions. I develop automated experiments to collect these measurements and use models to identify which tests would reduce uncertainty.",
@@ -51,6 +84,8 @@ window.SITE_CONTENT = {
         {
           id: "copper-spall-statistics",
           title: "What repeated impact tests reveal about copper failure",
+          teaser: "Repeated tests on two copper microstructures separate the effects of loading rate and prior shock stress on internal fracture and its variability.",
+          takeaway: "Across 173 tests, spall strength rose strongly with tensile loading rate; prior shock stress had a weaker, microstructure-dependent effect.",
           publicationTitle: "High-throughput dynamic experiments: The statistics of spall failure at ultra-high strain rates",
           authors: "P. Wanchoo, R. Berlia, T.P. Weihs, K.T. Ramesh",
           venue: "Journal of the Mechanics and Physics of Solids · 210, 106523",
@@ -70,7 +105,7 @@ window.SITE_CONTENT = {
           importance: "Dynamic failure cannot be characterized by a single strength value. A statistically rich dataset helps compare microstructures under relevant loading conditions, test models of void-driven fracture, and identify where additional measurements could reduce uncertainty when designing materials for extreme loading.",
           figures: [
             {
-              "image": "./assets/research/papers/copper-spall-figure-2.png",
+              "image": "./assets/research/papers/copper-spall-figure-2.png", "preview": "./assets/research/previews/copper-spall-figure-2.jpg", "previewWidth": 1000, "previewHeight": 398,
               "width": 2070,
               "height": 825,
               "label": "Figure 2 · A package for repeated impacts",
@@ -80,7 +115,7 @@ window.SITE_CONTENT = {
               "credit": "Wanchoo et al. (2026), Fig. 2"
             },
             {
-              "image": "./assets/research/papers/copper-spall-figure-12.png",
+              "image": "./assets/research/papers/copper-spall-figure-12.png", "preview": "./assets/research/previews/copper-spall-figure-12.jpg", "previewWidth": 1000, "previewHeight": 732,
               "width": 2070,
               "height": 1515,
               "label": "Figure 12 · Separating rate and shock effects",
@@ -111,6 +146,9 @@ window.SITE_CONTENT = {
         {
           id: "helix-automation",
           title: "Making repeated impact experiments faster and more consistent",
+          teaser: "Camera and diagnostic feedback coordinate positioning, laser power, and velocity measurements, making repeated microflyer impact experiments faster while recording the conditions of each test.",
+          takeaway: "Twenty-five tests took approximately four minutes, about eight times faster than manual operation in the study’s comparison.",
+          contribution: "I designed and built the HELIX experimental facility used in this work.",
           publicationTitle: "A Closed-Loop Automation Framework for High-Throughput Laser-Driven Micro-flyer Impact Experiments",
           authors: "A. Bhattacharjee, K. Muly, P. Wanchoo, S. A. Sreedhar, L. Rackers, J. Rentas-Velez, P. Addepalli, K. T. Ramesh, A. Krieger",
           venue: "Integrating Materials and Manufacturing Innovation",
@@ -126,7 +164,7 @@ window.SITE_CONTENT = {
           importance: "Reliable repeated experiments make it practical to collect richer datasets on dynamic material behavior. Integrating positioning, feedback, and logging helps reduce repetitive work and preserve the information needed to compare results and trace experimental conditions.",
           figures: [
             {
-              "image": "./assets/research/papers/helix-automation-figure-1.png",
+              "image": "./assets/research/papers/helix-automation-figure-1.png", "preview": "./assets/research/previews/helix-automation-figure-1.jpg", "previewWidth": 1000, "previewHeight": 509,
               "width": 2037,
               "height": 1038,
               "label": "Figure 1 · Closing the experimental loop",
@@ -136,7 +174,7 @@ window.SITE_CONTENT = {
               "credit": "Bhattacharjee et al. (2026)"
             },
             {
-              "image": "./assets/research/papers/helix-automation-figure-15.png",
+              "image": "./assets/research/papers/helix-automation-figure-15.png", "preview": "./assets/research/previews/helix-automation-figure-15.jpg", "previewWidth": 1000, "previewHeight": 438,
               "width": 1500,
               "height": 657,
               "label": "Figure 15 · Recovering velocity signals",
@@ -156,6 +194,8 @@ window.SITE_CONTENT = {
         {
           id: "flyer-positioning",
           title: "Finding and aligning tiny flyers automatically",
+          teaser: "A camera-guided control loop finds and centers tiny flyers, triggers an impact, and advances to the next sample, reducing a repetitive bottleneck in laser experiments.",
+          takeaway: "The tested see-move-shoot cycle took 7.46 seconds, compared with 19.2 seconds for an expert operating it manually.",
           publicationTitle: "Closed Loop Vision Guided Control of Flyer Position for High-Throughput Laser Shock Experiments",
           authors: "H. Wang, J. M. Diamond, A. Bhattacharjee, P. Wanchoo, A. Mirzaei, L. Li, T. J. Nkansah-Mahaney, K. Ramesh, A. Krieger",
           venue: "ASME IMECE 2024 · Volume 5: Dynamics, Vibration, and Control · V005T07A065",
@@ -171,7 +211,7 @@ window.SITE_CONTENT = {
           importance: "Automated alignment addresses a repetitive bottleneck in high-throughput impact testing. Pairing vision with motion control can make positioning more consistent, while the timed comparison shows how this component contributes to a broader automated experimental workflow.",
           figures: [
             {
-              "image": "./assets/research/papers/flyer-positioning-related-copper-figure-5.png",
+              "image": "./assets/research/papers/flyer-positioning-related-copper-figure-5.png", "preview": "./assets/research/previews/flyer-positioning-related-copper-figure-5.jpg", "previewWidth": 1000, "previewHeight": 522,
               "width": 1820,
               "height": 950,
               "label": "Related schematic · Flyer alignment",
@@ -187,6 +227,8 @@ window.SITE_CONTENT = {
         {
           id: "aimdl-laboratory",
           title: "Connecting materials measurements in an automated laboratory",
+          teaser: "This preprint describes a robotic laboratory that connects complementary instruments and their data to measure structural materials across composition, microstructure, and mechanical behavior.",
+          takeaway: "Connected measurements revealed that Cu–Ti elastic modulus, shock elastic limit, and lattice parameter peaked near 3 atomic percent titanium.",
           publicationTitle: "AIMD-L: An automated laboratory for high-throughput characterization of structural materials for extreme environments",
           authors: "T.C. Hufnagel, P. Addepalli, A. Bhattacharjee, R. Berlia, J. El-Awady, D. Elbert, L. Graham-Brady, A. Krieger, H. Neralla, T.J. Nkansah-Mahaney, M.M. Omar, H.S. Park, K.T. Ramesh, M. Shaeffer, E. Walker, P. Wanchoo, T.P. Weihs",
           venue: "arXiv:2603.06835v1",
@@ -202,7 +244,7 @@ window.SITE_CONTENT = {
           importance: "Combining measurements on a shared set of materials makes it easier to connect chemistry, structure, and performance. The Cu–Ti example shows why several probes are needed. This infrastructure supports rapid screening and future model-guided experiments while preserving the context behind each measurement.",
           figures: [
             {
-              "image": "./assets/research/papers/aimdl-figure-2-layout.png",
+              "image": "./assets/research/papers/aimdl-figure-2-layout.png", "preview": "./assets/research/previews/aimdl-figure-2-layout.jpg", "previewWidth": 1000, "previewHeight": 679,
               "width": 5078,
               "height": 3451,
               "label": "Figure 2 (layout panel) · Connecting laboratory stations",
@@ -214,7 +256,7 @@ window.SITE_CONTENT = {
               "licenseLabel": "CC BY-NC-ND 4.0"
             },
             {
-              "image": "./assets/research/papers/aimdl-figure-10-results.png",
+              "image": "./assets/research/papers/aimdl-figure-10-results.png", "preview": "./assets/research/previews/aimdl-figure-10-results.jpg", "previewWidth": 1000, "previewHeight": 707,
               "width": 1540,
               "height": 1090,
               "label": "Figure 10 · Composition and measured properties",
@@ -263,6 +305,8 @@ window.SITE_CONTENT = {
         {
           id: "underwater-energy",
           title: "Why bubble collapse matters in underwater blast",
+          teaser: "Experiments and an energy framework follow an underwater explosion beyond its first shock, revealing how later bubble collapse loads composite plates and foam cladding.",
+          takeaway: "Bubble collapse produced the largest energy transfer; foam cladding reduced central deflection by about 50% during that loading stage.",
           publicationTitle: "Energy quantification framework for underwater explosive loading into PVC foam cladded composite plates",
           authors: "P. Wanchoo, A. Pandey, M. Leger, J. LeBlanc, A. Shukla",
           venue: "Journal of the Mechanics and Physics of Solids · 187, 105646",
@@ -283,7 +327,7 @@ window.SITE_CONTENT = {
               "caption": "The image sequence follows the initial explosion, cavitation, bubble growth and collapse. The late water jet is directed back toward the composite plate, explaining why the first pressure pulse does not capture the entire threat.",
               "alt": "Underwater high-speed image sequence showing the explosive, plate, pressure sensors, cavitation, growing explosion bubble and late jet directed at the plate.",
               "credit": "Wanchoo et al. (2024)",
-              "image": "./assets/research/papers/underwater-bubble.jpg"
+              "image": "./assets/research/papers/underwater-bubble.jpg", "preview": "./assets/research/previews/underwater-bubble.jpg", "previewWidth": 1000, "previewHeight": 846
             },
             {
               "width": 1580,
@@ -292,7 +336,7 @@ window.SITE_CONTENT = {
               "caption": "Center-point deflection and velocity compare the bare panel with three foam-cladded panels. Foam lowers the initial deflection and the later deflection associated with bubble collapse in these tests.",
               "alt": "Displacement and velocity histories of a base composite plate and plates with H80, H130 and H200 foam cladding over 60 milliseconds.",
               "credit": "Wanchoo et al. (2024)",
-              "image": "./assets/research/papers/underwater-deflection.jpg"
+              "image": "./assets/research/papers/underwater-deflection.jpg", "preview": "./assets/research/previews/underwater-deflection.jpg", "previewWidth": 1000, "previewHeight": 550
             }
           ],
           methods: "Pressure sensors and high-speed cameras tracked the blast, bubble, and plate motion. Stereo digital image correlation measured surface deformation and strain. The analytical model accounted for a spherical incident wave and separated radiated and after-flow energy; its strain-energy estimates assume no substantial structural damage."
@@ -300,6 +344,8 @@ window.SITE_CONTENT = {
         {
           id: "rubber-composites",
           title: "Changing the resin to control blast damage",
+          teaser: "Comparing conventional and rubber-modified composite panels under air shock shows how the resin changes vibration, energy dissipation, and crack growth, alongside stiffness and strength tradeoffs.",
+          takeaway: "Rubber modification increased low-intensity damping by roughly 50% and limited crack growth, while reducing resin stiffness and strength.",
           publicationTitle: "Blast failure and energy analysis of rubber-modified carbon-fiber vinyl-ester composite laminates",
           authors: "P. Wanchoo, B. Chaudhary, H.-W.-X. Li, H. Matos, A. Shukla",
           venue: "Mechanics of Materials · 183, 104685",
@@ -319,7 +365,7 @@ window.SITE_CONTENT = {
               "caption": "Full-field displacement maps compare the unmodified resin (A) and rubber-modified resin (B) at successive vibration peaks. Spatial measurements reveal differences that a center-point displacement alone would miss.",
               "alt": "Two rows of displacement contours for Resin A and Resin B composite panels at their first four response peaks, with the original displacement scale in millimeters.",
               "credit": "Wanchoo et al. (2023)",
-              "image": "./assets/research/papers/rubber-deformation.jpg"
+              "image": "./assets/research/papers/rubber-deformation.jpg", "preview": "./assets/research/previews/rubber-deformation.jpg", "previewWidth": 1000, "previewHeight": 505
             },
             {
               "width": 1960,
@@ -328,7 +374,7 @@ window.SITE_CONTENT = {
               "caption": "High-speed images compare damage propagation after failure begins. The original dashed overlays identify surface crack paths; the rubber-modified Resin B panel shows less extensive crack growth in this comparison.",
               "alt": "Four high-speed frames each for Resin A and Resin B panels, with green clamped boundaries and yellow dashed crack paths at 350, 500, 800 and 1000 microseconds.",
               "credit": "Wanchoo et al. (2023)",
-              "image": "./assets/research/papers/rubber-cracks.jpg"
+              "image": "./assets/research/papers/rubber-cracks.jpg", "preview": "./assets/research/previews/rubber-cracks.jpg", "previewWidth": 1000, "previewHeight": 576
             }
           ],
           methods: "A shock tube applied repeatable air-shock loads to clamped panels. High-speed stereo imaging and 3D digital image correlation measured deformation and strain, supporting estimates of kinetic and strain energy. Resin characterization and structural vibration tests connected the panel response to material behavior.",
@@ -337,6 +383,8 @@ window.SITE_CONTENT = {
         {
           "id": "sandwich-undex-interaction",
           "title": "How an underwater explosion bubble reloads a sandwich panel",
+          "teaser": "High-speed measurements connect a sandwich panel’s motion with the explosion bubble and surface cavity, showing how their collapse can produce damaging loads after the initial shock.",
+          "takeaway": "Coincident bubble and surface-cavity collapse caused severe local loading; denser-core panels showed about 40% lower deflection in these tests.",
           "publicationTitle": "Near-field underwater explosion and its interaction with a sandwich composite plate",
           "authors": "A. Pandey, P. Wanchoo, H. Matos, J. LeBlanc, A. Shukla",
           "venue": "International Journal of Impact Engineering · 196, 105155",
@@ -362,6 +410,8 @@ window.SITE_CONTENT = {
         {
           "id": "curved-sandwich-air-shock",
           "title": "Why curvature and edge support must be designed together",
+          "teaser": "Shock-tube experiments compare flat and curved sandwich panels to show how edge restraint and foam-core density change deformation and damage under similar loading.",
+          "takeaway": "Increasing curvature raised deflection with simple supports but lowered it when horizontal and vertical edge motion were restrained.",
           "publicationTitle": "Curved Polymeric Sandwich Composites Subjected to Air Shock: An Experimental Investigation",
           "authors": "A. Pandey, P. Wanchoo, H. Matos, A. Shukla",
           "venue": "Experimental Mechanics · 64(6), 945–961",
@@ -385,7 +435,7 @@ window.SITE_CONTENT = {
           ],
           "figures": [
             {
-              "image": "./assets/research/papers/curved-air-fig4.png",
+              "image": "./assets/research/papers/curved-air-fig4.png", "preview": "./assets/research/previews/curved-air-fig4.jpg", "previewWidth": 990, "previewHeight": 835,
               "width": 990,
               "height": 835,
               "label": "Figure 4 · Experiment and edge supports",
@@ -397,7 +447,7 @@ window.SITE_CONTENT = {
               "licenseLabel": "CC BY 4.0"
             },
             {
-              "image": "./assets/research/papers/curved-air-fig7.png",
+              "image": "./assets/research/papers/curved-air-fig7.png", "preview": "./assets/research/previews/curved-air-fig7.jpg", "previewWidth": 1000, "previewHeight": 740,
               "width": 1000,
               "height": 740,
               "label": "Figure 7 · Curvature depends on support",
@@ -413,6 +463,8 @@ window.SITE_CONTENT = {
         {
           "id": "gyroid-core-shock",
           "title": "Comparing 3D-printed gyroid cores under shock loading",
+          "teaser": "Sandwich panels with PLA, ABS, and flexible TPU gyroid cores reveal how polymer choice changes shock-induced deflection and the different measures of structural energy.",
+          "takeaway": "TPU cores produced greater panel deflection and the highest specific deformation energy, while the ranking differed for specific total energy.",
           "publicationTitle": "Shock response of sandwich panels with additively manufactured polymer gyroid lattice cores",
           "authors": "B. Oladipo, S. Doner, G.A. Lyngdoh, J.T. Villada, P. Wanchoo, H. Matos, A. Shukla, S. Das",
           "venue": "Materials Today Communications · 41, 110664",
@@ -451,6 +503,8 @@ window.SITE_CONTENT = {
         {
           id: "foam-stress-waves",
           title: "When a foam cushion can amplify transmitted force",
+          teaser: "Tracking stress waves and input and output forces in PVC foam reveals when a protective layer amplifies loading and when plastic crushing reduces transmission.",
+          takeaway: "Elastic wave propagation amplified transmitted peak force by about 20–40%; under stronger loading, transmission fell after the initial wave passage.",
           publicationTitle: "Stress wave propagation and force transmission in polymeric closed cell foams subjected to air shock loading",
           authors: "P. Wanchoo, A. Pandey, A. Shukla",
           venue: "Extreme Mechanics Letters · 63, 102061",
@@ -470,7 +524,7 @@ window.SITE_CONTENT = {
               "caption": "Virtual gauges and full-field displacement maps track the moving disturbance. The strain histories distinguish low-intensity elastic response from the large, localized deformation produced at higher loading intensity.",
               "alt": "Gauge positions, axial strain histories, displacement maps and position–time wave-speed measurements for H45 and H100 foams.",
               "credit": "Wanchoo, Pandey & Shukla (2023)",
-              "image": "./assets/research/papers/foam-wave-propagation.jpg"
+              "image": "./assets/research/papers/foam-wave-propagation.jpg", "preview": "./assets/research/previews/foam-wave-propagation.jpg", "previewWidth": 1000, "previewHeight": 1282
             },
             {
               "width": 1930,
@@ -479,7 +533,7 @@ window.SITE_CONTENT = {
               "caption": "Input and transmitted forces are normalized by the peak input force. Low-intensity loading produces an amplified transmitted peak; with plastic crushing, force transmission falls after the initial wave propagation phase.",
               "alt": "Normalized input and output force histories for H45 and H100 foam at low and high shock intensities, including experimental dispersion bands.",
               "credit": "Wanchoo, Pandey & Shukla (2023)",
-              "image": "./assets/research/papers/foam-force-transmission.jpg"
+              "image": "./assets/research/papers/foam-force-transmission.jpg", "preview": "./assets/research/previews/foam-force-transmission.jpg", "previewWidth": 1000, "previewHeight": 941
             }
           ],
           methods: "High-speed imaging at up to one million frames per second and digital image correlation tracked elastic, plastic, and compaction waves. Pressure and force sensors measured the applied and transmitted loads, while material tests at different strain rates supported wave-speed predictions."
@@ -487,6 +541,8 @@ window.SITE_CONTENT = {
         {
           id: "foam-hydrostatic",
           title: "Measuring how foams respond to rapid pressure",
+          teaser: "Rapid pressure and full-field volume measurements capture how five PVC foam grades stiffen and collapse when compressed from all directions, as in underwater loading.",
+          takeaway: "Rapid hydrostatic loading increased bulk stiffness to 2.1–2.7 times slow-test values, with stronger collapse-pressure rate effects in denser foam.",
           publicationTitle: "Hydrostatic high strain rate loading response of closed-cell polymeric foams as a function of mass density",
           authors: "P. Wanchoo, S. Kishore, A. Shukla",
           venue: "Composites Part B: Engineering · 247, 110318",
@@ -506,7 +562,7 @@ window.SITE_CONTENT = {
               "caption": "High-speed digital image correlation tracks volumetric strain across five foam densities. The lower-density specimens develop large deformations earlier in the loading sequence.",
               "alt": "Volumetric strain maps for H130, H100, H80, H60 and H45 foam from 0 to 350 microseconds, with a color scale from zero to minus 0.5.",
               "credit": "Wanchoo, Kishore & Shukla (2022)",
-              "image": "./assets/research/papers/hydrostatic-strain.jpg"
+              "image": "./assets/research/papers/hydrostatic-strain.jpg", "preview": "./assets/research/previews/hydrostatic-strain.jpg", "previewWidth": 1000, "previewHeight": 916
             },
             {
               "width": 1020,
@@ -515,7 +571,7 @@ window.SITE_CONTENT = {
               "caption": "Black curves show rapid hydrostatic loading and blue curves show quasi-static loading. The increase in collapse pressure is much larger for the denser foams.",
               "alt": "Pressure versus volumetric strain comparing dynamic and quasi-static loading for five PVC foam density grades.",
               "credit": "Wanchoo, Kishore & Shukla (2022)",
-              "image": "./assets/research/papers/hydrostatic-rate.jpg"
+              "image": "./assets/research/papers/hydrostatic-rate.jpg", "preview": "./assets/research/previews/hydrostatic-rate.jpg", "previewWidth": 1000, "previewHeight": 1000
             }
           ],
           methods: "A water-filled dynamic loading setup applied rapid pressure while ultra-high-speed stereo imaging and 3D digital image correlation measured volumetric strain. The five grades covered nominal densities of 45–130 kg/m³, with average measured volumetric strain rates ranging from about 340 to 1,260 s⁻¹."
@@ -523,6 +579,8 @@ window.SITE_CONTENT = {
         {
           "id": "foam-shear-loading-rate",
           "title": "Measuring foam strength in shear from slow loading to impact rates",
+          "teaser": "Shear and compression tests across six orders of loading rate show why a sandwich foam core needs characterization in both loading modes.",
+          "takeaway": "Shear plateau stress was 30–50% of compression at matched rates and grades; compression strengthened more strongly as loading rate increased.",
           "publicationTitle": "Shear Constitutive Behavior of Closed-Cell PVC Foams at Varied Loading Rates",
           "authors": "A. Pandey, P. Wanchoo, A. Shukla",
           "venue": "Journal of Dynamic Behavior of Materials · 11(4), 534–545",
@@ -550,7 +608,7 @@ window.SITE_CONTENT = {
           ],
           "figures": [
             {
-              "image": "./assets/research/papers/shear-fig10.png",
+              "image": "./assets/research/papers/shear-fig10.png", "preview": "./assets/research/previews/shear-fig10.jpg", "previewWidth": 1000, "previewHeight": 292,
               "width": 1335,
               "height": 390,
               "label": "Figure 10 · Shear versus compression",
@@ -562,7 +620,7 @@ window.SITE_CONTENT = {
               "licenseLabel": "CC BY 4.0"
             },
             {
-              "image": "./assets/research/papers/shear-fig11.png",
+              "image": "./assets/research/papers/shear-fig11.png", "preview": "./assets/research/previews/shear-fig11.jpg", "previewWidth": 985, "previewHeight": 420,
               "width": 985,
               "height": 420,
               "label": "Figure 11 · Different loading-rate effects",
@@ -594,6 +652,8 @@ window.SITE_CONTENT = {
         {
           "id": "smooth-mode-decomposition",
           "title": "Recovering vibration modes from fewer images",
+          "teaser": "A method that uses spatial smoothness extracts structural vibration modes from camera data, including images captured too slowly or at irregular time intervals.",
+          "takeaway": "Beam experiments recovered mode shapes from undersampled images, showing how spatial information can reduce the need for dense time sampling.",
           "publicationTitle": "Smooth mode decomposition: Theory and its applications in full-field output-only modal analysis",
           "authors": "H.-W.-X. Li, P. Wanchoo, A. Shukla, D. Chelidze",
           "venue": "Mechanical Systems and Signal Processing · 200, 110541",
@@ -611,7 +671,7 @@ window.SITE_CONTENT = {
           "note": "Coauthored Ph.D. research; second author of four.",
           "figures": [
             {
-              "image": "./assets/research/papers/smooth-mode-fig-9.png",
+              "image": "./assets/research/papers/smooth-mode-fig-9.png", "preview": "./assets/research/previews/smooth-mode-fig-9.jpg", "previewWidth": 1000, "previewHeight": 1003,
               "width": 1420,
               "height": 1425,
               "label": "Figure 9 · Measuring beam motion",
@@ -620,7 +680,7 @@ window.SITE_CONTENT = {
               "credit": "Li et al. (2023)"
             },
             {
-              "image": "./assets/research/papers/smooth-mode-fig-11.png",
+              "image": "./assets/research/papers/smooth-mode-fig-11.png", "preview": "./assets/research/previews/smooth-mode-fig-11.jpg", "previewWidth": 1000, "previewHeight": 947,
               "width": 1420,
               "height": 1345,
               "label": "Figure 11 · Recovering modes from fewer images",
@@ -633,6 +693,8 @@ window.SITE_CONTENT = {
         {
           "id": "rate-stiffening-soft-polymer",
           "title": "Explaining how a soft polymer stiffens during impact",
+          "teaser": "Compression experiments and a reversible-network model connect a soft polymer’s slow flow with its strong resistance to rapid deformation, then test predictions in indentation.",
+          "takeaway": "Measured stress at comparable strain increased by over three orders of magnitude across tested loading rates; separate indentation experiments checked the model.",
           "publicationTitle": "A large deformation model for quasi-static to high strain rate response of a rate-stiffening soft polymer",
           "authors": "A. Konale, Z. Ahmed, P. Wanchoo, V. Srivastava",
           "venue": "International Journal of Plasticity · 168, 103701",
@@ -650,7 +712,7 @@ window.SITE_CONTENT = {
           "note": "Coauthored Ph.D. research; third author of four. The paper identifies early portions of the highest-rate compression traces where dynamic force equilibrium had not yet been reached.",
           "figures": [
             {
-              "image": "./assets/research/papers/rate-stiffening-pbs-fig-1.png",
+              "image": "./assets/research/papers/rate-stiffening-pbs-fig-1.png", "preview": "./assets/research/previews/rate-stiffening-pbs-fig-1.jpg", "previewWidth": 1000, "previewHeight": 787,
               "width": 1200,
               "height": 945,
               "label": "Figure 1 · Slow flow and rapid recovery",
@@ -659,7 +721,7 @@ window.SITE_CONTENT = {
               "credit": "Konale et al. (2023)"
             },
             {
-              "image": "./assets/research/papers/rate-stiffening-pbs-fig-7.png",
+              "image": "./assets/research/papers/rate-stiffening-pbs-fig-7.png", "preview": "./assets/research/previews/rate-stiffening-pbs-fig-7.jpg", "previewWidth": 1000, "previewHeight": 885,
               "width": 1390,
               "height": 1230,
               "label": "Figure 7 · Testing the network model",
@@ -693,6 +755,8 @@ window.SITE_CONTENT = {
         {
           "id": "air-underwater-blast-review",
           "title": "How polymer composites mitigate air and underwater blast",
+          "teaser": "This review connects blast physics, damage mechanisms, and sandwich-panel design, explaining why protective choices depend on whether loading occurs in air or underwater.",
+          "takeaway": "The literature shows that face sheets, core crushing, and interfaces must be assessed together under the relevant fluid and loading conditions.",
           "publicationTitle": "Investigations on air and underwater blast mitigation in polymeric composite structures – A review",
           "authors": "P. Wanchoo, H. Matos, C.-E. Rousseau, A. Shukla",
           "venue": "Composite Structures · 263, 113530",
@@ -713,6 +777,8 @@ window.SITE_CONTENT = {
         {
           "id": "naval-blast-implosion-review",
           "title": "Designing naval sandwich structures for blast and implosion",
+          "teaser": "This review brings together models and experiments on naval composites, covering both explosive loading and the pressure pulses released when structures collapse underwater.",
+          "takeaway": "The reviewed evidence identifies two design concerns: resisting collapse and limiting the pressure pulse that an implosion sends toward neighboring structures.",
           "publicationTitle": "Advances in naval composite and sandwich structures for blast and implosion mitigations",
           "authors": "P. Wanchoo, S. Kishore, A. Pandey, A. Shukla",
           "venue": "Journal of Sandwich Structures & Materials · 26(2), 152–174",

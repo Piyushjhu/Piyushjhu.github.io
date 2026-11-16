@@ -41,6 +41,10 @@
   $("#research-vision-description").textContent = researchVision.description || "";
   $("#research-steps").innerHTML = (researchVision.steps || []).map((step, index) => `<li><span class="research-step-number">0${index + 1}</span><h4>${escape(step.title)}</h4><p>${escape(step.text)}</p></li>`).join("");
   const researchStudies = content.researchStudies || [];
+  const overview = content.researchOverview || {};
+  $("#research-overview-title").textContent = overview.heading || "Explore my research";
+  $("#research-overview-intro").textContent = overview.introduction || "";
+  $("#research-directions").innerHTML = (overview.directions || []).map(direction => `<article class="research-direction"><p class="eyebrow">${escape(direction.label)}</p><h4>${escape(direction.title)}</h4><p>${escape(direction.summary)}</p><p class="direction-finding"><strong>One finding</strong>${escape(direction.finding)}</p>${/^#[a-z0-9-]+$/.test(direction.href || "") ? `<a class="text-link light-link" href="${escape(direction.href)}">${escape(direction.linkLabel)} ${icon("arrow-down")}</a>` : ""}</article>`).join("");
   const researchFigures = new Map();
   const renderPaperFigures = paper => {
     const figures = (paper.figures || []).filter(figure => safeUrl(figure.image, true));
@@ -48,7 +52,7 @@
       const key = `${paper.id}-${index}`;
       researchFigures.set(key, { ...figure, paper });
       const sourceUrl = safeUrl(figure.sourceUrl || paper.url);
-      return `<figure class="paper-figure"><button type="button" class="paper-figure-open" aria-haspopup="dialog" data-paper-figure="${escape(key)}" aria-label="Enlarge ${escape(figure.label)}: ${escape(paper.title)}"><img src="${escape(figure.image)}" alt="${escape(figure.alt)}" width="${Number(figure.width) || 1600}" height="${Number(figure.height) || 1000}" loading="lazy" /><span class="figure-enlarge">Enlarge ${icon("arrow-up-right")}</span></button><figcaption><strong>${escape(figure.label)}</strong><p>${escape(figure.caption)}</p>${sourceUrl ? externalLink(sourceUrl, figure.credit || "Source paper", "figure-source") : ""}${safeUrl(figure.licenseUrl) ? ` <a class="figure-source figure-license" href="${escape(figure.licenseUrl)}" target="_blank" rel="noopener noreferrer">${escape(figure.licenseLabel || "License")}</a>` : ""}</figcaption></figure>`;
+      return `<figure class="paper-figure"><button type="button" class="paper-figure-open" aria-haspopup="dialog" data-paper-figure="${escape(key)}" aria-label="Enlarge ${escape(figure.label)}: ${escape(paper.title)}"><img src="${escape(safeUrl(figure.preview, true) || figure.image)}" alt="${escape(figure.alt)}" width="${Number(figure.previewWidth || figure.width) || 1600}" height="${Number(figure.previewHeight || figure.height) || 1000}" loading="lazy" decoding="async" /><span class="figure-enlarge">Enlarge ${icon("arrow-up-right")}</span></button><figcaption><strong>${escape(figure.label)}</strong><p>${escape(figure.caption)}</p>${sourceUrl ? externalLink(sourceUrl, figure.credit || "Source paper", "figure-source") : ""}${safeUrl(figure.licenseUrl) ? ` <a class="figure-source figure-license" href="${escape(figure.licenseUrl)}" target="_blank" rel="noopener noreferrer">${escape(figure.licenseLabel || "License")}</a>` : ""}</figcaption></figure>`;
     }).join("")}</div>` : "";
   };
   const researchMedia = (item, id) => {
@@ -64,22 +68,34 @@
     const id = `paper-${paper.id}`;
     const paperUrl = safeUrl(paper.url);
     const links = (paper.links || []).filter(link => safeUrl(link.url));
-    return `<article class="research-paper" id="${escape(id)}" tabindex="-1" aria-labelledby="${escape(id)}-title"><header class="research-paper-header"><div>${paper.publicationType ? `<p class="paper-type${paper.publicationType === "Preprint" ? " paper-type-preprint" : ""}">${escape(paper.publicationType)}</p>` : ""}<p class="research-paper-meta">${escape(paper.year)} · ${escape(paper.venue)}</p><h4 id="${escape(id)}-title"><a href="#${escape(id)}">${escape(paper.title)}</a></h4></div>${paper.highlight ? `<p class="paper-highlight"><strong>${escape(paper.highlight.value)}</strong><span>${escape(paper.highlight.label)}</span></p>` : ""}</header><p class="paper-description">${escape(paper.summary)}</p>${paper.note ? `<p class="paper-note">${escape(paper.note)}</p>` : ""}${researchMedia(paper, id)}<div class="paper-findings"><div class="paper-results"><h5>${escape(paper.resultsHeading || "Key results")}</h5><ul>${(paper.results || []).map(result => `<li>${escape(result)}</li>`).join("")}</ul></div><aside class="paper-importance"><h5>Why it matters</h5><p>${escape(paper.importance)}</p></aside></div>${renderPaperFigures(paper)}${paper.methods ? `<details class="study-details paper-methods"><summary>How we studied it ${icon("arrow-down")}</summary><p>${escape(paper.methods)}</p></details>` : ""}<footer class="paper-reference"><div><p class="paper-reference-title"><cite>${escape(paper.publicationTitle)}</cite></p><p class="paper-authors">${escape(paper.authors)}</p></div><div class="study-links">${paperUrl ? externalLink(paperUrl, paper.linkLabel || "Read paper") : ""}${links.map(link => externalLink(link.url, link.label)).join("")}</div></footer></article>`;
+    return `<article class="research-paper" id="${escape(id)}" tabindex="-1" aria-labelledby="${escape(id)}-title"><header class="research-paper-header"><div>${paper.publicationType ? `<p class="paper-type${paper.publicationType === "Preprint" ? " paper-type-preprint" : ""}">${escape(paper.publicationType)}</p>` : ""}<p class="research-paper-meta">${escape(paper.year)} · ${escape(paper.venue)}</p><h4 id="${escape(id)}-title"><a href="#${escape(id)}">${escape(paper.title)}</a></h4></div></header><p class="paper-teaser">${escape(paper.teaser || paper.summary)}</p>${paper.takeaway ? `<p class="paper-takeaway"><strong>Key takeaway</strong> ${escape(paper.takeaway)}</p>` : ""}<details class="paper-story" id="${escape(id)}-details"><summary><span>Read study <span class="paper-story-hint">· results, figures &amp; methods</span></span>${icon("arrow-down")}</summary><div class="paper-story-body">${paper.highlight ? `<p class="paper-highlight"><strong>${escape(paper.highlight.value)}</strong><span>${escape(paper.highlight.label)}</span></p>` : ""}<p class="paper-description">${escape(paper.summary)}</p>${paper.contribution ? `<p class="paper-contribution"><strong>My contribution</strong> ${escape(paper.contribution)}</p>` : ""}${paper.note ? `<p class="paper-note">${escape(paper.note)}</p>` : ""}${researchMedia(paper, id)}<div class="paper-findings"><div class="paper-results"><h5>${escape(paper.resultsHeading || "Key results")}</h5><ul>${(paper.results || []).map(result => `<li>${escape(result)}</li>`).join("")}</ul></div><aside class="paper-importance"><h5>Why it matters</h5><p>${escape(paper.importance)}</p></aside></div>${renderPaperFigures(paper)}${paper.methods ? `<details class="study-details paper-methods"><summary>How we studied it ${icon("arrow-down")}</summary><p>${escape(paper.methods)}</p></details>` : ""}<footer class="paper-reference"><div><p class="paper-reference-title"><cite>${escape(paper.publicationTitle)}</cite></p><p class="paper-authors">${escape(paper.authors)}</p></div><div class="study-links">${paperUrl ? externalLink(paperUrl, paper.linkLabel || "Read paper") : ""}${links.map(link => externalLink(link.url, link.label)).join("")}</div></footer><div class="paper-return"><a href="#${escape(paper.topicAnchor)}">Back to topic ${icon("arrow-up-right")}</a><a href="#research">Research overview ${icon("arrow-up-right")}</a></div></div></details></article>`;
   };
   const renderResearchStudies = status => researchStudies.filter(study => study.status === status).map((study, index) => {
     const studyId = `research-${study.id}`;
     const media = researchMedia(study, studyId);
-    if (study.papers?.length) return `<section class="research-theme" id="${escape(studyId)}" tabindex="-1" aria-labelledby="${escape(studyId)}-title"><div class="research-theme-overview${media ? " has-media" : ""}"><div class="research-theme-heading"><p class="study-label">0${index + 1} / ${escape(study.label)}</p><h3 id="${escape(studyId)}-title">${escape(study.title)}</h3><p class="study-summary">${escape(study.summary)}</p>${status === "active" ? `<div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research context ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}` : ""}</div>${media}</div><div class="research-papers">${study.papers.map(renderResearchPaper).join("")}</div></section>`;
+    if (study.papers?.length) return `<section class="research-theme" id="${escape(studyId)}" tabindex="-1" aria-labelledby="${escape(studyId)}-title"><div class="research-theme-overview${media ? " has-media" : ""}"><div class="research-theme-heading"><p class="study-label">0${index + 1} / ${escape(study.label)}</p><h3 id="${escape(studyId)}-title">${escape(study.title)}</h3><p class="study-summary">${escape(study.summary)}</p>${status === "active" ? `<div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research context ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}` : ""}</div>${media}</div><div class="research-papers">${study.papers.map(paper => renderResearchPaper({ ...paper, topicAnchor: studyId })).join("")}</div></section>`;
     const links = (study.links || []).filter(link => safeUrl(link.url)).map(link => externalLink(link.url, link.label)).join("");
-    return `<article class="research-study${media ? " has-media" : ""}" id="${escape(studyId)}">${media || `<div class="study-marker" aria-hidden="true"><span>${status === "active" ? "EXPLORING" : "FOUNDATIONS"}</span><strong>0${index + 1}</strong></div>`}<div class="study-copy"><p class="study-label">${escape(study.label)}</p><h3>${escape(study.title)}</h3><p class="study-institution">${escape(study.institution)}</p><p class="study-summary">${escape(study.summary)}</p><div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research details ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}${links ? `<div class="study-links">${links}</div>` : ""}</div></article>`;
+    return `<article class="research-study${media ? " has-media" : ""}" id="${escape(studyId)}" tabindex="-1" aria-labelledby="${escape(studyId)}-title">${media || `<div class="study-marker" aria-hidden="true"><span>${status === "active" ? "EXPLORING" : "FOUNDATIONS"}</span><strong>0${index + 1}</strong></div>`}<div class="study-copy"><p class="study-label">${escape(study.label)}</p><h3 id="${escape(studyId)}-title">${escape(study.title)}</h3><p class="study-institution">${escape(study.institution)}</p><p class="study-summary">${escape(study.summary)}</p><div class="study-tags">${(study.tags || []).map(tag => `<span>${escape(tag)}</span>`).join("")}</div>${(study.details || []).length ? `<details class="study-details"><summary>Research details ${icon("arrow-down")}</summary>${study.details.map(detail => `<div><h4>${escape(detail.title)}</h4><p>${escape(detail.text)}</p></div>`).join("")}</details>` : ""}${links ? `<div class="study-links">${links}</div>` : ""}</div></article>`;
   }).join("");
   $("#active-research").innerHTML = renderResearchStudies("active");
   $("#past-research").innerHTML = renderResearchStudies("past");
 
   const researchTabs = $$("[data-research-tab]");
+  let currentResearchTab = "active";
+  const markCurrentNavigation = name => {
+    $$("[data-nav]").forEach(link => {
+      if (link.dataset.nav === name) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  };
   const activateResearchTab = (name, moveFocus = false) => {
     const selected = researchTabs.find(tab => tab.dataset.researchTab === name);
     if (!selected) return;
+    currentResearchTab = name;
+    $("#research-topic-label").hidden = name === "publications";
+    $("#research-topic").innerHTML = '<option value="">Choose a topic</option>' + researchStudies.filter(study => study.status === name).map(study => `<option value="research-${escape(study.id)}">${escape(study.title)}</option>`).join("");
+    $("#research-topic").value = "";
+    markCurrentNavigation(name === "publications" ? "publications" : "research");
     researchTabs.forEach(tab => {
       const active = tab === selected;
       tab.setAttribute("aria-selected", String(active));
@@ -104,16 +120,32 @@
     const panel = anchor?.closest('[role="tabpanel"]');
     if (!panel || !panel.id.startsWith("research-panel-")) return;
     activateResearchTab(panel.id.slice("research-panel-".length));
+    const paper = anchor.closest(".research-paper");
+    const story = paper?.querySelector(".paper-story");
+    if (story) story.open = true;
+    const topic = anchor.closest(".research-theme, .research-study");
+    if (topic) $("#research-topic").value = topic.id;
+    const target = anchor;
     window.requestAnimationFrame(() => {
-      anchor.scrollIntoView({block: "start"});
-      if (moveFocus) anchor.focus({preventScroll: true});
+      target.scrollIntoView({block: "start"});
+      if (moveFocus) target.focus({preventScroll: true});
     });
   };
-  $("#research").addEventListener("click", event => {
+  document.addEventListener("click", event => {
     const link = event.target.closest('a[href^="#"]');
     if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     revealResearchAnchor(link.getAttribute("href").slice(1), true);
   });
+  $("#research-topic").addEventListener("change", event => {
+    const id = event.target.value;
+    if (!id) return;
+    window.location.hash = id;
+    revealResearchAnchor(id, true);
+  });
+  $("#research").addEventListener("toggle", event => {
+    if (event.target.classList.contains("paper-story") && !event.target.open) $$("video", event.target).forEach(video => video.pause());
+  }, true);
+  activateResearchTab("active");
   window.addEventListener("hashchange", () => revealResearchAnchor(window.location.hash.slice(1), true));
   revealResearchAnchor();
   $("#about-bio").innerHTML = content.bio.map(paragraph => `<p>${escape(paragraph)}</p>`).join("");
@@ -281,18 +313,35 @@
     scholarPapersButton.hidden = false;
     scholarPapersButton.textContent = `Google Scholar (${scholarPapers.length})`;
   }
-  const renderPublications = (filter = "selected") => {
-    const papers = filter === "scholar" ? scholarPapers : filter === "progress" ? (content.manuscripts || []) : filter === "conference" ? conferencePublications : filter === "all" ? publications : publications.filter(paper => paper.featured);
+  const findExplanation = publication => explainedPapers.find(paper => paper.url === safeUrl(publication.url) || paperTitleKey(paper.publicationTitle) === paperTitleKey(publication.title));
+  const publicationTopic = publication => researchStudies.find(study => (study.papers || []).includes(findExplanation(publication)))?.id || "other";
+  const publicationSearchText = paper => {
+    const explanation = findExplanation(paper);
+    return [paper.title, paper.authors, paper.venue, explanation?.title, explanation?.teaser, explanation?.summary].join(" ").toLocaleLowerCase();
+  };
+  const publicationYear = paper => String(paper.year || "").match(/\b(?:19|20)\d{2}\b/)?.[0] || "undated";
+  const allPublications = [...publications, ...conferencePublications, ...(content.manuscripts || []), ...scholarPapers];
+  $("#publication-year").innerHTML = '<option value="">All years</option>' + [...new Set(allPublications.map(publicationYear))].sort((a, b) => a === "undated" ? 1 : b === "undated" ? -1 : b.localeCompare(a, "en", { numeric: true })).map(year => `<option value="${escape(year)}">${year === "undated" ? "Year not listed" : escape(year)}</option>`).join("");
+  $("#publication-topic").innerHTML = '<option value="">All topics</option>' + researchStudies.filter(study => study.papers?.length).map(study => `<option value="${escape(study.id)}">${escape(study.title)}</option>`).join("") + '<option value="other">Other work</option>';
+  let currentPaperFilter = "selected";
+  const renderPublications = (filter = currentPaperFilter) => {
+    const categoryPapers = filter === "scholar" ? scholarPapers : filter === "progress" ? (content.manuscripts || []) : filter === "conference" ? conferencePublications : filter === "all" ? publications : publications.filter(paper => paper.featured);
+    const query = ($("#publication-search").value || "").trim().toLocaleLowerCase();
+    const year = $("#publication-year").value || "";
+    const topic = $("#publication-topic").value || "";
+    const papers = categoryPapers.filter(paper => (!query || publicationSearchText(paper).includes(query)) && (!year || publicationYear(paper) === year) && (!topic || publicationTopic(paper) === topic));
+    $("#publication-count").textContent = `${papers.length} of ${categoryPapers.length} paper${categoryPapers.length === 1 ? "" : "s"} shown`;
     const bibliographySource = "Curated bibliography: September 2026 CV and verified postdoctoral publication updates";
     $("#publication-source-note").textContent = filter === "scholar" && scholar ? `Google Scholar · Updated ${scholarUpdated} · Includes journal papers, preprints, and other works` : scholar ? `${bibliographySource} · Scholar metrics updated ${scholarUpdated}` : bibliographySource;
-    $("#publications").innerHTML = papers.length ? papers.map(publication => {
+    $("#publication-results").innerHTML = papers.length ? papers.map(publication => {
     const paperUrl = safeUrl(publication.url);
     const pdfUrl = safeUrl(publication.pdf, true);
-    const explanation = explainedPapers.find(paper => paper.url === paperUrl || paperTitleKey(paper.publicationTitle) === paperTitleKey(publication.title));
+    const explanation = findExplanation(publication);
     return `<article class="publication"><div class="publication-summary"><div><p class="publication-year">${escape(publication.year)}</p><h3>${escape(publication.title)}</h3><p class="publication-meta publication-authors">${escape(publication.authors).replaceAll("P. Wanchoo", "<strong>P. Wanchoo</strong>")}</p>${publication.venue ? `<p class="publication-meta">${escape(publication.venue)}</p>` : ""}${publication.note ? `<p class="publication-note">${escape(publication.note)}</p>` : ""}</div><div class="publication-actions">${explanation ? `<a class="paper-link" href="#paper-${escape(explanation.id)}">Results &amp; significance ${icon("arrow-up-right")}</a>` : ""}${paperUrl ? externalLink(paperUrl, publication.source === "scholar" ? "View on Scholar" : "Read paper", "paper-link") : ""}${pdfUrl ? externalLink(pdfUrl, "PDF", "paper-link") : ""}</div></div>${publication.abstract ? `<details><summary>Read abstract</summary><p>${escape(publication.abstract)}</p></details>` : ""}</article>`;
-  }).join("") : '<div class="publication-empty"><p>No publications in this category.</p></div>';
+  }).join("") : '<div class="publication-empty"><p>No papers match these filters. Try a different search, year, or topic, or clear the filters.</p></div>';
   };
   const activatePaperFilter = name => {
+    currentPaperFilter = name;
     $$('[data-paper-filter]').forEach(button => {
       const active = button.dataset.paperFilter === name;
       button.classList.toggle("active", active);
@@ -301,7 +350,13 @@
     renderPublications(name);
   };
   $$('[data-paper-filter]').forEach(button => button.addEventListener("click", () => activatePaperFilter(button.dataset.paperFilter)));
-  activatePaperFilter(scholar ? "scholar" : "selected");
+  ["#publication-search", "#publication-year", "#publication-topic"].forEach(selector => $(selector).addEventListener(selector === "#publication-search" ? "input" : "change", () => renderPublications()));
+  $("#publication-reset").addEventListener("click", () => {
+    ["#publication-search", "#publication-year", "#publication-topic"].forEach(selector => { $(selector).value = ""; });
+    renderPublications();
+    $("#publication-search").focus();
+  });
+  activatePaperFilter("selected");
   const scholarUrl = safeUrl(content.scholar);
   if (scholarUrl) $("#scholar-link").href = scholarUrl;
   else $("#scholar-link").hidden = true;
@@ -360,6 +415,7 @@
     if (!imageUrl) return;
     const sourceUrl = safeUrl(figure.sourceUrl || figure.paper.url);
     openDialog(`<figure class="research-figure-lightbox"><figcaption><p class="dialog-eyebrow">${escape(figure.paper.year)} · ${escape(figure.paper.venue)}</p><h2 id="dialog-title">${escape(figure.label)}</h2><p>${escape(figure.caption)}</p></figcaption><img src="${escape(imageUrl)}" alt="${escape(figure.alt)}" width="${Number(figure.width) || 1600}" height="${Number(figure.height) || 1000}" /><div class="figure-dialog-links">${sourceUrl ? externalLink(sourceUrl, figure.credit || "Source paper") : ""}${safeUrl(figure.licenseUrl) ? externalLink(figure.licenseUrl, figure.licenseLabel || "License") : ""}<a class="text-link" href="${escape(imageUrl)}" target="_blank" rel="noopener noreferrer">Open full-resolution image ${icon("arrow-up-right")}</a></div></figure>`, "research-figure");
+    window.ResearchFigureViewer?.setup($(".research-figure-lightbox", $("#dialog-content")));
   });
   $("#projects").addEventListener("click", event => {
     const card = event.target.closest("[data-project]");
@@ -397,11 +453,9 @@
       $$(".reveal").forEach(element => reveal.observe(element));
     }
     const sectionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) $$("[data-nav]").forEach(link => {
-        if (link.dataset.nav === entry.target.id) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
-      });
+      if (entry.isIntersecting) markCurrentNavigation(entry.target.id === "research" && currentResearchTab === "publications" ? "publications" : entry.target.id);
     }), { rootMargin: "-15% 0px -55% 0px", threshold: 0 });
-    $$("main section[id]").forEach(section => sectionObserver.observe(section));
+    const destinations = new Set($$("[data-nav]").map(link => link.dataset.nav));
+    $$("main > section[id]").filter(section => destinations.has(section.id)).forEach(section => sectionObserver.observe(section));
   }
 })();
