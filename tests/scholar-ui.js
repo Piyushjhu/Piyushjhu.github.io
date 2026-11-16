@@ -6,6 +6,7 @@ const vm = require("node:vm");
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const read = name => fs.readFileSync(path.join(root, name), "utf8");
+const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"})[character]);
 
 function element(tag, attrs) {
   const classes = new Set((attrs.class || "").split(/\s+/));
@@ -17,10 +18,14 @@ function element(tag, attrs) {
     getAttribute(name) { return this.attrs[name] ?? null; },
     setAttribute(name, value) { this.attrs[name] = String(value); },
     addEventListener(name, callback) { (this.listeners[name] ||= []).push(callback); },
-    click() { for (const listener of this.listeners.click || []) listener({target: this}); },
+    dispatch(name, event = {}) { for (const listener of this.listeners[name] || []) listener({target: this, ...event}); },
+    click(target = this) { this.dispatch("click", {target}); },
     querySelectorAll() { return []; },
     closest() { return null; },
-    focus() {},
+    focus() { this.focused = true; },
+    showModal() { this.open = true; },
+    close() { this.open = false; this.dispatch("close"); },
+    getBoundingClientRect() { return {left: 10, right: 900, top: 10, bottom: 700}; },
     style: {setProperty() {}}
   };
 }
@@ -155,17 +160,22 @@ assert.equal(foreign.query('[data-paper-filter="scholar"]').hidden, true);
 const paperArticles = (page, panel) => [...(panel ? page.query(panel).innerHTML : page.query("#active-research").innerHTML + page.query("#past-research").innerHTML).matchAll(/<article class="research-paper"[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]);
 const paperById = (page, id) => paperArticles(page).find(article => article.includes(`id="paper-${id}"`)) || "";
 const explained = page.window.SITE_CONTENT.researchStudies.filter(study => study.status === "past").flatMap(study => study.papers || []);
-assert.equal(explained.length, 4);
-assert.equal(paperArticles(page, "#past-research").length, 4);
+assert.equal(paperArticles(page, "#past-research").length, explained.length);
+for (const id of ["sandwich-undex-interaction", "curved-sandwich-air-shock", "foam-shear-loading-rate", "gyroid-core-shock", "smooth-mode-decomposition", "rate-stiffening-soft-polymer"]) {
+  assert.ok(explained.some(paper => paper.id === id), `Missing coauthored PhD explanation: ${id}`);
+}
+for (const id of ["blast-composites", "porous-materials", "models-and-measurements", "reviews-and-design"]) {
+  assert.ok(page.query("#past-research").innerHTML.includes(`id="research-${id}"`), `Missing PhD research theme: ${id}`);
+}
 for (const paper of explained) {
   const article = paperById(page, paper.id);
   const visibleReading = article.replace(/<details\b[\s\S]*?<\/details>/g, "");
   assert.ok(visibleReading.includes('class="paper-description"'));
-  assert.match(visibleReading, /<h5>Key results<\/h5><ul><li>.+<\/li><\/ul>/);
+  assert.ok(visibleReading.includes(`<h5>${escapeHtml(paper.resultsHeading || "Key results")}</h5><ul><li>`));
+  assert.match(visibleReading, /<div class="paper-results"><h5>.+<\/h5><ul><li>.+<\/li><\/ul>/);
   assert.match(visibleReading, /<h5>Why it matters<\/h5><p>.+<\/p>/);
   assert.ok(article.includes(`aria-labelledby="paper-${paper.id}-title"`));
   assert.ok(article.includes(`href="${paper.url}"`));
-  assert.ok(!article.includes("<figure") && !article.includes("<video") && !article.includes("<img"));
 }
 page.query('[data-research-tab="past"]').click();
 assert.equal(page.query("#research-panel-past").hidden, false);
@@ -178,7 +188,7 @@ assert.ok(page.query("#publications").innerHTML.includes('href="#paper-aimdl-lab
 // Published postdoctoral work and the preprint keep their distinct source types.
 const postdoc = page.window.SITE_CONTENT.researchStudies.filter(study => study.status === "active").flatMap(study => study.papers || []);
 assert.equal(postdoc.length, 4);
-assert.equal(paperArticles(page, "#active-research").length, 4);
+assert.equal(paperArticles(page, "#active-research").length, postdoc.length);
 for (const [id, type] of [["copper-spall-statistics", "Journal article"], ["helix-automation", "Journal article"], ["flyer-positioning", "Conference paper"], ["aimdl-laboratory", "Preprint"]]) {
   const paper = postdoc.find(paper => paper.id === id);
   assert.equal(paper?.publicationType, type);
@@ -194,11 +204,11 @@ assert.ok(activeReading.includes('src="./assets/research/helix-facility.jpg"'));
 assert.ok(activeReading.includes('aria-describedby="research-spall-strength-caption"'));
 assert.ok(paperById(page, "aimdl-laboratory").includes(">Read preprint "));
 page.query('[data-paper-filter="conference"]').click();
-assert.equal(page.query('[data-paper-filter="conference"]').textContent, "Conference papers (1)");
+assert.equal(page.query('[data-paper-filter="conference"]').textContent, `Conference papers (${page.window.SITE_CONTENT.conferencePublications.length})`);
 assert.ok(page.query("#publications").innerHTML.includes('href="#paper-flyer-positioning"'));
 assert.ok(!page.query("#publications").innerHTML.includes('href="#paper-copper-spall-statistics"'));
 page.query('[data-paper-filter="all"]').click();
-assert.equal(page.query('[data-paper-filter="all"]').textContent, "Journal articles (14)");
+assert.equal(page.query('[data-paper-filter="all"]').textContent, `Journal articles (${page.window.SITE_CONTENT.publications.length})`);
 assert.ok(!page.query("#publications").innerHTML.includes('href="#paper-flyer-positioning"'));
 for (const id of ["copper-spall-statistics", "helix-automation"]) assert.ok(page.query("#publications").innerHTML.includes(`href="#paper-${id}"`));
 const publishedAutomation = page.window.SITE_CONTENT.publications.find(paper => paper.url === "https://doi.org/10.1007/s40192-026-00482-1");
@@ -223,18 +233,21 @@ const hostilePaper = render({mutate: window => {
   paper.title = '<img src=x onerror="title()">';
   paper.summary = '<script>summary()</script>';
   paper.results = ['<svg onload="result()">'];
+  paper.resultsHeading = '<svg onload="heading()">';
   paper.importance = '</aside><img src=x onerror="importance()">';
   paper.publicationType = '<img src=x onerror="type()">';
   paper.note = '<script>note()</script>';
   paper.url = "javascript:paper()";
   paper.links = [{label: "Unsafe link", url: "javascript:extra()"}];
   paper.image = "javascript:image()";
+  paper.figures = [];
 }});
 const hostileArticle = paperById(hostilePaper, explained[0].id);
 for (const expected of [
   '&lt;img src=x onerror=&quot;title()&quot;&gt;',
   '&lt;script&gt;summary()&lt;/script&gt;',
   '&lt;svg onload=&quot;result()&quot;&gt;',
+  '&lt;svg onload=&quot;heading()&quot;&gt;',
   '&lt;/aside&gt;&lt;img src=x onerror=&quot;importance()&quot;&gt;',
   '&lt;img src=x onerror=&quot;type()&quot;&gt;',
   '&lt;script&gt;note()&lt;/script&gt;'
@@ -244,6 +257,7 @@ assert.ok(!hostileArticle.includes("<img") && !hostileArticle.includes("<script"
 
 const withMedia = render({mutate: window => {
   const papers = window.SITE_CONTENT.researchStudies.filter(study => study.status === "past").flatMap(study => study.papers || []);
+  for (const paper of papers.slice(0, 3)) paper.figures = [];
   Object.assign(papers[0], {video: "./assets/research/example.mp4", caption: "Pressure & deformation", mediaLabel: "Underwater experiment"});
   Object.assign(papers[1], {image: "./assets/research/example.jpg", imageAlt: "Crack & strain field", caption: "Measured strain field"});
   Object.assign(papers[2], {video: "./assets/research/example.mp4"});
@@ -260,4 +274,104 @@ assert.ok(imagePaper.includes(`<figcaption id="paper-${explained[1].id}-caption"
 const uncaptionedPaper = paperById(withMedia, explained[2].id);
 assert.ok(uncaptionedPaper.includes("<video"));
 assert.ok(!uncaptionedPaper.includes("aria-describedby") && !uncaptionedPaper.includes("<figcaption"));
-console.log("Scholar, news, and research UI checks passed: publication filters and explanation links, Ph.D. and postdoctoral findings, journal/conference/preprint distinctions, retained media, hostile content escaping, news timing, source identity, and cached update dates.");
+
+// Original paper figures retain readable context and a direct source in cards and the dialog.
+const figureCards = article => [...article.matchAll(/<figure class="paper-figure">[\s\S]*?<\/figure>/g)].map(match => match[0]);
+const allExplained = [...postdoc, ...explained];
+const illustrated = allExplained.filter(paper => paper.figures?.length);
+assert.ok(illustrated.length > 0, "Research explanations must include original paper figures");
+for (const id of ["underwater-energy", "rubber-composites", "foam-stress-waves", "foam-hydrostatic", "curved-sandwich-air-shock", "foam-shear-loading-rate", "smooth-mode-decomposition", "rate-stiffening-soft-polymer", "copper-spall-statistics", "helix-automation", "flyer-positioning", "aimdl-laboratory"]) {
+  assert.ok(allExplained.find(paper => paper.id === id)?.figures?.length, `Missing paper figures for ${id}`);
+}
+for (const paper of allExplained) {
+  const article = paperById(page, paper.id);
+  const cards = figureCards(article);
+  assert.equal(cards.length, (paper.figures || []).length, `Figure count for ${paper.id}`);
+  if (cards.length) assert.ok(article.includes('class="paper-figures" role="group" aria-label="Figures from this paper"'));
+  for (const [index, figure] of (paper.figures || []).entries()) {
+    assert.ok(figure.alt && figure.label && figure.caption && figure.credit, `Incomplete figure context for ${paper.id}-${index}`);
+    const card = cards[index];
+    assert.ok(card.includes(`data-paper-figure="${paper.id}-${index}"`));
+    assert.ok(card.includes('aria-haspopup="dialog"'));
+    assert.ok(card.includes(`src="${escapeHtml(figure.image)}"`));
+    assert.ok(card.includes(`alt="${escapeHtml(figure.alt)}"`));
+    assert.ok(card.includes(`width="${figure.width}" height="${figure.height}" loading="lazy"`));
+    assert.ok(card.includes(`<strong>${escapeHtml(figure.label)}</strong><p>${escapeHtml(figure.caption)}</p>`));
+    assert.ok(card.includes(`class="figure-source" href="${escapeHtml(figure.sourceUrl || paper.url)}"`));
+    assert.ok(card.includes(escapeHtml(figure.credit)));
+    if (figure.licenseUrl) {
+      assert.ok(card.includes(`class="figure-source figure-license" href="${escapeHtml(figure.licenseUrl)}"`));
+      assert.ok(card.includes(`>${escapeHtml(figure.licenseLabel || "License")}</a>`));
+    }
+    assert.ok(card.includes('target="_blank" rel="noopener noreferrer"'));
+    if (figure.image.startsWith("./")) assert.ok(fs.existsSync(path.resolve(root, figure.image)), `Missing figure image: ${figure.image}`);
+  }
+}
+
+// Exercise delegated clicks with a nested target, as clicking an image inside its button does.
+function openFigure(targetPage, key) {
+  const button = element("button", {"data-paper-figure": key});
+  const image = {closest: selector => selector === "[data-paper-figure]" ? button : null};
+  targetPage.document.activeElement = button;
+  targetPage.query("#research").click(image);
+  return button;
+}
+const illustratedPaper = illustrated[0];
+const firstFigure = illustratedPaper.figures[0];
+const figureTrigger = openFigure(page, `${illustratedPaper.id}-0`);
+const dialog = page.query("#detail-dialog");
+const enlarged = page.query("#dialog-content").innerHTML;
+assert.equal(dialog.open, true);
+assert.ok(dialog.classList.contains("research-figure-dialog"));
+assert.ok(!dialog.classList.contains("gallery-dialog"));
+assert.ok(page.document.body.classList.contains("modal-open"));
+assert.ok(enlarged.includes(`src="${escapeHtml(firstFigure.image)}"`));
+assert.ok(enlarged.includes(`alt="${escapeHtml(firstFigure.alt)}"`));
+assert.ok(enlarged.includes(`<h2 id="dialog-title">${escapeHtml(firstFigure.label)}</h2>`));
+assert.ok(enlarged.includes(`<p>${escapeHtml(firstFigure.caption)}</p>`));
+assert.ok(enlarged.includes(`href="${escapeHtml(firstFigure.sourceUrl || illustratedPaper.url)}"`));
+assert.ok(enlarged.includes(`href="${escapeHtml(firstFigure.image)}" target="_blank" rel="noopener noreferrer">Open full-resolution image`));
+page.query(".dialog-close").click();
+assert.equal(dialog.open, false);
+assert.ok(!page.document.body.classList.contains("modal-open"));
+assert.equal(figureTrigger.focused, true, "Closing a figure returns focus to its trigger");
+openFigure(page, "not-a-registered-paper-figure");
+assert.equal(dialog.open, false, "Unregistered figure keys must not open a dialog");
+openFigure(page, `${illustratedPaper.id}-0`);
+dialog.dispatch("click", {clientX: 0, clientY: 0});
+assert.equal(dialog.open, false, "Clicking the dialog backdrop closes the figure");
+
+const hostileFigures = render({mutate: window => {
+  const paper = window.SITE_CONTENT.researchStudies.find(study => study.status === "past" && study.papers?.length).papers[0];
+  paper.url = "https://example.org/source-paper";
+  paper.figures = [
+    {image: "javascript:figure()", label: "Rejected JavaScript image"},
+    {image: "data:image/svg+xml,<svg onload=alert(1)>", label: "Rejected data image"},
+    {image: "./assets/research/safe.png", label: "Unsafe source omitted", caption: "Safe image", alt: "Safe alternative", credit: "Unsafe source", sourceUrl: "javascript:source()", licenseUrl: "javascript:license()"},
+    {image: 'https://example.org/image.png?label="x"&n=1', alt: '<img onerror="alt()">', label: '<svg onload="label()">', caption: '<script>caption()</script>', credit: '<img onerror="credit()">', width: '1" onload="dimension()', height: 200, sourceUrl: "https://example.org/source?x=1&y=2", licenseUrl: "https://example.org/license?x=1&y=2", licenseLabel: '<script>license()</script>'},
+    {image: "./assets/research/fallback.png", alt: "Source fallback", label: "Paper source", caption: "No separate source URL", credit: "Fallback credit", width: 300, height: 200}
+  ];
+}});
+const hostileFigureArticle = paperById(hostileFigures, explained[0].id);
+const safeFigureCards = figureCards(hostileFigureArticle);
+assert.equal(safeFigureCards.length, 3);
+assert.ok(!hostileFigureArticle.includes("javascript:") && !hostileFigureArticle.includes("data:image"));
+assert.ok(!hostileFigureArticle.includes("Rejected JavaScript image") && !hostileFigureArticle.includes("Rejected data image"));
+assert.ok(!safeFigureCards[0].includes('class="figure-source"'));
+assert.ok(!safeFigureCards[0].includes("figure-license"));
+assert.ok(safeFigureCards[1].includes('src="https://example.org/image.png?label=&quot;x&quot;&amp;n=1"'));
+assert.ok(safeFigureCards[1].includes('alt="&lt;img onerror=&quot;alt()&quot;&gt;"'));
+assert.ok(safeFigureCards[1].includes('&lt;svg onload=&quot;label()&quot;&gt;'));
+assert.ok(safeFigureCards[1].includes('&lt;script&gt;caption()&lt;/script&gt;'));
+assert.ok(safeFigureCards[1].includes('&lt;img onerror=&quot;credit()&quot;&gt;'));
+assert.ok(safeFigureCards[1].includes('width="1600" height="200"'));
+assert.ok(safeFigureCards[1].includes('href="https://example.org/source?x=1&amp;y=2"'));
+assert.ok(safeFigureCards[1].includes('href="https://example.org/license?x=1&amp;y=2"'));
+assert.ok(safeFigureCards[1].includes('&lt;script&gt;license()&lt;/script&gt;'));
+assert.ok(safeFigureCards[2].includes('class="figure-source" href="https://example.org/source-paper"'));
+openFigure(hostileFigures, `${explained[0].id}-1`);
+const hostileEnlarged = hostileFigures.query("#dialog-content").innerHTML;
+assert.equal(hostileFigures.query("#detail-dialog").open, true);
+for (const expected of ['&lt;svg onload=&quot;label()&quot;&gt;', '&lt;script&gt;caption()&lt;/script&gt;', '&lt;img onerror=&quot;credit()&quot;&gt;', 'alt="&lt;img onerror=&quot;alt()&quot;&gt;"', 'href="https://example.org/license?x=1&amp;y=2"', '&lt;script&gt;license()&lt;/script&gt;']) assert.ok(hostileEnlarged.includes(expected));
+assert.ok(!hostileEnlarged.includes("javascript:") && !hostileEnlarged.includes("<script") && !hostileEnlarged.includes("<img onerror"));
+console.log("Scholar, news, and research UI checks passed: publication filters and explanation links, coauthored findings and themes, source types, original figures and enlargement, retained media, URL safety and escaping, news timing, source identity, and cached update dates.");

@@ -41,6 +41,16 @@
   $("#research-vision-description").textContent = researchVision.description || "";
   $("#research-steps").innerHTML = (researchVision.steps || []).map((step, index) => `<li><span class="research-step-number">0${index + 1}</span><h4>${escape(step.title)}</h4><p>${escape(step.text)}</p></li>`).join("");
   const researchStudies = content.researchStudies || [];
+  const researchFigures = new Map();
+  const renderPaperFigures = paper => {
+    const figures = (paper.figures || []).filter(figure => safeUrl(figure.image, true));
+    return figures.length ? `<div class="paper-figures" role="group" aria-label="Figures from this paper">${figures.map((figure, index) => {
+      const key = `${paper.id}-${index}`;
+      researchFigures.set(key, { ...figure, paper });
+      const sourceUrl = safeUrl(figure.sourceUrl || paper.url);
+      return `<figure class="paper-figure"><button type="button" class="paper-figure-open" aria-haspopup="dialog" data-paper-figure="${escape(key)}" aria-label="Enlarge ${escape(figure.label)}: ${escape(paper.title)}"><img src="${escape(figure.image)}" alt="${escape(figure.alt)}" width="${Number(figure.width) || 1600}" height="${Number(figure.height) || 1000}" loading="lazy" /><span class="figure-enlarge">Enlarge ${icon("arrow-up-right")}</span></button><figcaption><strong>${escape(figure.label)}</strong><p>${escape(figure.caption)}</p>${sourceUrl ? externalLink(sourceUrl, figure.credit || "Source paper", "figure-source") : ""}${safeUrl(figure.licenseUrl) ? ` <a class="figure-source figure-license" href="${escape(figure.licenseUrl)}" target="_blank" rel="noopener noreferrer">${escape(figure.licenseLabel || "License")}</a>` : ""}</figcaption></figure>`;
+    }).join("")}</div>` : "";
+  };
   const researchMedia = (item, id) => {
     const videoUrl = safeUrl(item.video, true);
     const imageUrl = safeUrl(item.image, true);
@@ -54,7 +64,7 @@
     const id = `paper-${paper.id}`;
     const paperUrl = safeUrl(paper.url);
     const links = (paper.links || []).filter(link => safeUrl(link.url));
-    return `<article class="research-paper" id="${escape(id)}" tabindex="-1" aria-labelledby="${escape(id)}-title"><header class="research-paper-header"><div>${paper.publicationType ? `<p class="paper-type${paper.publicationType === "Preprint" ? " paper-type-preprint" : ""}">${escape(paper.publicationType)}</p>` : ""}<p class="research-paper-meta">${escape(paper.year)} · ${escape(paper.venue)}</p><h4 id="${escape(id)}-title"><a href="#${escape(id)}">${escape(paper.title)}</a></h4></div>${paper.highlight ? `<p class="paper-highlight"><strong>${escape(paper.highlight.value)}</strong><span>${escape(paper.highlight.label)}</span></p>` : ""}</header><p class="paper-description">${escape(paper.summary)}</p>${paper.note ? `<p class="paper-note">${escape(paper.note)}</p>` : ""}${researchMedia(paper, id)}<div class="paper-findings"><div class="paper-results"><h5>Key results</h5><ul>${(paper.results || []).map(result => `<li>${escape(result)}</li>`).join("")}</ul></div><aside class="paper-importance"><h5>Why it matters</h5><p>${escape(paper.importance)}</p></aside></div>${paper.methods ? `<details class="study-details paper-methods"><summary>How we studied it ${icon("arrow-down")}</summary><p>${escape(paper.methods)}</p></details>` : ""}<footer class="paper-reference"><div><p class="paper-reference-title"><cite>${escape(paper.publicationTitle)}</cite></p><p class="paper-authors">${escape(paper.authors)}</p></div><div class="study-links">${paperUrl ? externalLink(paperUrl, paper.linkLabel || "Read paper") : ""}${links.map(link => externalLink(link.url, link.label)).join("")}</div></footer></article>`;
+    return `<article class="research-paper" id="${escape(id)}" tabindex="-1" aria-labelledby="${escape(id)}-title"><header class="research-paper-header"><div>${paper.publicationType ? `<p class="paper-type${paper.publicationType === "Preprint" ? " paper-type-preprint" : ""}">${escape(paper.publicationType)}</p>` : ""}<p class="research-paper-meta">${escape(paper.year)} · ${escape(paper.venue)}</p><h4 id="${escape(id)}-title"><a href="#${escape(id)}">${escape(paper.title)}</a></h4></div>${paper.highlight ? `<p class="paper-highlight"><strong>${escape(paper.highlight.value)}</strong><span>${escape(paper.highlight.label)}</span></p>` : ""}</header><p class="paper-description">${escape(paper.summary)}</p>${paper.note ? `<p class="paper-note">${escape(paper.note)}</p>` : ""}${researchMedia(paper, id)}<div class="paper-findings"><div class="paper-results"><h5>${escape(paper.resultsHeading || "Key results")}</h5><ul>${(paper.results || []).map(result => `<li>${escape(result)}</li>`).join("")}</ul></div><aside class="paper-importance"><h5>Why it matters</h5><p>${escape(paper.importance)}</p></aside></div>${renderPaperFigures(paper)}${paper.methods ? `<details class="study-details paper-methods"><summary>How we studied it ${icon("arrow-down")}</summary><p>${escape(paper.methods)}</p></details>` : ""}<footer class="paper-reference"><div><p class="paper-reference-title"><cite>${escape(paper.publicationTitle)}</cite></p><p class="paper-authors">${escape(paper.authors)}</p></div><div class="study-links">${paperUrl ? externalLink(paperUrl, paper.linkLabel || "Read paper") : ""}${links.map(link => externalLink(link.url, link.label)).join("")}</div></footer></article>`;
   };
   const renderResearchStudies = status => researchStudies.filter(study => study.status === status).map((study, index) => {
     const studyId = `research-${study.id}`;
@@ -314,6 +324,7 @@
   const openDialog = (html, mode = "") => {
     previousFocus = document.activeElement;
     dialog.classList.toggle("gallery-dialog", mode === "gallery");
+    dialog.classList.toggle("research-figure-dialog", mode === "research-figure");
     $("#dialog-content").innerHTML = html;
     dialog.showModal();
     document.body.classList.add("modal-open");
@@ -340,6 +351,15 @@
     if (!imageUrl) return;
     const sourceUrl = safeUrl(item.sourceUrl);
     openDialog(`<figure class="gallery-lightbox"><img src="${escape(imageUrl)}" alt="${escape(item.alt)}" width="${Number(item.width) || 1600}" height="${Number(item.height) || 1200}" /><figcaption><p class="dialog-eyebrow">${escape(item.event)} · ${escape(item.dateLabel)}</p><h2 id="dialog-title">${escape(item.title)}</h2><p>${escape(item.caption)}</p>${sourceUrl ? externalLink(sourceUrl, item.sourceLabel || "View source") : ""}</figcaption></figure>`, "gallery");
+  });
+  $("#research").addEventListener("click", event => {
+    const button = event.target.closest("[data-paper-figure]");
+    const figure = button ? researchFigures.get(button.dataset.paperFigure) : null;
+    if (!figure) return;
+    const imageUrl = safeUrl(figure.image, true);
+    if (!imageUrl) return;
+    const sourceUrl = safeUrl(figure.sourceUrl || figure.paper.url);
+    openDialog(`<figure class="research-figure-lightbox"><figcaption><p class="dialog-eyebrow">${escape(figure.paper.year)} · ${escape(figure.paper.venue)}</p><h2 id="dialog-title">${escape(figure.label)}</h2><p>${escape(figure.caption)}</p></figcaption><img src="${escape(imageUrl)}" alt="${escape(figure.alt)}" width="${Number(figure.width) || 1600}" height="${Number(figure.height) || 1000}" /><div class="figure-dialog-links">${sourceUrl ? externalLink(sourceUrl, figure.credit || "Source paper") : ""}${safeUrl(figure.licenseUrl) ? externalLink(figure.licenseUrl, figure.licenseLabel || "License") : ""}<a class="text-link" href="${escape(imageUrl)}" target="_blank" rel="noopener noreferrer">Open full-resolution image ${icon("arrow-up-right")}</a></div></figure>`, "research-figure");
   });
   $("#projects").addEventListener("click", event => {
     const card = event.target.closest("[data-project]");
