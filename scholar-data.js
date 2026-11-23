@@ -3,9 +3,9 @@ window.SCHOLAR_DATA = {
   "profileId": "L0GoOBAAAAAJ",
   "sourceUrl": "https://scholar.google.com/citations?user=L0GoOBAAAAAJ&hl=en",
   "name": "Piyush Wanchoo",
-  "updatedAt": "2026-11-22T17:49:09+00:00",
+  "updatedAt": "2026-11-23T22:02:10+00:00",
   "metrics": {
-    "citations": 299,
+    "citations": 300,
     "hIndex": 9,
     "i10Index": 9
   },
@@ -25,7 +25,7 @@ window.SCHOLAR_DATA = {
       "authors": "TC Hufnagel, P Addepalli, A Bhattacharjee, R Berlia, J El-Awady, D Elbert, ...",
       "venue": "arXiv preprint arXiv:2603.06835, 2026",
       "year": "2026",
-      "citations": 4,
+      "citations": 5,
       "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=L0GoOBAAAAAJ&citation_for_view=L0GoOBAAAAAJ%3AhqOjcs7Dif8C"
     },
     {
