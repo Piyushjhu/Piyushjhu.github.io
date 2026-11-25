@@ -3,9 +3,9 @@ window.SCHOLAR_DATA = {
   "profileId": "L0GoOBAAAAAJ",
   "sourceUrl": "https://scholar.google.com/citations?user=L0GoOBAAAAAJ&hl=en",
   "name": "Piyush Wanchoo",
-  "updatedAt": "2026-11-24T20:39:02+00:00",
+  "updatedAt": "2026-11-25T19:56:21+00:00",
   "metrics": {
-    "citations": 300,
+    "citations": 303,
     "hIndex": 9,
     "i10Index": 9
   },
@@ -61,7 +61,7 @@ window.SCHOLAR_DATA = {
       "authors": "A Pandey, P Wanchoo, H Matos, J LeBlanc, A Shukla",
       "venue": "International Journal of Impact Engineering 196, 105155, 2025",
       "year": "2025",
-      "citations": 38,
+      "citations": 39,
       "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=L0GoOBAAAAAJ&citation_for_view=L0GoOBAAAAAJ%3AeQOLeE2rZwMC"
     },
     {
@@ -214,7 +214,7 @@ window.SCHOLAR_DATA = {
       "authors": "P Wanchoo, H Matos, CE Rousseau, A Shukla",
       "venue": "Composite Structures 263, 113530, 2021",
       "year": "2021",
-      "citations": 86,
+      "citations": 88,
       "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=L0GoOBAAAAAJ&citation_for_view=L0GoOBAAAAAJ%3A9yKSN-GCB0IC"
     },
     {
